@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">Secure VPN Proxy</string>
+
+    // OnBoarding Screen
+    <string name="skip">Skip</string>
+    <string name="app_title">QUARK VPN</string>
+
+    <string name="btn_continue_text">Continue</string>
+    <string name="btn_get_started_text">Get Started</string>
+
+    <string name="title_on_boarding_1">No-Adult Content</string>
+    <string name="title_on_boarding_2">Multiple-level Protection</string>
+    <string name="title_on_boarding_3">Stable Internet Connection</string>
+
+    <string name="description_on_boarding_1">Protect yourself from adult contents that exist everywhere in the internet.\nMake your life safer.</string>
+    <string name="description_on_boarding_2">Select protection level you need.\nOr even customize whitelist &#38; blacklist by yourself.</string>
+    <string name="description_on_boarding_3">Your internet connection will be the same as your ISP provided. No slowing down!</string>
+
+    // Premium Screen
+    <string name="description_premium">Subscribe to get these all great features:</string>
+    <string name="description_bill">Unlimited access</string>
+
+    <string name="billed_monthly">Billed Monthly</string>
+    <string name="billed_annually">Billed Annually</string>
+    <string name="start_free_trial">Start Free Trial</string>
+    <string name="monthly_premium">Monthly Premium</string>
+    <string name="annually_premium">Annually Premium</string>
+    <string name="monthly_price">$4,99</string>
+    <string name="annually_price">$9,99</string>
+    <string name="month">/month</string>
+    <string name="year">/year</string>
+
+    <string name="regional_servers_feature">Regional servers</string>
+    <string name="unlock_feature">Unlock all premium features</string>
+    <string name="no_ads_feature">No ads</string>
+    <string name="more_secure_feature">More secure</string>
+    <string name="unlimited_device_feature">Unlimited devices</string>
+
+    // Login Screen
+    <string name="description_login">Login now to get protected.</string>
+    <string name="email">Email</string>
+    <string name="email_hint">email@example.com</string>
+    <string name="password">Password</string>
+    <string name="password_hint">**********</string>
+    <string name="text_error">Password is not valid</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="login">Login</string>
+    <string name="navigate_to_register">Don\'t have an account? Register</string>
+
+
+    // Forgot Password Screen
+    <string name="description_forgot_password">Enter your registered email below to receive password reset instruction.</string>
+    <string name="send">Send</string>z
+    <string name="forgot_password_navigate_to_login">Back to login</string>
+
+    // Check Email Screen
+    <string name="title_check_email">Check your email</string>
+    <string name="description_check_email">We have sent password recovery instruction to your email.</string>
+
+    // Register Screen
+    <string name="description_register">Register to start your journey!</string>
+    <string name="full_name">Full name</string>
+    <string name="full_name_hint">John Smith</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="register_navigate_to_login">Have an account? Login</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    // Home Screen
+    <string name="activated">activated</string>
+    <string name="change">Change</string>
+    <string name="not_protected_status">Not Protected</string>
+    <string name="protected_status">Protected</string>
+    <string name="go_premium">Go Premium</string>
+    <string name="sub_desc_go_premium">Extends your experience now.</string>
+    <string name="timer">00:00:00</string>
+    <string name="filters">Filters</string>
+    <string name="security_filter">Security filter</string>
+    <string name="adult_filter">Adult filter</string>
+    <string name="family_filter">Family filter</string>
+
+    // Profile Screen
+    <string name="title_profile">Welcome, John Doe</string>
+    <string name="logout">Logout</string>
+    <string name="sub_title_app">QUARK VPN Premium</string>
+    <string name="more_about_premium">More about premium</string>
+    <string name="account">Account</string>
+    <string name="account_status">Free/Premium</string>
+    <string name="settings">Settings</string>
+    <string name="support">Support</string>
+    <string name="about">About</string>
+
+    // Account Information Screen
+    <string name="title_account_information">Account information</string>
+    <string name="linked_devices">Linked devices</string>
+    <string name="manage_account">Manage account</string>
+
+    // Settings Screen
+    <string name="pin_protect">PIN Protect</string>
+    <string name="pin_protect_status">On/Off</string>
+    <string name="apps_lock">Apps Lock</string>
+    <string name="apps_lock_status">10 apps</string>
+    <string name="custom_block_list_status">9 domains</string>
+    <string name="whitelist_apps">Whitelist apps</string>
+    <string name="whitelist_apps_status">10 apps</string>
+    <string name="custom_blocklist">Custom blocklist</string>
+
+    // Whitelist Apps Screen
+    <string name="description_whitelist_apps">Exclude selected apps which won\'t be protected by blocker. eg. Banking app…</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="about_quark_vpn">About Quark VPN</string>
+    <string name="terms_of_service">Terms of service</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="open_source_attributes">Open source attributes</string>
+
+
+</resources>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.midterm.securevpnproxy.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_severListFragment"
+            app:destination="@id/severListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_premiumFragment"
+            app:destination="@id/premiumFragment" />
+        <argument
+            android:name="filter"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue= "" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.midterm.securevpnproxy.home.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_accountInformationFragment"
+            app:destination="@id/accountInformationFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_severListFragment"
+            app:destination="@id/severListFragment"
+            app:popUpTo="@id/severListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/severListFragment"
+        android:name="com.midterm.securevpnproxy.home.SeverListFragment"
+        android:label="fragment_sever_list"
+        tools:layout="@layout/fragment_sever_list" >
+        <action
+            android:id="@+id/action_severListFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="filter"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_severListFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountInformationFragment"
+        android:name="com.midterm.securevpnproxy.home.AccountInformationFragment"
+        android:label="fragment_account_information"
+        tools:layout="@layout/fragment_account_information" >
+        <action
+            android:id="@+id/action_accountInformationFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.midterm.securevpnproxy.home.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_settingsFragment_to_whiteListAppsFragment"
+            app:destination="@id/whiteListAppsFragment" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_premium"
+        android:id="@+id/premiumFragment"
+        android:name="com.midterm.securevpnproxy.home.PremiumFragment"
+        android:label="PremiumFragment" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.midterm.securevpnproxy.home.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" >
+        <action
+            android:id="@+id/action_aboutFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/whiteListAppsFragment"
+        android:name="com.midterm.securevpnproxy.home.WhiteListAppsFragment"
+        android:label="fragment_white_list_apps"
+        tools:layout="@layout/fragment_white_list_apps" >
+        <action
+            android:id="@+id/action_whiteListAppsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:popUpTo="@id/settingsFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

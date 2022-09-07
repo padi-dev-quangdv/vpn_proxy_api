@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvSkip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MarginImageIcon"
+                android:text="@string/skip"
+                android:textAppearance="@style/TextViewLargeText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/regular_margin"
+                android:text="@string/app_title"
+                android:textAppearance="@style/TextViewTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvSkip" />
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="@dimen/textview_width"
+                android:layout_height="@dimen/textview_height"
+                android:layout_marginTop="@dimen/regular_margin"
+                android:fontFamily="@font/plus_jakarta_text_regular"
+                android:gravity="center"
+                android:text="@string/description_premium"
+                android:textAppearance="@style/TextViewSmallGrayColorText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout"
+                android:layout_width="@dimen/layout_width"
+                android:layout_height="@dimen/large_layout_height"
+                android:layout_marginTop="@dimen/large_margin"
+                android:background="@drawable/layout_choose_bill"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvDescription">
+
+                <TextView
+                    android:id="@+id/tvBilledMonthly"
+                    android:layout_width="96dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/billed_monthly"
+                    android:textAppearance="@style/TextViewLargeText"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Switch
+                    android:id="@+id/sbPremiumOptions"
+                    android:trackTint="@color/primary_main"
+                    android:thumbTint="@color/white"
+                    android:layout_width="56dp"
+                    android:layout_height="32dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="UnusedAttribute,UseSwitchCompatOrMaterialXml" />
+
+                <TextView
+                    android:id="@+id/tvBilledAnnually"
+                    android:layout_width="95dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/billed_annually"
+                    android:textAppearance="@style/TextViewLargeText"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="327dp"
+                android:layout_height="492dp"
+                android:layout_marginTop="@dimen/small_margin"
+                android:background="@drawable/layout_feature_for_premium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout">
+
+                <TextView
+                    android:id="@+id/tvPremium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_margin"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:textAppearance="@style/TextViewTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@string/monthly_premium" />
+
+                <TextView
+                    android:id="@+id/tvDescriptionBill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_between_elements"
+                    android:fontFamily="@font/plus_jakarta_text_regular"
+                    android:text="@string/description_bill"
+                    android:textAppearance="@style/TextViewMediumText"
+                    app:layout_constraintStart_toStartOf="@id/tvPremium"
+                    app:layout_constraintTop_toBottomOf="@id/tvPremium" />
+
+                <TextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:textAppearance="@style/TextViewSuperLargeBoldText"
+                    app:layout_constraintStart_toStartOf="@id/tvPremium"
+                    app:layout_constraintTop_toBottomOf="@id/tvDescriptionBill"
+                    android:text="@string/monthly_price" />
+
+                <TextView
+                    android:id="@+id/tvExtensionTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_between_desc_and_title"
+                    android:layout_marginBottom="@dimen/margin_between_desc_and_title"
+                    android:fontFamily="@font/plus_jakarta_text_regular"
+                    android:textAppearance="@style/TextViewMediumText"
+                    app:layout_constraintBottom_toBottomOf="@id/tvPrice"
+                    app:layout_constraintStart_toEndOf="@id/tvPrice"
+                    android:text="@string/month" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnStart"
+                    style="@style/ButtonGradientMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
+                    android:text="@string/start_free_trial"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+
+                <TextView
+                    android:id="@+id/tvRegionalSeversFeature"
+                    style="@style/TextViewLargeGrayTextMargin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/regional_servers_feature"
+                    app:layout_constraintStart_toEndOf="@id/imageWorld"
+                    app:layout_constraintTop_toBottomOf="@id/btnStart" />
+
+                <ImageView
+                    android:id="@+id/imageWorld"
+                    style="@style/ImageIconFeature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_world"
+                    app:layout_constraintBottom_toBottomOf="@id/tvRegionalSeversFeature"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvRegionalSeversFeature" />
+
+                <TextView
+                    android:id="@+id/tvUnLockFeature"
+                    style="@style/TextViewLargeGrayTextMargin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unlock_feature"
+                    app:layout_constraintStart_toEndOf="@id/imageRocket"
+                    app:layout_constraintTop_toBottomOf="@id/tvRegionalSeversFeature" />
+
+                <ImageView
+                    android:id="@+id/imageRocket"
+                    style="@style/ImageIconFeature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_rocket"
+                    app:layout_constraintBottom_toBottomOf="@id/tvUnLockFeature"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvUnLockFeature" />
+
+                <TextView
+                    android:id="@+id/tvNoAdsFeature"
+                    style="@style/TextViewLargeGrayTextMargin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_ads_feature"
+                    app:layout_constraintStart_toEndOf="@id/imageNoAds"
+                    app:layout_constraintTop_toBottomOf="@id/tvUnLockFeature" />
+
+                <ImageView
+                    android:id="@+id/imageNoAds"
+                    style="@style/ImageIconFeature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_no_ad"
+                    app:layout_constraintBottom_toBottomOf="@id/tvNoAdsFeature"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvNoAdsFeature" />
+
+                <TextView
+                    android:id="@+id/tvMoreSecureFeature"
+                    style="@style/TextViewLargeGrayTextMargin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/more_secure_feature"
+                    app:layout_constraintStart_toEndOf="@id/imageProtectBrowser"
+                    app:layout_constraintTop_toBottomOf="@id/tvNoAdsFeature" />
+
+                <ImageView
+                    android:id="@+id/imageProtectBrowser"
+                    style="@style/ImageIconFeature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_protect_browser"
+                    app:layout_constraintBottom_toBottomOf="@id/tvMoreSecureFeature"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvMoreSecureFeature" />
+
+                <TextView
+                    android:id="@+id/tvUnlimitedDeviceFeature"
+                    style="@style/TextViewLargeGrayTextMargin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unlimited_device_feature"
+                    app:layout_constraintStart_toEndOf="@id/imageProtectShield"
+                    app:layout_constraintTop_toBottomOf="@id/tvMoreSecureFeature" />
+
+                <ImageView
+                    android:id="@+id/imageProtectShield"
+                    style="@style/ImageIconFeature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_no_limit"
+                    app:layout_constraintBottom_toBottomOf="@id/tvUnlimitedDeviceFeature"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvUnlimitedDeviceFeature" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>
+
