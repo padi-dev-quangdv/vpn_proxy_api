@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "429322443473",
+    "project_id": "vpn-7c12a",
+    "storage_bucket": "vpn-7c12a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429322443473:android:7d1171d30782193cc203f0",
+        "android_client_info": {
+          "package_name": "com.midterm.securevpnproxy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429322443473-6r48p58d8p9nb7jm8e2udc8g5n4girom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.midterm.securevpnproxy",
+            "certificate_hash": "d5645875a5fe2e4320473ea3b653a5c296021b72"
+          }
+        },
+        {
+          "client_id": "429322443473-q4vh917ss03hcg9gohgcp2c9kfcrisod.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVkGvBtfEDs1vz82ZBmA08JTvNRb_X-60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429322443473-q4vh917ss03hcg9gohgcp2c9kfcrisod.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

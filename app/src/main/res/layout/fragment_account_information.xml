@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".home.AccountInformationFragment">
+        tools:context=".presentation.base.account_info.AccountInformationFragment">
 
         <ImageView
             android:id="@+id/imageBack"
