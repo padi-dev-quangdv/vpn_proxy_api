@@ -1,48 +1,42 @@
 package com.midterm.securevpnproxy.presentation.register
 
 import android.os.Bundle
-
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.midterm.securevpnproxy.R
+import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentRegisterBinding
+import com.midterm.securevpnproxy.presentation.register.RegisterViewModel.ViewEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterFragment : Fragment() {
+class RegisterFragment :
+    BaseFragment<FragmentRegisterBinding, RegisterViewModel>(layoutId = R.layout.fragment_register) {
 
-    private var _binding: FragmentRegisterBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: RegisterViewModel by viewModels()
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun initData() {
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun initViewListener() {
         binding.btnRegister.setOnClickListener {
-            val fullName = binding.etFullName.text.toString()
+            val fullName = binding.inputFullName.etInput.text.toString()
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
-            viewModel.register(fullName, email, password)
-            val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-            findNavController().navigate(action)
+            viewModel.onEvent(ViewEvent.RegisterEvent(fullName, email, password))
         }
-
         binding.tvNavigateToLogin.setOnClickListener {
             val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
             findNavController().navigate(action)
         }
     }
 
+    override fun initObserver() {
+        viewModel.viewState.observe(viewLifecycleOwner) {
+            binding.inputFullName.etInput.error = it.fullNameError
+            binding.etEmail.error = it.emailError
+            binding.etPassword.error = it.passwordError
+        }
+    }
+
+    override fun initView() {
+    }
 }

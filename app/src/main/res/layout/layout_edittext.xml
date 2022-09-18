@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="inputHint"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/TextViewMediumLightGrayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{title}" />
+
+        <EditText
+            android:id="@+id/etInput"
+            style="@style/CustomEditText"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            android:hint="@{inputHint}" />
+
+    </LinearLayout>
+</layout>

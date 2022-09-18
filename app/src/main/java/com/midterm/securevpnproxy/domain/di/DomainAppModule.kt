@@ -1,0 +1,25 @@
+package com.midterm.securevpnproxy.domain.di
+
+import com.midterm.securevpnproxy.domain.usecase.login.LoginUseCase
+import com.midterm.securevpnproxy.domain.usecase.login.LoginUseCaseImpl
+import com.midterm.securevpnproxy.domain.usecase.register.RegisterUseCase
+import com.midterm.securevpnproxy.domain.usecase.register.RegisterUseCaseImpl
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
+
+@Module
+@InstallIn(ViewModelComponent::class)
+abstract class DomainAppModule {
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindRegisterUseCase(impl: RegisterUseCaseImpl): RegisterUseCase
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindLoginUseCase(impl: LoginUseCaseImpl): LoginUseCase
+
+}
