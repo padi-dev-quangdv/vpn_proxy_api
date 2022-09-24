@@ -7,11 +7,13 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.HomeActivity
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentLoginBinding
+import com.midterm.securevpnproxy.presentation.ViewEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,38 +24,27 @@ class LoginFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
             activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-            showKeyBoard(etPassword)
-        }
-    }
-
-    private fun setErrorEditText(error: Boolean) {
-        if (error) {
-            binding.tvError.visibility = View.VISIBLE
-            binding.etPassword.setBackgroundResource(R.drawable.bg_edit_text_error)
-        } else {
-            binding.tvError.visibility = View.GONE
-            binding.etPassword.setBackgroundResource(R.drawable.bg_edit_text)
+            showKeyBoard(inputPassword.etInput)
         }
     }
 
     private fun reinitializeUI() {
         binding.apply {
-            etEmail.text.clear()
-            etPassword.text.clear()
+            inputEmail.etInput.text.clear()
+            inputPassword.etInput.text.clear()
             imageDisplayPassword.setImageResource(R.drawable.ic_display_password)
-            etEmail.requestFocus()
+            inputEmail.etInput.requestFocus()
         }
     }
 
     override fun initData() {
-        binding.etPassword.setText("agasdgaga")
     }
 
     override fun initViewListener() {
         binding.apply {
-            etPassword.setOnEditorActionListener { textView, i, keyEvent ->
+            inputPassword.etInput.setOnEditorActionListener { textView, i, keyEvent ->
                 if (i == EditorInfo.IME_ACTION_DONE) {
-                    hideKeyBoard(etPassword)
+                    hideKeyBoard(inputPassword.etInput)
                     true
                 } else {
                     false
@@ -61,13 +52,9 @@ class LoginFragment :
             }
 
             btnLogin.setOnClickListener {
-                val email = etEmail.text.toString()
-                val password = etPassword.text.toString()
-                viewModel.login(email, password)
-                reinitializeUI()
-                val intent =
-                    Intent(this@LoginFragment.requireContext(), HomeActivity::class.java)
-                startActivity(intent)
+                val email = inputEmail.etInput.text.toString()
+                val password = inputPassword.etInput.text.toString()
+                viewModel.onEvent(ViewEvent.LoginEvent(email,password))
             }
             tvForgotPassword.setOnClickListener {
                 val action = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment()
@@ -79,11 +66,11 @@ class LoginFragment :
             }
 
             imageDisplayPassword.setOnClickListener {
-                if (etPassword.transformationMethod == PasswordTransformationMethod.getInstance()) {
+                if (inputPassword.etInput.transformationMethod == PasswordTransformationMethod.getInstance()) {
                     imageDisplayPassword.setImageResource(R.drawable.ic_hide_password)
-                    etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    inputPassword.etInput.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 } else {
-                    etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                    inputPassword.etInput.transformationMethod = PasswordTransformationMethod.getInstance()
                     imageDisplayPassword.setImageResource(R.drawable.ic_display_password)
                 }
             }
@@ -91,7 +78,20 @@ class LoginFragment :
     }
 
     override fun initObserver() {
-
+        viewModel.viewState.observe(viewLifecycleOwner) {
+            binding.inputEmail.etInput.error = it.emailError
+            binding.inputPassword.etInput.error = it.passwordError
+        }
+        viewModel.isExistUser.observe(viewLifecycleOwner) { isExist ->
+            if(isExist) {
+                val intent =
+                    Intent(this@LoginFragment.requireContext(), HomeActivity::class.java)
+                startActivity(intent)
+            }
+            else {
+                Toast.makeText(requireContext(),"user is not exist",Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun initView() {

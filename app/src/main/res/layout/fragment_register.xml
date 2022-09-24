@@ -37,7 +37,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageLogo" />
 
             <TextView
-                android:id="@+id/login_now"
+                android:id="@+id/tvSubTitle"
                 android:layout_width="@dimen/textview_width"
                 android:layout_height="@dimen/textview_height"
                 android:layout_marginTop="@dimen/regular_margin"
@@ -51,105 +51,64 @@
             <include
                 android:id="@+id/inputFullName"
                 layout="@layout/layout_edittext"
-                app:title="@{@string/full_name}"
-                app:inputHint="@{@string/full_name_hint}"
-                android:layout_marginStart="@dimen/regular_margin"
-                app:layout_constraintTop_toBottomOf="@id/login_now"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/regular_margin"
                 android:layout_marginTop="40dp"
-                android:layout_marginEnd="@dimen/regular_margin"/>
+                android:layout_marginEnd="@dimen/regular_margin"
+                app:inputHint="@{@string/full_name_hint}"
+                app:layout_constraintTop_toBottomOf="@id/tvSubTitle"
+                app:title="@{@string/full_name}" />
 
-            <!--            <TextView-->
-            <!--                android:id="@+id/tvFullName"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="@string/full_name"-->
-            <!--                style="@style/TextViewMediumLightGrayText"-->
-            <!--                app:layout_constraintBottom_toTopOf="@id/etFullName"-->
-            <!--                app:layout_constraintStart_toStartOf="@id/etFullName" />-->
-
-            <!--            <EditText-->
-            <!--                android:id="@+id/etFullName"-->
-            <!--                style="@style/CustomEditText"-->
-            <!--                android:layout_width="@dimen/button_width"-->
-            <!--                android:layout_height="@dimen/button_height"-->
-            <!--                android:layout_marginTop="@dimen/large_margin"-->
-            <!--                android:hint="@string/full_name_hint"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@+id/login_now" />-->
-
-            <TextView
-                android:id="@+id/tvEmail"
-                style="@style/TextViewMediumLightGrayText"
-                android:layout_width="wrap_content"
+            <include
+                android:id="@+id/inputEmail"
+                layout="@layout/layout_edittext"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/email"
-                app:layout_constraintBottom_toTopOf="@id/etEmail"
-                app:layout_constraintStart_toStartOf="@id/etEmail" />
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/regular_margin"
+                app:inputHint="@{@string/email_hint}"
+                app:layout_constraintTop_toBottomOf="@id/inputFullName"
+                app:title="@{@string/email}" />
 
-            <EditText
-                android:id="@+id/etEmail"
-                style="@style/CustomEditText"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginTop="@dimen/large_margin"
-                android:hint="@string/email_hint"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputFullName" />
-
-            <TextView
-                android:id="@+id/tvPassword"
-                style="@style/TextViewMediumLightGrayText"
-                android:layout_width="wrap_content"
+            <include
+                android:id="@+id/inputPassword"
+                layout="@layout/layout_edittext"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/password"
-                app:layout_constraintBottom_toTopOf="@id/etPassword"
-                app:layout_constraintStart_toStartOf="@id/etPassword" />
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/regular_margin"
+                app:inputHint="@{@string/password_hint}"
+                app:layout_constraintTop_toBottomOf="@id/inputEmail"
+                app:title="@{@string/password}" />
 
-
-            <EditText
-                android:id="@+id/etPassword"
-                style="@style/PasswordEditText"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginTop="@dimen/large_margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etEmail" />
-
-            <TextView
-                android:id="@+id/tvConfirmPassword"
-                style="@style/TextViewMediumLightGrayText"
-                android:layout_width="wrap_content"
+            <include
+                android:id="@+id/inputConfirmPassword"
+                layout="@layout/layout_edittext"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/confirm_password"
-                app:layout_constraintBottom_toTopOf="@id/etConfirmPassword"
-                app:layout_constraintStart_toStartOf="@id/etConfirmPassword" />
-
-
-            <EditText
-                android:id="@+id/etConfirmPassword"
-                style="@style/PasswordEditText"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginTop="@dimen/large_margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/regular_margin"
+                app:inputHint="@{@string/password_hint}"
+                app:layout_constraintTop_toBottomOf="@id/inputPassword"
+                app:title="@{@string/confirm_password}" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnRegister"
                 style="@style/ButtonGradientLarge"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="@dimen/regular_margin"
+                android:layout_marginEnd="24dp"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
                 android:text="@string/register"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/etConfirmPassword" />
+                app:layout_constraintTop_toBottomOf="@id/inputConfirmPassword" />
 
             <TextView
                 android:id="@+id/tvNavigateToLogin"

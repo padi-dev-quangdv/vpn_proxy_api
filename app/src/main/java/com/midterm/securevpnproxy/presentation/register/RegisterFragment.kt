@@ -1,12 +1,10 @@
 package com.midterm.securevpnproxy.presentation.register
 
-import android.os.Bundle
-import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentRegisterBinding
-import com.midterm.securevpnproxy.presentation.register.RegisterViewModel.ViewEvent
+import com.midterm.securevpnproxy.presentation.ViewEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,9 +17,13 @@ class RegisterFragment :
     override fun initViewListener() {
         binding.btnRegister.setOnClickListener {
             val fullName = binding.inputFullName.etInput.text.toString()
-            val email = binding.etEmail.text.toString()
-            val password = binding.etPassword.text.toString()
-            viewModel.onEvent(ViewEvent.RegisterEvent(fullName, email, password))
+            val email = binding.inputEmail.etInput.text.toString()
+            val password = binding.inputPassword.etInput.text.toString()
+            val confirmPassword = binding.inputConfirmPassword.etInput.text.toString()
+            viewModel.onEvent(ViewEvent.RegisterEvent(fullName, email, password,confirmPassword))
+//            val intent =
+//                Intent(this@RegisterFragment.requireContext(), HomeActivity::class.java)
+//            startActivity(intent)
         }
         binding.tvNavigateToLogin.setOnClickListener {
             val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
@@ -32,8 +34,9 @@ class RegisterFragment :
     override fun initObserver() {
         viewModel.viewState.observe(viewLifecycleOwner) {
             binding.inputFullName.etInput.error = it.fullNameError
-            binding.etEmail.error = it.emailError
-            binding.etPassword.error = it.passwordError
+            binding.inputEmail.etInput.error = it.emailError
+            binding.inputPassword.etInput.error = it.passwordError
+            binding.inputConfirmPassword.etInput.error = it.confirmPasswordError
         }
     }
 

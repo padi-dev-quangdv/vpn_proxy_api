@@ -9,4 +9,6 @@ interface AuthDataSource {
     suspend fun login(param: LoginParam): ResultModel<LoginModel>
 
     suspend fun register(param: RegisterParam)
+
+    suspend fun resetEmail(email: String)
 }

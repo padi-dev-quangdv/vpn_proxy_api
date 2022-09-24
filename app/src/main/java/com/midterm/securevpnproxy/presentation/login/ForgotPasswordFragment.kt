@@ -1,36 +1,50 @@
 package com.midterm.securevpnproxy.presentation.login
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.midterm.securevpnproxy.R
+import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentForgotPasswordBinding
+import com.midterm.securevpnproxy.presentation.ViewEvent
+import dagger.hilt.android.AndroidEntryPoint
 
-class ForgotPasswordFragment : Fragment() {
+@AndroidEntryPoint
+class ForgotPasswordFragment :
+    BaseFragment<FragmentForgotPasswordBinding, ForgotPasswordViewModel>(layoutId = R.layout.fragment_forgot_password) {
 
-    private var _binding: FragmentForgotPasswordBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentForgotPasswordBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun initData() {
+        binding.etEmail.text?.clear()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun initViewListener() {
         binding.tvNavigateToLogin.setOnClickListener {
-            val action = ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment()
+            val action =
+                ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment()
             findNavController().navigate(action)
         }
         binding.btnSend.setOnClickListener {
-            val action = ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToCheckEmailFragment()
-            findNavController().navigate(action)
+            val email = binding.etEmail.text.toString()
+            viewModel.onEvent(ViewEvent.ResetPasswordEvent(email = email))
+
         }
     }
+
+    override fun initObserver() {
+        viewModel.viewState.observe(viewLifecycleOwner) {
+            binding.etEmail.error = it.emailError
+        }
+        viewModel.isEmailExist.observe(viewLifecycleOwner) {
+            if(it) {
+                val action =
+                    ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToCheckEmailFragment()
+                findNavController().navigate(action)
+                viewModel.doneNavigating()
+            }
+        }
+    }
+
+    override fun initView() {
+        binding.etEmail.text?.clear()
+    }
+
+
 }
