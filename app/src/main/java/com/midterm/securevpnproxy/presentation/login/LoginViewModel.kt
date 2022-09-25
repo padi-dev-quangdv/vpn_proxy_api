@@ -6,53 +6,62 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.midterm.securevpnproxy.domain.model.ResultModel
 import com.midterm.securevpnproxy.domain.usecase.login.LoginParam
-import com.midterm.securevpnproxy.domain.usecase.login.LoginUseCaseImpl
-import com.midterm.securevpnproxy.presentation.ViewEvent
+import com.midterm.securevpnproxy.domain.usecase.login.LoginUseCase
+import com.midterm.securevpnproxy.presentation.base.ViewEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCaseImpl) : ViewModel() {
+class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
 
     val viewState: MutableLiveData<ViewState> = MutableLiveData(ViewState())
     val isExistUser: MutableLiveData<Boolean> = MutableLiveData()
 
+    var job: Job? = null
+
     private fun login(email: String, password: String) {
-        val validateLogin = validateLogin(email,password)
-        if(!validateLogin) {
-            return
-        }
-        else {
-            viewModelScope.launch {
-                val result = loginUseCase(LoginParam(email, password))
-                if (result is ResultModel.Success) {
-                    isExistUser.value = true
-                } else if (result is ResultModel.Error) {
-                    isExistUser.value = false
+        val validateLogin = validateLogin(email, password)
+        if (!validateLogin) return
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            loginUseCase.invoke(LoginParam(email, password)).collectLatest { result ->
+                when (result) {
+                    is ResultModel.Success -> {
+                        isExistUser.value = true
+                    }
+                    is ResultModel.Error -> {
+                        isExistUser.value = false
+                    }
                 }
             }
         }
     }
 
-   fun onEvent(event: ViewEvent) {
-       when(event) {
-           is ViewEvent.LoginEvent -> login(event.email,event.password)
-       }
-   }
+    fun onEvent(event: ViewEvent) {
+        when (event) {
+            is ViewEvent.LoginEvent -> login(event.email, event.password)
+        }
+    }
 
-    private fun validateLogin(email: String, password:String): Boolean
-    {
+    private fun validateLogin(email: String, password: String): Boolean {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            viewState.postValue(viewState.value?.copy(
-                emailError = "Invalid email"
-            ))
+            viewState.postValue(
+                viewState.value?.copy(
+                    emailError = "Invalid email"
+                )
+            )
             return false
         }
-        if(password.trim().length < 8) {
-            viewState.postValue(viewState.value?.copy(
-                passwordError = "Password must be longer than 8"
-            ))
+        if (password.trim().length < 8) {
+            viewState.postValue(
+                viewState.value?.copy(
+                    passwordError = "Password must be longer than 8"
+                )
+            )
             return false
         }
         return true

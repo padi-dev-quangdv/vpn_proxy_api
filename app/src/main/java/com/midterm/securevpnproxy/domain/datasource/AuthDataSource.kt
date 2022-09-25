@@ -4,9 +4,10 @@ import com.midterm.securevpnproxy.domain.model.LoginModel
 import com.midterm.securevpnproxy.domain.model.ResultModel
 import com.midterm.securevpnproxy.domain.usecase.login.LoginParam
 import com.midterm.securevpnproxy.domain.usecase.register.RegisterParam
+import kotlinx.coroutines.flow.Flow
 
 interface AuthDataSource {
-    suspend fun login(param: LoginParam): ResultModel<LoginModel>
+    fun login(param: LoginParam): Flow<ResultModel<LoginModel>>
 
     suspend fun register(param: RegisterParam)
 

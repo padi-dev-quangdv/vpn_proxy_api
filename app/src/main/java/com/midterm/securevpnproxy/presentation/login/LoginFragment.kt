@@ -13,7 +13,7 @@ import com.midterm.securevpnproxy.HomeActivity
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentLoginBinding
-import com.midterm.securevpnproxy.presentation.ViewEvent
+import com.midterm.securevpnproxy.presentation.base.ViewEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -85,7 +85,7 @@ class LoginFragment :
         viewModel.isExistUser.observe(viewLifecycleOwner) { isExist ->
             if(isExist) {
                 val intent =
-                    Intent(this@LoginFragment.requireContext(), HomeActivity::class.java)
+                    Intent(requireActivity(), HomeActivity::class.java)
                 startActivity(intent)
             }
             else {

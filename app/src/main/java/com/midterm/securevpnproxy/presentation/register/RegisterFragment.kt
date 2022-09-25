@@ -4,7 +4,7 @@ import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentRegisterBinding
-import com.midterm.securevpnproxy.presentation.ViewEvent
+import com.midterm.securevpnproxy.presentation.register.RegisterViewModel.RegisterEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +20,8 @@ class RegisterFragment :
             val email = binding.inputEmail.etInput.text.toString()
             val password = binding.inputPassword.etInput.text.toString()
             val confirmPassword = binding.inputConfirmPassword.etInput.text.toString()
-            viewModel.onEvent(ViewEvent.RegisterEvent(fullName, email, password,confirmPassword))
+            val event = RegisterEvent(fullName, email, password, confirmPassword)
+            viewModel.onEvent(event)
 //            val intent =
 //                Intent(this@RegisterFragment.requireContext(), HomeActivity::class.java)
 //            startActivity(intent)

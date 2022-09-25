@@ -4,7 +4,7 @@ import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentForgotPasswordBinding
-import com.midterm.securevpnproxy.presentation.ViewEvent
+import com.midterm.securevpnproxy.presentation.base.ViewEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

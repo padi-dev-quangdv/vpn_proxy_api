@@ -39,8 +39,7 @@
         <action
             android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/loginFragment" />
         <action
             android:id="@+id/action_forgotPasswordFragment_to_checkEmailFragment"
             app:destination="@id/checkEmailFragment" />

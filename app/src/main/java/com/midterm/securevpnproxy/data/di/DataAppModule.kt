@@ -17,14 +17,3 @@ abstract class DataAppModule {
     @ViewModelScoped
     abstract fun bindAuthDataSource(repository: AuthRepository) : AuthDataSource
 }
-
-@Module
-@InstallIn(ViewModelComponent::class)
-object InterfaceDataAppModule {
-
-    @Provides
-    @ViewModelScoped
-    fun provideAuthRepository() : AuthRepository {
-        return AuthRepository()
-    }
-}
