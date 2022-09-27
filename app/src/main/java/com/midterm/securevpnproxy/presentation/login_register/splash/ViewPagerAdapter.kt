@@ -1,4 +1,4 @@
-package com.midterm.securevpnproxy.presentation.splash
+package com.midterm.securevpnproxy.presentation.login_register.splash
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.midterm.securevpnproxy.domain.model.OnBoardingData
 import com.midterm.securevpnproxy.R
 
 class ViewPagerAdapter(
-    private val onBoardingDataList: List<OnBoardingData>,
+    private val onBoardingDataList: List<OnBoardingData>
 ) : RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder>() {
 
     inner class ViewPagerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

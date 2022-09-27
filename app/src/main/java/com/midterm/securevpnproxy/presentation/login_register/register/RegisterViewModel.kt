@@ -1,21 +1,24 @@
-package com.midterm.securevpnproxy.presentation.register
+package com.midterm.securevpnproxy.presentation.login_register.register
 
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.midterm.securevpnproxy.domain.model.ResultModel
 import com.midterm.securevpnproxy.domain.usecase.register.RegisterParam
-import com.midterm.securevpnproxy.domain.usecase.register.RegisterUseCaseImpl
-import com.midterm.securevpnproxy.presentation.base.ViewEvent
+import com.midterm.securevpnproxy.domain.usecase.register.RegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject
-constructor(private val registerUseCase: RegisterUseCaseImpl) : ViewModel() {
+constructor(private val registerUseCase: RegisterUseCase) : ViewModel() {
 
     val viewState: MutableLiveData<ViewState> = MutableLiveData(ViewState())
+    val isEmailAlreadyExist: MutableLiveData<Boolean> = MutableLiveData()
 
     private fun register(
         fullName: String,
@@ -27,14 +30,18 @@ constructor(private val registerUseCase: RegisterUseCaseImpl) : ViewModel() {
         if (!validateResult) {
             return
         } else {
-            viewModelScope.launch {
-                registerUseCase(
-                    RegisterParam(
-                        email = email,
-                        fullName = fullName,
-                        password = password
-                    )
-                )
+            val param = RegisterParam(email = email, fullName = fullName, password = password)
+            viewModelScope.launch(Dispatchers.IO) {
+                registerUseCase(param).collectLatest { result ->
+                    when(result) {
+                        is ResultModel.Success -> {
+                            isEmailAlreadyExist.value = false
+                        }
+                        is ResultModel.Error -> {
+                            isEmailAlreadyExist.value = true
+                        }
+                    }
+                }
             }
         }
     }
@@ -48,7 +55,7 @@ constructor(private val registerUseCase: RegisterUseCaseImpl) : ViewModel() {
         if (fullName.trim().isEmpty()) {
             viewState.postValue(
                 viewState.value?.copy(
-                    fullNameError = "Invalid fullname"
+                    fullNameError = "Full name cannot be empty"
                 )
             )
             return false
@@ -60,6 +67,13 @@ constructor(private val registerUseCase: RegisterUseCaseImpl) : ViewModel() {
                 )
             )
             return false
+        }
+        if(password.trim().isEmpty()) {
+            viewState.postValue(
+                viewState.value?.copy(
+                    passwordError = "Password cannot be empty"
+                )
+            )
         }
         if (password.trim().length < 8) {
             viewState.postValue(
@@ -82,7 +96,7 @@ constructor(private val registerUseCase: RegisterUseCaseImpl) : ViewModel() {
 
     fun onEvent(event: ViewEvent) {
         when (event) {
-            is RegisterEvent -> register(
+            is ViewEvent.RegisterEvent -> register(
                 event.fullName,
                 event.email,
                 event.password,
@@ -98,12 +112,15 @@ constructor(private val registerUseCase: RegisterUseCaseImpl) : ViewModel() {
         val confirmPasswordError: String? = null
     )
 
-    data class RegisterEvent(
-        val fullName: String,
-        val email: String,
-        val password: String,
-        val confirmPassword: String
-    ) : ViewEvent
+    sealed interface ViewEvent {
+        data class RegisterEvent(
+            val fullName: String,
+            val email: String,
+            val password: String,
+            val confirmPassword: String
+        ) : ViewEvent
+    }
+
 
 
     sealed interface ViewEffect {

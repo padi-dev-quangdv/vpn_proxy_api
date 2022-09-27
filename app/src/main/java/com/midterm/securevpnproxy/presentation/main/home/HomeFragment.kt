@@ -1,23 +1,18 @@
-package com.midterm.securevpnproxy.presentation.base.home
+package com.midterm.securevpnproxy.presentation.main.home
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.midterm.securevpnproxy.R
+import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentHomeBinding
 import kotlinx.coroutines.*
 import java.util.*
 import kotlin.math.roundToInt
 
-class HomeFragment : Fragment() {
+class HomeFragment :
+    BaseFragment<FragmentHomeBinding, HomeViewModel>(layoutId = R.layout.fragment_home) {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
 
     private val navigationArgs: HomeFragmentArgs by navArgs()
     private var filterName: String? = null
@@ -29,21 +24,49 @@ class HomeFragment : Fragment() {
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+    private fun startTimer() {
+        time = 0.0
+        timerTask = object : TimerTask() {
+            override fun run() {
+                uiScope.launch {
+                    withContext(Dispatchers.Main) {
+                        time++
+                        binding.tvTimer.text = getTimerText()
+                    }
+                }
+            }
+        }
+        timer.scheduleAtFixedRate(timerTask, 0, 1000)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun getTimerText(): String {
+        val round = time.roundToInt()
+        val seconds: Int = ((round % 86300) % 3600) % 60
+        val minutes: Int = ((round % 86300) % 3600) / 60
+        val hours: Int = (round % 86300) / 3600
 
+        return formatTime(seconds, minutes, hours)
+    }
+
+    private fun formatTime(seconds: Int, minutes: Int, hours: Int): String {
+        return String.format("%02d", hours) + " : " + String.format(
+            "%02d",
+            minutes
+        ) + " : " + String.format("%02d", seconds)
+    }
+
+    override fun initData() {
         filterName = navigationArgs.filter
-
         binding.apply {
-            imageProfile.setOnClickListener {
+            if (filterName != null && filterName != "") {
+                tvSubTitleFilter.text = filterName
+            }
+        }
+    }
+
+    override fun initViewListener() {
+        binding.apply {
+            layoutHeader.iconRight.setOnClickListener {
                 val action = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
                 findNavController().navigate(action)
             }
@@ -68,50 +91,25 @@ class HomeFragment : Fragment() {
                         )
                     )
                     timer.cancel()
-                    tvTimer.text = formatTime(0,0,0)
+                    tvTimer.text = formatTime(0, 0, 0)
                     tvStatus.text = resources.getString(R.string.not_protected_status)
                 }
             }
             btnFilter.setOnClickListener {
-                val action = HomeFragmentDirections.actionHomeFragmentToSeverListFragment(tvSubTitleFilter.text.toString())
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToSeverListFragment(tvSubTitleFilter.text.toString())
                 findNavController().navigate(action)
             }
             btnNavigateToPremium.setOnClickListener {
                 val action = HomeFragmentDirections.actionHomeFragmentToPremiumFragment()
                 findNavController().navigate(action)
             }
-            if(filterName != null && filterName != "") {
-                tvSubTitleFilter.text = filterName
-            }
-
         }
     }
 
-    private fun startTimer() {
-        time = 0.0
-        timerTask = object : TimerTask() {
-            override fun run() {
-                uiScope.launch {
-                    withContext(Dispatchers.Main) {
-                        time++
-                        binding.tvTimer.text = getTimerText()
-                    }
-                }
-            }
-        }
-        timer.scheduleAtFixedRate(timerTask,0,1000)
+    override fun initObserver() {
     }
 
-    private fun getTimerText(): String {
-        val round = time.roundToInt()
-        val seconds: Int = ((round % 86300) % 3600) % 60
-        val minutes: Int = ((round % 86300) % 3600) / 60
-        val hours: Int = (round % 86300) / 3600
-
-        return formatTime(seconds,minutes,hours)
-    }
-
-    private fun formatTime( seconds: Int,  minutes: Int,  hours: Int): String {
-        return String.format("%02d",hours) + " : " + String.format("%02d",minutes) + " : " + String.format("%02d",seconds)
+    override fun initView() {
     }
 }

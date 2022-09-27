@@ -1,10 +1,12 @@
-package com.midterm.securevpnproxy.presentation.register
+package com.midterm.securevpnproxy.presentation.login_register.register
 
+import android.content.Intent
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.midterm.securevpnproxy.MainActivity
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentRegisterBinding
-import com.midterm.securevpnproxy.presentation.register.RegisterViewModel.RegisterEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,11 +22,14 @@ class RegisterFragment :
             val email = binding.inputEmail.etInput.text.toString()
             val password = binding.inputPassword.etInput.text.toString()
             val confirmPassword = binding.inputConfirmPassword.etInput.text.toString()
-            val event = RegisterEvent(fullName, email, password, confirmPassword)
+            val event = RegisterViewModel.ViewEvent.RegisterEvent(
+                fullName,
+                email,
+                password,
+                confirmPassword
+            )
             viewModel.onEvent(event)
-//            val intent =
-//                Intent(this@RegisterFragment.requireContext(), HomeActivity::class.java)
-//            startActivity(intent)
+
         }
         binding.tvNavigateToLogin.setOnClickListener {
             val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
@@ -38,6 +43,20 @@ class RegisterFragment :
             binding.inputEmail.etInput.error = it.emailError
             binding.inputPassword.etInput.error = it.passwordError
             binding.inputConfirmPassword.etInput.error = it.confirmPasswordError
+        }
+
+        viewModel.isEmailAlreadyExist.observe(viewLifecycleOwner) { isExist ->
+            if (isExist) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.error_email_already_exist),
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                val intent =
+                    Intent(this@RegisterFragment.requireContext(), MainActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

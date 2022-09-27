@@ -1,10 +1,10 @@
-package com.midterm.securevpnproxy.presentation.login
+package com.midterm.securevpnproxy.presentation.login_register.reset_password
 
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentForgotPasswordBinding
-import com.midterm.securevpnproxy.presentation.base.ViewEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,8 +23,7 @@ class ForgotPasswordFragment :
         }
         binding.btnSend.setOnClickListener {
             val email = binding.etEmail.text.toString()
-            viewModel.onEvent(ViewEvent.ResetPasswordEvent(email = email))
-
+            viewModel.onEvent(ForgotPasswordViewModel.ViewEvent.ResetPasswordEvent(email = email))
         }
     }
 
@@ -37,6 +36,7 @@ class ForgotPasswordFragment :
                 val action =
                     ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToCheckEmailFragment()
                 findNavController().navigate(action)
+                Toast.makeText(requireContext(),getString(R.string.check_mail),Toast.LENGTH_LONG).show()
                 viewModel.doneNavigating()
             }
         }

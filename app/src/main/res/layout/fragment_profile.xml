@@ -10,21 +10,22 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.base.profile.ProfileFragment">
+        tools:context=".presentation.main.profile.ProfileFragment">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imageBack"
-                android:layout_width="wrap_content"
+            <include
+                android:id="@+id/layoutHeader"
+                layout="@layout/layout_header"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/MarginImageIcon"
-                android:src="@drawable/ic_back"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:iconLeft="@{@drawable/ic_back}" />
 
             <ImageView
                 android:id="@+id/imageEllipse"

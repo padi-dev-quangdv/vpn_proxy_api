@@ -44,7 +44,6 @@ abstract class BaseFragment<BINDING : ViewDataBinding, VM : ViewModel>(val layou
                 genericSuperClass = (genericSuperClass as Class<*>).genericSuperclass
             }
         }
-
         return parametrizedType.actualTypeArguments[1] as Class<VM>
     }
 

@@ -104,9 +104,11 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLogin"
             style="@style/ButtonGradientLarge"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/regular_margin"
+            android:layout_marginStart="@dimen/regular_margin"
+            android:layout_marginEnd="@dimen/regular_margin"
             android:foreground="?android:attr/selectableItemBackgroundBorderless"
             android:text="@string/login"
             app:layout_constraintEnd_toEndOf="parent"

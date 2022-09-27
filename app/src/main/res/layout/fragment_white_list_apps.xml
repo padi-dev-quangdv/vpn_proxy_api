@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".presentation.base.white_list.WhiteListAppsFragment">
+    tools:context=".presentation.main.white_list.WhiteListAppsFragment">
 
     <data>
 
@@ -12,31 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/llHeader"
+        <include
+            android:id="@+id/layoutHeader"
+            layout="@layout/layout_header"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/imageBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/regular_margin"
-                android:layout_marginEnd="@dimen/regular_margin"
-                android:src="@drawable/ic_back" />
-
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/whitelist_apps"
-                android:textAppearance="@style/TextViewLargeText" />
-
-        </RelativeLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:iconLeft="@{@drawable/ic_back}"
+            app:title="@{@string/whitelist_apps}" />
 
         <TextView
             android:id="@+id/tvDescriptionWhitelistApps"
@@ -47,7 +32,7 @@
             android:textAppearance="@style/TextViewMediumBoldText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llHeader" />
+            app:layout_constraintTop_toBottomOf="@id/layoutHeader" />
 
         <SearchView
             android:id="@+id/searchView"
@@ -67,68 +52,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/searchView">
 
-            <ImageView
-                android:id="@+id/imageFacebook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_margin"
-                android:layout_marginTop="@dimen/small_margin"
-                android:src="@drawable/ic_facebook"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="#3B5998" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvWhiteListApp"
+                tools:listitem="@layout/item_white_list_app"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-            <TextView
-                android:id="@+id/tvFacebook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_between_elements"
-                android:text="@string/facebook"
-                android:textAppearance="@style/TextViewMediumGrayText"
-                app:layout_constraintBottom_toBottomOf="@id/imageFacebook"
-                app:layout_constraintStart_toEndOf="@id/imageFacebook"
-                app:layout_constraintTop_toTopOf="@id/imageFacebook" />
 
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/small_margin"
-                android:thumbTint="@color/white"
-                android:trackTint="@color/primary_main"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/imageFacebook"
-                tools:ignore="UnusedAttribute,UseSwitchCompatOrMaterialXml" />
-
-            <ImageView
-                android:id="@+id/imageTwitter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_margin"
-                android:src="@drawable/ic_facebook"
-                app:layout_constraintStart_toStartOf="@id/imageFacebook"
-                app:layout_constraintTop_toBottomOf="@id/imageFacebook"
-                app:tint="#3B5998" />
-
-            <TextView
-                android:id="@+id/tvTwitter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_between_elements"
-                android:text="@string/twitter"
-                android:textAppearance="@style/TextViewMediumGrayText"
-                app:layout_constraintBottom_toBottomOf="@id/imageTwitter"
-                app:layout_constraintStart_toEndOf="@id/imageTwitter"
-                app:layout_constraintTop_toTopOf="@id/imageTwitter" />
-
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/small_margin"
-                android:thumbTint="@color/white"
-                android:trackTint="@color/primary_main"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/imageTwitter"
-                tools:ignore="UnusedAttribute,UseSwitchCompatOrMaterialXml" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

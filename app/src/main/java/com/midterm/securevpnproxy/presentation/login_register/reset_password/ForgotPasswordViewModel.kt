@@ -1,11 +1,11 @@
-package com.midterm.securevpnproxy.presentation.login
+package com.midterm.securevpnproxy.presentation.login_register.reset_password
 
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.midterm.securevpnproxy.domain.usecase.reset_password.ResetPasswordParam
 import com.midterm.securevpnproxy.domain.usecase.reset_password.ResetPasswordUseCaseImpl
-import com.midterm.securevpnproxy.presentation.base.ViewEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,7 +24,7 @@ class ForgotPasswordViewModel @Inject constructor(private val resetPasswordUseCa
         } else {
             isEmailExist.value = true
             viewModelScope.launch {
-                resetPasswordUseCase(email)
+                resetPasswordUseCase(ResetPasswordParam(email))
             }
         }
     }
@@ -54,5 +54,11 @@ class ForgotPasswordViewModel @Inject constructor(private val resetPasswordUseCa
     data class ViewState(
         val emailError: String? = null
     )
+
+    sealed interface ViewEvent {
+        data class ResetPasswordEvent(
+            val email: String
+        ) : ViewEvent
+    }
 
 }
