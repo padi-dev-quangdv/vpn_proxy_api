@@ -1,4 +1,4 @@
-package com.midterm.securevpnproxy.presentation.login
+package com.midterm.securevpnproxy.presentation.login_register.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,11 +9,10 @@ import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.midterm.securevpnproxy.HomeActivity
+import com.midterm.securevpnproxy.MainActivity
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentLoginBinding
-import com.midterm.securevpnproxy.presentation.base.ViewEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,7 +53,7 @@ class LoginFragment :
             btnLogin.setOnClickListener {
                 val email = inputEmail.etInput.text.toString()
                 val password = inputPassword.etInput.text.toString()
-                viewModel.onEvent(ViewEvent.LoginEvent(email,password))
+                viewModel.onEvent(LoginViewModel.ViewEvent.LoginEvent(email, password))
             }
             tvForgotPassword.setOnClickListener {
                 val action = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment()
@@ -68,9 +67,11 @@ class LoginFragment :
             imageDisplayPassword.setOnClickListener {
                 if (inputPassword.etInput.transformationMethod == PasswordTransformationMethod.getInstance()) {
                     imageDisplayPassword.setImageResource(R.drawable.ic_hide_password)
-                    inputPassword.etInput.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    inputPassword.etInput.transformationMethod =
+                        HideReturnsTransformationMethod.getInstance()
                 } else {
-                    inputPassword.etInput.transformationMethod = PasswordTransformationMethod.getInstance()
+                    inputPassword.etInput.transformationMethod =
+                        PasswordTransformationMethod.getInstance()
                     imageDisplayPassword.setImageResource(R.drawable.ic_display_password)
                 }
             }
@@ -82,14 +83,17 @@ class LoginFragment :
             binding.inputEmail.etInput.error = it.emailError
             binding.inputPassword.etInput.error = it.passwordError
         }
-        viewModel.isExistUser.observe(viewLifecycleOwner) { isExist ->
-            if(isExist) {
+        viewModel.isUserExist.observe(viewLifecycleOwner) { isExist ->
+            if (isExist) {
                 val intent =
-                    Intent(requireActivity(), HomeActivity::class.java)
+                    Intent(requireActivity(), MainActivity::class.java)
                 startActivity(intent)
-            }
-            else {
-                Toast.makeText(requireContext(),"user is not exist",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.error_user_not_exist),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }

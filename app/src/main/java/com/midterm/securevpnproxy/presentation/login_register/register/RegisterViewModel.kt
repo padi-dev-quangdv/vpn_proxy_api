@@ -33,7 +33,7 @@ constructor(private val registerUseCase: RegisterUseCase) : ViewModel() {
         if (!validateResult) return
         job?.cancel()
         val param = RegisterParam(email = email, fullName = fullName, password = password)
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch(Dispatchers.Main) {
             registerUseCase(param).collectLatest { result ->
                 when (result) {
                     is ResultModel.Success -> {

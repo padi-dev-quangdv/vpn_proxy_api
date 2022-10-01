@@ -26,7 +26,7 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
         val validateLogin = validateLogin(email, password)
         if (!validateLogin) return
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch(Dispatchers.Main) {
             loginUseCase.invoke(LoginParam(email, password)).collectLatest { result ->
                 when (result) {
                     is ResultModel.Success -> {
