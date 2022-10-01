@@ -7,9 +7,10 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".presentation.main.sever_list.SeverListFragment">
 
         <include
@@ -28,8 +29,8 @@
             android:id="@+id/tvSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginStart="@dimen/regular_margin"
+            android:layout_marginTop="@dimen/large_margin"
             android:text="@string/filters"
             android:textAppearance="@style/TextViewLargeBoldText"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,11 +39,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvFilter"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/regular_margin"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvSubTitle"
             tools:listitem="@layout/item_sever_list" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

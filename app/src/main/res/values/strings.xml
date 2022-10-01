@@ -56,6 +56,7 @@
     // Check Email Screen
     <string name="title_check_email">Check your email</string>
     <string name="description_check_email">We have sent password recovery instruction to your email.</string>
+    <string name="confirm_check">Back</string>
 
     // Register Screen
     <string name="description_register">Register to start your journey!</string>
@@ -75,10 +76,6 @@
     <string name="go_premium">Go Premium</string>
     <string name="sub_desc_go_premium">Extends your experience now.</string>
     <string name="timer">00:00:00</string>
-    <string name="filters">Filters</string>
-    <string name="security_filter">Security filter</string>
-    <string name="adult_filter">Adult filter</string>
-    <string name="family_filter">Family filter</string>
 
     // Profile Screen
     <string name="title_profile">Welcome, John Doe</string>
@@ -114,6 +111,22 @@
     <string name="terms_of_service">Terms of service</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="open_source_attributes">Open source attributes</string>
+
+
+    // Register Fragment Strings
+    <string name="error_email_already_exist">E-mail is being used</string>
+
+    // Login Fragment Strings
+    <string name="error_user_not_exist">user is not exist</string>
+
+    // ForgotPassword Fragment
+    <string name="check_mail">Check your email</string>
+
+    // SeverList Fragment
+    <string name="filters">Filters</string>
+    <string name="security_filter">Security filter</string>
+    <string name="adult_filter">Adult filter</string>
+    <string name="family_filter">Family filter</string>
 
 
 </resources>

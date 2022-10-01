@@ -1,52 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/regular_layout_height"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="@dimen/small_margin"
-    android:layout_marginStart="24dp"
-    android:layout_marginEnd="24dp"
-    android:background="@drawable/bg_item_filter">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RadioButton
-        android:id="@+id/radioButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/regular_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/tvItemTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@string/security_filter"
-        android:textAppearance="@style/TextViewMediumBoldText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/radioButton"
-        app:layout_constraintTop_toTopOf="parent" />
+    </data>
 
-    <ImageView
-        android:id="@+id/imageInformation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/regular_margin"
-        android:src="@drawable/ic_information"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/regular_layout_height"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_item_filter">
 
-    <ImageView
-        android:id="@+id/imageStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_between_elements"
-        android:src="@drawable/ic_status"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/imageInformation"
-        app:layout_constraintTop_toTopOf="parent" />
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/regular_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvItemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/security_filter"
+            android:textAppearance="@style/TextViewMediumBoldText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/radioButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageInformation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/regular_margin"
+            android:src="@drawable/ic_information"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_between_elements"
+            android:src="@drawable/ic_status"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imageInformation"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

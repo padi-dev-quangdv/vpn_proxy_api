@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     // Small Text
     <style name="TextViewSmallText">
@@ -155,12 +155,17 @@
 
 
     //Image icon
-    <style name="MarginImageIcon">
+    <style name="MarginIcon">
         <item name="android:layout_marginTop">@dimen/icon_margin_top</item>
         <item name="android:layout_marginStart">@dimen/regular_margin</item>
         <item name="android:layout_marginEnd">@dimen/regular_margin</item>
     </style>
 
+    // Switch Button
+    <style name="CustomSwitchButton">
+        <item name="android:trackTint" tools:targetApi="m">@color/primary_main</item>
+        <item name="android:thumbTint">@color/white</item>
+    </style>
 
 
 </resources>

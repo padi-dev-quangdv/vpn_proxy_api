@@ -1,5 +1,6 @@
 package com.midterm.securevpnproxy.presentation.main.home
 
+import android.os.Bundle
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,26 +18,29 @@ class HomeFragment :
     private val navigationArgs: HomeFragmentArgs by navArgs()
     private var filterName: String? = null
 
-    private lateinit var timer: Timer
     private lateinit var timerTask: TimerTask
-    private var time = 0.02
+    private var time = 0.0
 
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
+
     private fun startTimer() {
-        time = 0.0
-        timerTask = object : TimerTask() {
-            override fun run() {
-                uiScope.launch {
-                    withContext(Dispatchers.Main) {
-                        time++
-                        binding.tvTimer.text = getTimerText()
+        viewModel.timer.observe(viewLifecycleOwner) {
+            time = 0.0
+            timerTask = object : TimerTask() {
+                override fun run() {
+                    uiScope.launch {
+                        withContext(Dispatchers.Main) {
+                            time++
+                            binding.tvTimer.text = getTimerText()
+                        }
                     }
                 }
             }
+            it.scheduleAtFixedRate(timerTask, 0, 1000)
         }
-        timer.scheduleAtFixedRate(timerTask, 0, 1000)
+
     }
 
     private fun getTimerText(): String {
@@ -79,7 +83,7 @@ class HomeFragment :
                             R.color.success_main, null
                         )
                     )
-                    timer = Timer()
+                    viewModel.timer.value = Timer()
                     startTimer()
                     tvStatus.text = resources.getString(R.string.protected_status)
                 } else {
@@ -90,7 +94,7 @@ class HomeFragment :
                             R.color.danger_main, null
                         )
                     )
-                    timer.cancel()
+                    viewModel.timer.value?.cancel()
                     tvTimer.text = formatTime(0, 0, 0)
                     tvStatus.text = resources.getString(R.string.not_protected_status)
                 }

@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class LoginUseCaseImpl @Inject constructor(private val dataSource: AuthDataSource) : LoginUseCase {
-
     override fun invoke(param: LoginParam): Flow<ResultModel<LoginModel>> {
         return dataSource.login(param)
     }
