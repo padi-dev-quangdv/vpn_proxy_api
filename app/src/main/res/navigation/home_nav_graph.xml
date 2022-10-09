@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.midterm.securevpnproxy.presentation.base.home.HomeFragment"
+        android:name="com.midterm.securevpnproxy.presentation.main.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.midterm.securevpnproxy.presentation.base.profile.ProfileFragment"
+        android:name="com.midterm.securevpnproxy.presentation.main.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/severListFragment"
-        android:name="com.midterm.securevpnproxy.presentation.base.sever_list.SeverListFragment"
+        android:name="com.midterm.securevpnproxy.presentation.main.sever_list.SeverListFragment"
         android:label="fragment_sever_list"
         tools:layout="@layout/fragment_sever_list" >
         <action
@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/accountInformationFragment"
-        android:name="com.midterm.securevpnproxy.presentation.base.account_info.AccountInformationFragment"
+        android:name="com.midterm.securevpnproxy.presentation.main.account_info.AccountInformationFragment"
         android:label="fragment_account_information"
         tools:layout="@layout/fragment_account_information" >
         <action
@@ -79,7 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.midterm.securevpnproxy.presentation.base.setting.SettingsFragment"
+        android:name="com.midterm.securevpnproxy.presentation.main.setting.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
         <action
@@ -94,11 +94,11 @@
     <fragment
         tools:layout="@layout/fragment_premium"
         android:id="@+id/premiumFragment"
-        android:name="com.midterm.securevpnproxy.presentation.base.premium.PremiumFragment"
+        android:name="com.midterm.securevpnproxy.presentation.main.premium.PremiumFragment"
         android:label="PremiumFragment" />
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.midterm.securevpnproxy.presentation.base.about.AboutFragment"
+        android:name="com.midterm.securevpnproxy.presentation.main.about.AboutFragment"
         android:label="fragment_about"
         tools:layout="@layout/fragment_about" >
         <action
@@ -109,7 +109,7 @@
     </fragment>
     <fragment
         android:id="@+id/whiteListAppsFragment"
-        android:name="com.midterm.securevpnproxy.presentation.base.white_list.WhiteListAppsFragment"
+        android:name="com.midterm.securevpnproxy.presentation.main.white_list.WhiteListAppsFragment"
         android:label="fragment_white_list_apps"
         tools:layout="@layout/fragment_white_list_apps" >
         <action

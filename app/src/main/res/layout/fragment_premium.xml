@@ -19,7 +19,7 @@
                 android:id="@+id/tvSkip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/MarginImageIcon"
+                style="@style/MarginIcon"
                 android:text="@string/skip"
                 android:textAppearance="@style/TextViewLargeText"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -72,8 +72,7 @@
 
                 <Switch
                     android:id="@+id/sbPremiumOptions"
-                    android:trackTint="@color/primary_main"
-                    android:thumbTint="@color/white"
+                    style="@style/CustomSwitchButton"
                     android:layout_width="56dp"
                     android:layout_height="32dp"
                     app:layout_constraintBottom_toBottomOf="parent"

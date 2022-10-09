@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/onboardingFragment"
-        android:name="com.midterm.securevpnproxy.presentation.splash.OnBoardingFragment"
+        android:name="com.midterm.securevpnproxy.presentation.login_register.splash.OnBoardingFragment"
         android:label="OnboardingFragment"
         tools:layout="@layout/fragment_onboarding">
         <action
@@ -16,12 +16,12 @@
     </fragment>
     <fragment
         android:id="@+id/premiumFragment"
-        android:name="com.midterm.securevpnproxy.presentation.base.premium.PremiumFragment"
+        android:name="com.midterm.securevpnproxy.presentation.main.premium.PremiumFragment"
         android:label="PremiumFragment"
         tools:layout="@layout/fragment_premium" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.midterm.securevpnproxy.presentation.login.LoginFragment"
+        android:name="com.midterm.securevpnproxy.presentation.login_register.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login" >
         <action
@@ -34,12 +34,13 @@
     <fragment
         android:id="@+id/forgotPasswordFragment"
         tools:layout="@layout/fragment_forgot_password"
-        android:name="com.midterm.securevpnproxy.presentation.login.ForgotPasswordFragment"
+        android:name="com.midterm.securevpnproxy.presentation.login_register.reset_password.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment" >
         <action
             android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment" />
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_forgotPasswordFragment_to_checkEmailFragment"
             app:destination="@id/checkEmailFragment" />
@@ -47,12 +48,18 @@
     <fragment
         tools:layout="@layout/fragment_check_email"
         android:id="@+id/checkEmailFragment"
-        android:name="com.midterm.securevpnproxy.presentation.login.CheckEmailFragment"
-        android:label="CheckEmailFragment" />
+        android:name="com.midterm.securevpnproxy.presentation.login_register.reset_password.CheckEmailFragment"
+        android:label="CheckEmailFragment" >
+        <action
+            android:id="@+id/action_checkEmailFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         tools:layout="@layout/fragment_register"
         android:id="@+id/registerFragment"
-        android:name="com.midterm.securevpnproxy.presentation.register.RegisterFragment"
+        android:name="com.midterm.securevpnproxy.presentation.login_register.register.RegisterFragment"
         android:label="RegisterFragment" >
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"

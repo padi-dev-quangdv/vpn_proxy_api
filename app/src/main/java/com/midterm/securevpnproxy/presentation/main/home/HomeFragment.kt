@@ -1,6 +1,5 @@
 package com.midterm.securevpnproxy.presentation.main.home
 
-import android.os.Bundle
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,7 +12,6 @@ import kotlin.math.roundToInt
 
 class HomeFragment :
     BaseFragment<FragmentHomeBinding, HomeViewModel>(layoutId = R.layout.fragment_home) {
-
 
     private val navigationArgs: HomeFragmentArgs by navArgs()
     private var filterName: String? = null
@@ -53,20 +51,11 @@ class HomeFragment :
     }
 
     private fun formatTime(seconds: Int, minutes: Int, hours: Int): String {
-        return String.format("%02d", hours) + " : " + String.format(
-            "%02d",
-            minutes
-        ) + " : " + String.format("%02d", seconds)
+        return String.format("%02d", hours) + " : " +
+                String.format("%02d", minutes) + " : " +
+                String.format("%02d", seconds)
     }
 
-    override fun initData() {
-        filterName = navigationArgs.filter
-        binding.apply {
-            if (filterName != null && filterName != "") {
-                tvSubTitleFilter.text = filterName
-            }
-        }
-    }
 
     override fun initViewListener() {
         binding.apply {
@@ -107,6 +96,15 @@ class HomeFragment :
             btnNavigateToPremium.setOnClickListener {
                 val action = HomeFragmentDirections.actionHomeFragmentToPremiumFragment()
                 findNavController().navigate(action)
+            }
+        }
+    }
+
+    override fun initData() {
+        filterName = navigationArgs.filter
+        binding.apply {
+            if (filterName != null && filterName != "") {
+                tvSubTitleFilter.text = filterName
             }
         }
     }

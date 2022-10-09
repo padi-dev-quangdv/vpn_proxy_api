@@ -1,4 +1,4 @@
-package com.midterm.securevpnproxy.domain.model
+package com.midterm.securevpnproxy.presentation.login_register.splash
 
 data class OnBoardingData(
     val image: Int,

@@ -1,12 +1,14 @@
-package com.midterm.securevpnproxy.presentation.splash
+package com.midterm.securevpnproxy.presentation.login_register.splash
 
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class OnBoardingViewModel() {
+class OnBoardingViewModel : ViewModel() {
 
     private var sharedPreferences: SharedPreferences? = null
 

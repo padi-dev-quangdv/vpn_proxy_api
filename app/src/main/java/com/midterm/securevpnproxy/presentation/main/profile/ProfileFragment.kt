@@ -1,39 +1,28 @@
-package com.midterm.securevpnproxy.presentation.base.profile
+package com.midterm.securevpnproxy.presentation.main.profile
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.midterm.securevpnproxy.R
+import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentProfileBinding
 
-class ProfileFragment : Fragment() {
+class ProfileFragment :
+    BaseFragment<FragmentProfileBinding, ProfileViewModel>(layoutId = R.layout.fragment_profile) {
 
-    private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun initData() {
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun initViewListener() {
         binding.apply {
             btnAccount.setOnClickListener {
-                val action = ProfileFragmentDirections.actionProfileFragmentToAccountInformationFragment()
+                val action =
+                    ProfileFragmentDirections.actionProfileFragmentToAccountInformationFragment()
                 findNavController().navigate(action)
             }
             btnSetting.setOnClickListener {
                 val action = ProfileFragmentDirections.actionProfileFragmentToSettingsFragment()
                 findNavController().navigate(action)
             }
-            imageBack.setOnClickListener {
+            layoutHeader.iconLeft.setOnClickListener {
                 val action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment(null)
                 findNavController().navigate(action)
             }
@@ -45,5 +34,11 @@ class ProfileFragment : Fragment() {
                 this@ProfileFragment.activity?.finish()
             }
         }
+    }
+
+    override fun initObserver() {
+    }
+
+    override fun initView() {
     }
 }
