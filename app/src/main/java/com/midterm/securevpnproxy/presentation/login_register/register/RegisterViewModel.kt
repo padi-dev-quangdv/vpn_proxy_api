@@ -10,6 +10,7 @@ import com.midterm.securevpnproxy.domain.usecase.register.RegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,14 +34,14 @@ constructor(private val registerUseCase: RegisterUseCase) : ViewModel() {
         if (!validateResult) return
         job?.cancel()
         val param = RegisterParam(email = email, fullName = fullName, password = password)
-        job = viewModelScope.launch(Dispatchers.Main) {
+        job = viewModelScope.launch(Dispatchers.IO) {
             registerUseCase(param).collectLatest { result ->
                 when (result) {
                     is ResultModel.Success -> {
-                        isEmailAlreadyExist.value = false
+                        isEmailAlreadyExist.postValue(false)
                     }
                     is ResultModel.Error -> {
-                        isEmailAlreadyExist.value = true
+                        isEmailAlreadyExist.postValue(true)
                     }
                 }
             }

@@ -1,5 +1,7 @@
 package com.midterm.securevpnproxy.presentation.main.home
 
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -38,7 +40,6 @@ class HomeFragment :
             }
             it.scheduleAtFixedRate(timerTask, 0, 1000)
         }
-
     }
 
     private fun getTimerText(): String {
@@ -57,46 +58,42 @@ class HomeFragment :
     }
 
 
+
+    private fun toggleOnOff() {
+        val event = HomeViewModel.ViewEvent.OnOffToggle
+        viewModel.onEvent(event)
+    }
+
+    private fun goToProfile() {
+        val action = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun goToFilter() {
+        val action =
+            HomeFragmentDirections.actionHomeFragmentToSeverListFragment(binding.tvSubTitleFilter.text.toString())
+        findNavController().navigate(action)
+    }
+
+    private fun goToPremium() {
+        val action = HomeFragmentDirections.actionHomeFragmentToPremiumFragment()
+        findNavController().navigate(action)
+    }
+
     override fun initViewListener() {
-        binding.apply {
-            layoutHeader.iconRight.setOnClickListener {
-                val action = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
-                findNavController().navigate(action)
-            }
-            imageTurnOn.setOnClickListener {
-                if (tvStatus.text == resources.getString(R.string.not_protected_status)) {
-                    imageTurnOn.setImageResource(R.drawable.ic_turn_on_connected)
-                    tvStatus.setTextColor(
-                        ResourcesCompat.getColor(
-                            resources,
-                            R.color.success_main, null
-                        )
-                    )
-                    viewModel.timer.value = Timer()
-                    startTimer()
-                    tvStatus.text = resources.getString(R.string.protected_status)
-                } else {
-                    imageTurnOn.setImageResource(R.drawable.ic_turn_on_unconnected)
-                    tvStatus.setTextColor(
-                        ResourcesCompat.getColor(
-                            resources,
-                            R.color.danger_main, null
-                        )
-                    )
-                    viewModel.timer.value?.cancel()
-                    tvTimer.text = formatTime(0, 0, 0)
-                    tvStatus.text = resources.getString(R.string.not_protected_status)
-                }
-            }
-            btnFilter.setOnClickListener {
-                val action =
-                    HomeFragmentDirections.actionHomeFragmentToSeverListFragment(tvSubTitleFilter.text.toString())
-                findNavController().navigate(action)
-            }
-            btnNavigateToPremium.setOnClickListener {
-                val action = HomeFragmentDirections.actionHomeFragmentToPremiumFragment()
-                findNavController().navigate(action)
-            }
+        binding.imageTurnOn.setOnClickListener(this)
+        binding.layoutHeader.iconRight.setOnClickListener(this)
+        binding.btnFilter.setOnClickListener(this)
+        binding.btnNavigateToPremium.setOnClickListener(this)
+    }
+
+    override fun onViewClicked(v: View) {
+        super.onViewClicked(v)
+        when (v.id) {
+            binding.imageTurnOn.id -> toggleOnOff()
+            binding.layoutHeader.iconRight.id -> goToProfile()
+            binding.btnFilter.id -> goToFilter()
+            binding.btnNavigateToPremium.id -> goToPremium()
         }
     }
 
@@ -110,6 +107,26 @@ class HomeFragment :
     }
 
     override fun initObserver() {
+        viewModel.viewState.observe(viewLifecycleOwner) {
+            handleOnOffState(it.onOffState)
+        }
+    }
+
+    private fun handleOnOffState(isOn: Boolean) {
+        if (isOn) {
+            binding.imageTurnOn.setImageResource(R.drawable.ic_connected)
+
+            binding.tvStatus.setTextColor(
+                ContextCompat.getColor(binding.tvStatus.context, R.color.success_main)
+            )
+            binding.tvStatus.setText(R.string.protected_status)
+        } else {
+            binding.imageTurnOn.setImageResource(R.drawable.ic_disconnected)
+            binding.tvStatus.setTextColor(
+                ContextCompat.getColor(binding.tvStatus.context, R.color.danger_main)
+            )
+            binding.tvStatus.setText(R.string.not_protected_status)
+        }
     }
 
     override fun initView() {

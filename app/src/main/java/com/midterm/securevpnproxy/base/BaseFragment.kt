@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseFragment<BINDING : ViewDataBinding, VM : ViewModel>(val layoutId: Int) : Fragment() {
+abstract class BaseFragment<BINDING : ViewDataBinding, VM : ViewModel>(val layoutId: Int) : Fragment(), View.OnClickListener {
 
     protected lateinit var binding: BINDING
 
@@ -53,6 +53,14 @@ abstract class BaseFragment<BINDING : ViewDataBinding, VM : ViewModel>(val layou
         initObserver()
         initViewListener()
         initData()
+    }
+
+    override fun onClick(v: View?) {
+        v?.let { onViewClicked(it) }
+    }
+
+    open fun onViewClicked(view: View) {
+
     }
 
     abstract fun initData()
