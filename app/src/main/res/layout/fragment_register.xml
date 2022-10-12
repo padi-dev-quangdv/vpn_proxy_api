@@ -38,9 +38,11 @@
 
             <TextView
                 android:id="@+id/tvSubTitle"
-                android:layout_width="@dimen/textview_width"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/textview_height"
+                android:layout_marginStart="@dimen/wide_margin"
                 android:layout_marginTop="@dimen/regular_margin"
+                android:layout_marginEnd="@dimen/wide_margin"
                 android:gravity="center"
                 android:text="@string/description_register"
                 android:textAppearance="@style/TextViewSmallGrayColorText"
@@ -54,9 +56,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/regular_margin"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="@dimen/large_margin"
                 android:layout_marginEnd="@dimen/regular_margin"
-                app:inputHint="@{@string/full_name_hint}"
                 app:layout_constraintTop_toBottomOf="@id/tvSubTitle"
                 app:title="@{@string/full_name}" />
 
@@ -66,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/regular_margin"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginEnd="@dimen/regular_margin"
                 app:inputHint="@{@string/email_hint}"
                 app:layout_constraintTop_toBottomOf="@id/inputFullName"
@@ -78,11 +79,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/regular_margin"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginEnd="@dimen/regular_margin"
                 app:inputHint="@{@string/password_hint}"
                 app:layout_constraintTop_toBottomOf="@id/inputEmail"
                 app:title="@{@string/password}" />
+
+            <ImageView
+                android:id="@+id/imageDisplayPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:layout_marginBottom="@dimen/regular_margin"
+                android:src="@drawable/ic_display_password"
+                app:layout_constraintBottom_toBottomOf="@id/inputPassword"
+                app:layout_constraintEnd_toEndOf="@id/inputPassword" />
 
             <include
                 android:id="@+id/inputConfirmPassword"
@@ -90,20 +101,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/regular_margin"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginEnd="@dimen/regular_margin"
                 app:inputHint="@{@string/password_hint}"
                 app:layout_constraintTop_toBottomOf="@id/inputPassword"
                 app:title="@{@string/confirm_password}" />
+
+            <ImageView
+                android:id="@+id/imageDisplayConfirmPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:layout_marginBottom="@dimen/regular_margin"
+                android:src="@drawable/ic_display_password"
+                app:layout_constraintBottom_toBottomOf="@id/inputConfirmPassword"
+                app:layout_constraintEnd_toEndOf="@id/inputConfirmPassword" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnRegister"
                 style="@style/ButtonGradientLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="@dimen/regular_margin"
                 android:layout_marginTop="@dimen/regular_margin"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="@dimen/regular_margin"
                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
                 android:text="@string/register"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -114,7 +135,7 @@
                 android:id="@+id/tvNavigateToLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/large_margin"
                 android:layout_marginBottom="@dimen/regular_margin"
                 android:text="@string/register_navigate_to_login"
                 android:textAppearance="@style/TextViewMediumGrayText"

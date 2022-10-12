@@ -1,4 +1,4 @@
-package com.midterm.securevpnproxy.presentation.login_register.splash
+package com.midterm.securevpnproxy.presentation.auth.splash
 
 import android.view.LayoutInflater
 import android.view.View

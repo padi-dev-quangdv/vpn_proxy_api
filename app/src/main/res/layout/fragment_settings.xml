@@ -25,9 +25,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnPinProtect"
-            android:layout_width="@dimen/layout_width"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/regular_layout_height"
+            android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/regular_margin"
+            android:layout_marginEnd="@dimen/regular_margin"
             android:background="@drawable/layout_options"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,9 +80,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnAppsLock"
-            android:layout_width="@dimen/layout_width"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/regular_layout_height"
+            android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/margin_between_elements"
+            android:layout_marginEnd="@dimen/regular_margin"
             android:background="@drawable/layout_options"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -131,9 +135,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnCustomBlockList"
-            android:layout_width="@dimen/layout_width"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/regular_layout_height"
+            android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/margin_between_elements"
+            android:layout_marginEnd="@dimen/regular_margin"
             android:background="@drawable/layout_options"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -184,9 +190,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnWhiteListApps"
-            android:layout_width="@dimen/layout_width"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/regular_layout_height"
+            android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/margin_between_elements"
+            android:layout_marginEnd="@dimen/regular_margin"
             android:background="@drawable/layout_options"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -196,7 +204,7 @@
                 android:id="@+id/tvWhiteListApps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="@dimen/regular_margin"
                 android:text="@string/whitelist_apps"
                 android:textAppearance="@style/TextViewLargeText"
                 app:layout_constraintBottom_toBottomOf="parent"

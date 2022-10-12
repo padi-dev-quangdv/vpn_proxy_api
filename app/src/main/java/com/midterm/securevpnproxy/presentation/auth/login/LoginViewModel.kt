@@ -1,9 +1,9 @@
-package com.midterm.securevpnproxy.presentation.login_register.login
+package com.midterm.securevpnproxy.presentation.auth.login
 
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.midterm.securevpnproxy.base.BaseViewModel
 import com.midterm.securevpnproxy.domain.model.ResultModel
 import com.midterm.securevpnproxy.domain.usecase.login.LoginParam
 import com.midterm.securevpnproxy.domain.usecase.login.LoginUseCase
@@ -15,9 +15,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
+class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : BaseViewModel<LoginViewModel.ViewState>() {
 
-    val viewState: MutableLiveData<ViewState> = MutableLiveData(ViewState())
+    init {
+        viewState = MutableLiveData(ViewState())
+    }
     val isUserExist: MutableLiveData<Boolean> = MutableLiveData()
 
     private var job: Job? = null
@@ -26,21 +28,21 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
         val validateLogin = validateLogin(email, password)
         if (!validateLogin) return
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.Main) {
+        job = viewModelScope.launch(Dispatchers.IO) {
             loginUseCase.invoke(LoginParam(email, password)).collectLatest { result ->
                 when (result) {
                     is ResultModel.Success -> {
-                        isUserExist.value = true
+                        isUserExist.postValue(true)
                     }
                     is ResultModel.Error -> {
-                        isUserExist.value = false
+                        isUserExist.postValue(false)
                     }
                 }
             }
         }
     }
 
-    fun onEvent(event: ViewEvent) {
+    override fun onEvent(event: BaseViewModel.ViewEvent) {
         when (event) {
             is ViewEvent.LoginEvent -> login(event.email, event.password)
         }
@@ -76,13 +78,13 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     data class ViewState(
         val emailError: String? = null,
         val passwordError: String? = null
-    )
+    ): BaseViewModel.ViewState()
 
     sealed interface ViewEvent {
         data class LoginEvent(
             val email: String,
             val password: String
-        ): ViewEvent
+        ): BaseViewModel.ViewEvent
     }
 
 }

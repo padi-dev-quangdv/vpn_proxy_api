@@ -1,9 +1,10 @@
-package com.midterm.securevpnproxy
+package com.midterm.securevpnproxy.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.midterm.securevpnproxy.R
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController

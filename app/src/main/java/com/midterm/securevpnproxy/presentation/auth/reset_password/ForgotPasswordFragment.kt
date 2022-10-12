@@ -1,5 +1,6 @@
-package com.midterm.securevpnproxy.presentation.login_register.reset_password
+package com.midterm.securevpnproxy.presentation.auth.reset_password
 
+import android.view.View
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
@@ -15,16 +16,28 @@ class ForgotPasswordFragment :
         binding.etEmail.text?.clear()
     }
 
+    private fun gotoLogin() {
+        val action =
+            ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun sendEmail() {
+        val email = binding.etEmail.text.toString()
+        viewModel.onEvent(ForgotPasswordViewModel.ViewEvent.ResetPasswordEvent(email = email))
+    }
+
+    override fun onViewClicked(view: View) {
+        super.onViewClicked(view)
+        when (view.id) {
+            binding.tvNavigateToLogin.id -> gotoLogin()
+            binding.btnSend.id -> sendEmail()
+        }
+    }
+
     override fun initViewListener() {
-        binding.tvNavigateToLogin.setOnClickListener {
-            val action =
-                ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment()
-            findNavController().navigate(action)
-        }
-        binding.btnSend.setOnClickListener {
-            val email = binding.etEmail.text.toString()
-            viewModel.onEvent(ForgotPasswordViewModel.ViewEvent.ResetPasswordEvent(email = email))
-        }
+        binding.tvNavigateToLogin.setOnClickListener(this)
+        binding.btnSend.setOnClickListener(this)
     }
 
     override fun initObserver() {
@@ -32,11 +45,12 @@ class ForgotPasswordFragment :
             binding.etEmail.error = it.emailError
         }
         viewModel.isEmailExist.observe(viewLifecycleOwner) {
-            if(it) {
+            if (it) {
                 val action =
                     ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToCheckEmailFragment()
                 findNavController().navigate(action)
-                Toast.makeText(requireContext(),getString(R.string.check_mail),Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.check_mail), Toast.LENGTH_LONG)
+                    .show()
                 viewModel.doneNavigating()
             }
         }

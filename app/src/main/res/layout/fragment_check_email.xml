@@ -34,9 +34,11 @@
 
         <TextView
             android:id="@+id/tvDescription"
-            android:layout_width="@dimen/textview_width"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/textview_height"
+            android:layout_marginStart="@dimen/large_margin"
             android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/large_margin"
             android:gravity="center"
             android:text="@string/description_check_email"
             android:textAppearance="@style/TextViewSmallGrayColorText"
@@ -47,7 +49,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnBack"
             style="@style/ButtonGradientLarge"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/large_margin"

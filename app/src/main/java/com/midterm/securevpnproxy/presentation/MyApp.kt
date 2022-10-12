@@ -1,4 +1,4 @@
-package com.midterm.securevpnproxy
+package com.midterm.securevpnproxy.presentation
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

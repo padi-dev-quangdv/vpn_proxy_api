@@ -10,13 +10,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.login_register.splash.OnBoardingFragment">
+        tools:context=".presentation.auth.splash.OnBoardingFragment">
 
         <TextView
             android:id="@+id/tvSkip"
+            style="@style/MarginIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/MarginIcon"
             android:text="@string/skip"
             android:textAppearance="@style/TextViewLargeText"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,30 +35,32 @@
             app:layout_constraintTop_toBottomOf="@+id/tvSkip" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:layout_marginTop="30dp"
             android:id="@+id/viewPagerOnBoarding"
             android:layout_width="match_parent"
             android:layout_height="410dp"
+            android:layout_marginTop="@dimen/regular_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvAppName" />
 
         <me.relex.circleindicator.CircleIndicator3
-            app:ci_drawable="@drawable/bg_indicator"
             android:id="@+id/indicator"
-            android:layout_marginTop="@dimen/regular_margin"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/viewPagerOnBoarding"
             android:layout_width="wrap_content"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/regular_margin"
+            app:ci_drawable="@drawable/bg_indicator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewPagerOnBoarding" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnContinue"
             style="@style/ButtonGradientLarge"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/regular_margin"
+            android:layout_marginEnd="@dimen/regular_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/indicator"

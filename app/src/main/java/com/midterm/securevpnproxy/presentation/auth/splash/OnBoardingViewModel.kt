@@ -1,12 +1,10 @@
-package com.midterm.securevpnproxy.presentation.login_register.splash
+package com.midterm.securevpnproxy.presentation.auth.splash
 
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 class OnBoardingViewModel : ViewModel() {
 

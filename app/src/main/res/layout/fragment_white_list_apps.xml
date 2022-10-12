@@ -17,17 +17,19 @@
             layout="@layout/layout_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:iconLeft="@{@drawable/ic_back}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:iconLeft="@{@drawable/ic_back}"
             app:title="@{@string/whitelist_apps}" />
 
         <TextView
             android:id="@+id/tvDescriptionWhitelistApps"
-            android:layout_width="327dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/regular_margin"
+            android:layout_marginEnd="@dimen/regular_margin"
             android:text="@string/description_whitelist_apps"
             android:textAppearance="@style/TextViewMediumBoldText"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,29 +38,32 @@
 
         <SearchView
             android:id="@+id/searchView"
-            android:layout_width="@dimen/button_width"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
+            android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/regular_margin"
+            android:layout_marginEnd="@dimen/regular_margin"
             android:queryHint="Search apps"
             app:layout_constraintStart_toStartOf="@id/tvDescriptionWhitelistApps"
             app:layout_constraintTop_toBottomOf="@id/tvDescriptionWhitelistApps" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="327dp"
+            android:layout_width="match_parent"
             android:layout_height="492dp"
+            android:layout_marginStart="@dimen/regular_margin"
             android:layout_marginTop="@dimen/regular_margin"
+            android:layout_marginEnd="@dimen/regular_margin"
             android:background="@drawable/layout_feature_for_premium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/searchView">
 
             <androidx.recyclerview.widget.RecyclerView
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:id="@+id/rcvWhiteListApp"
-                tools:listitem="@layout/item_white_list_app"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_white_list_app" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

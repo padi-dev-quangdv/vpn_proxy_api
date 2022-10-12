@@ -1,14 +1,11 @@
 package com.midterm.securevpnproxy.presentation.main.account_info
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentAccountInformationBinding
+import com.midterm.securevpnproxy.presentation.auth.login.LoginFragment
 
 
 class AccountInformationFragment :
@@ -17,16 +14,30 @@ class AccountInformationFragment :
     override fun initData() {
     }
 
+    private fun gotoProfile() {
+        val action =
+            AccountInformationFragmentDirections.actionAccountInformationFragmentToProfileFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun backToLogin() {
+        val sharedPreferences = activity?.getSharedPreferences(LoginFragment.SHARED_PREFS, 0)
+        val editor = sharedPreferences?.edit()
+        editor?.putString("name", "")
+        editor?.apply()
+        activity?.finish()
+    }
+
     override fun initViewListener() {
-        binding.apply {
-            layoutHeader.iconLeft.setOnClickListener {
-                val action =
-                    AccountInformationFragmentDirections.actionAccountInformationFragmentToProfileFragment()
-                findNavController().navigate(action)
-            }
-            btnLogout.setOnClickListener {
-                this@AccountInformationFragment.activity?.finish()
-            }
+        binding.layoutHeader.iconLeft.setOnClickListener(this)
+        binding.btnLogout.setOnClickListener(this)
+    }
+
+    override fun onViewClicked(v: View) {
+        super.onViewClicked(v)
+        when (v.id) {
+            binding.layoutHeader.iconLeft.id -> gotoProfile()
+            binding.btnLogout.id -> backToLogin()
         }
     }
 

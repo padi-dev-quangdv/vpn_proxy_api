@@ -1,25 +1,27 @@
-package com.midterm.securevpnproxy.presentation.login_register.register
+package com.midterm.securevpnproxy.presentation.auth.register
 
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.midterm.securevpnproxy.base.BaseViewModel
 import com.midterm.securevpnproxy.domain.model.ResultModel
 import com.midterm.securevpnproxy.domain.usecase.register.RegisterParam
 import com.midterm.securevpnproxy.domain.usecase.register.RegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject
-constructor(private val registerUseCase: RegisterUseCase) : ViewModel() {
+constructor(private val registerUseCase: RegisterUseCase) : BaseViewModel<RegisterViewModel.ViewState>() {
 
-    val viewState: MutableLiveData<ViewState> = MutableLiveData(ViewState())
+    init {
+        viewState = MutableLiveData(ViewState())
+    }
+
     val isEmailAlreadyExist: MutableLiveData<Boolean> = MutableLiveData()
 
     private var job: Job? = null
@@ -96,7 +98,7 @@ constructor(private val registerUseCase: RegisterUseCase) : ViewModel() {
         return true
     }
 
-    fun onEvent(event: ViewEvent) {
+    override fun onEvent(event: BaseViewModel.ViewEvent) {
         when (event) {
             is ViewEvent.RegisterEvent -> register(
                 event.fullName,
@@ -112,7 +114,7 @@ constructor(private val registerUseCase: RegisterUseCase) : ViewModel() {
         val emailError: String? = null,
         val passwordError: String? = null,
         val confirmPasswordError: String? = null
-    )
+    ): BaseViewModel.ViewState()
 
     sealed interface ViewEvent {
         data class RegisterEvent(
@@ -120,7 +122,7 @@ constructor(private val registerUseCase: RegisterUseCase) : ViewModel() {
             val email: String,
             val password: String,
             val confirmPassword: String
-        ) : ViewEvent
+        ) : BaseViewModel.ViewEvent
     }
 
 

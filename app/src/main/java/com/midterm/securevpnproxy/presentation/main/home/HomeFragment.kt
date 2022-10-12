@@ -18,47 +18,6 @@ class HomeFragment :
     private val navigationArgs: HomeFragmentArgs by navArgs()
     private var filterName: String? = null
 
-    private lateinit var timerTask: TimerTask
-    private var time = 0.0
-
-    private val job = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + job)
-
-
-    private fun startTimer() {
-        viewModel.timer.observe(viewLifecycleOwner) {
-            time = 0.0
-            timerTask = object : TimerTask() {
-                override fun run() {
-                    uiScope.launch {
-                        withContext(Dispatchers.Main) {
-                            time++
-                            binding.tvTimer.text = getTimerText()
-                        }
-                    }
-                }
-            }
-            it.scheduleAtFixedRate(timerTask, 0, 1000)
-        }
-    }
-
-    private fun getTimerText(): String {
-        val round = time.roundToInt()
-        val seconds: Int = ((round % 86300) % 3600) % 60
-        val minutes: Int = ((round % 86300) % 3600) / 60
-        val hours: Int = (round % 86300) / 3600
-
-        return formatTime(seconds, minutes, hours)
-    }
-
-    private fun formatTime(seconds: Int, minutes: Int, hours: Int): String {
-        return String.format("%02d", hours) + " : " +
-                String.format("%02d", minutes) + " : " +
-                String.format("%02d", seconds)
-    }
-
-
-
     private fun toggleOnOff() {
         val event = HomeViewModel.ViewEvent.OnOffToggle
         viewModel.onEvent(event)

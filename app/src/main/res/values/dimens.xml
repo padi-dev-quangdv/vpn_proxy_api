@@ -5,8 +5,10 @@
 
     <dimen name="regular_margin">24dp</dimen>
     <dimen name="small_margin">16dp</dimen>
+    <dimen name="big_margin">32dp</dimen>
     <dimen name="large_margin">48dp</dimen>
     <dimen name="wide_margin">64dp</dimen>
+    <dimen name="margin_for_small_button">99dp</dimen>
 
     <dimen name="icon_margin_top">40dp</dimen>
 
@@ -14,9 +16,8 @@
     <dimen name="regular_layout_height">64dp</dimen>
     <dimen name="large_layout_height">72dp</dimen>
 
-    <dimen name="button_width">327dp</dimen>
-    <dimen name="button_height">56dp</dimen>
+    <dimen name="feature_height">64dp</dimen>
 
-    <dimen name="textview_width">279dp</dimen>
+    <dimen name="button_height">56dp</dimen>
     <dimen name="textview_height">40dp</dimen>
 </resources>

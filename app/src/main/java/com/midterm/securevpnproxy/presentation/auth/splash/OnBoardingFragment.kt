@@ -1,4 +1,4 @@
-package com.midterm.securevpnproxy.presentation.login_register.splash
+package com.midterm.securevpnproxy.presentation.auth.splash
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,7 @@ import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentOnboardingBinding
 
-class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding,OnBoardingViewModel>(layoutId = R.layout.fragment_onboarding){
+class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingViewModel>(layoutId = R.layout.fragment_onboarding){
 
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var onBoardingDataList: List<OnBoardingData>
@@ -53,29 +53,40 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding,OnBoardingView
         binding.indicator.setViewPager(binding.viewPagerOnBoarding)
     }
 
-    override fun initViewListener() {
+    private fun skipToLogin() {
+        val action = OnBoardingFragmentDirections.actionOnboardingFragmentToLoginFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun gotoLogin() {
         binding.apply {
             var position = viewPagerOnBoarding.currentItem
             setButtonText(position,btnContinue)
-
-            tvSkip.setOnClickListener {
+            if (position < onBoardingDataList.size) {
+                position++
+                viewPagerOnBoarding.currentItem = position
+                setButtonText(position,btnContinue)
+            }
+            if(position == onBoardingDataList.size) {
+                viewModel.savePrefData(this@OnBoardingFragment)
+                setButtonText(position,btnContinue)
                 val action = OnBoardingFragmentDirections.actionOnboardingFragmentToLoginFragment()
                 findNavController().navigate(action)
             }
-            btnContinue.setOnClickListener {
-                if (position < onBoardingDataList.size) {
-                    position++
-                    viewPagerOnBoarding.currentItem = position
-                    setButtonText(position,btnContinue)
-                }
-                if(position == onBoardingDataList.size) {
-                    viewModel.savePrefData(this@OnBoardingFragment)
-                    setButtonText(position,btnContinue)
-                    val action = OnBoardingFragmentDirections.actionOnboardingFragmentToLoginFragment()
-                    findNavController().navigate(action)
-                }
-            }
         }
+    }
+
+    override fun onViewClicked(view: View) {
+        super.onViewClicked(view)
+        when (view.id) {
+            binding.tvSkip.id -> skipToLogin()
+            binding.btnContinue.id -> gotoLogin()
+        }
+    }
+
+    override fun initViewListener() {
+        binding.tvSkip.setOnClickListener(this)
+        binding.btnContinue.setOnClickListener(this)
     }
 
     override fun initObserver() {

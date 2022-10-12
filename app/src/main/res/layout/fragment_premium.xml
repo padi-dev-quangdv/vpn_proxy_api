@@ -8,6 +8,7 @@
     </data>
 
     <ScrollView
+        android:layout_marginBottom="@dimen/regular_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,9 +18,9 @@
 
             <TextView
                 android:id="@+id/tvSkip"
+                style="@style/MarginIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/MarginIcon"
                 android:text="@string/skip"
                 android:textAppearance="@style/TextViewLargeText"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +39,9 @@
 
             <TextView
                 android:id="@+id/tvDescription"
-                android:layout_width="@dimen/textview_width"
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/wide_margin"
+                android:layout_marginEnd="@dimen/wide_margin"
                 android:layout_height="@dimen/textview_height"
                 android:layout_marginTop="@dimen/regular_margin"
                 android:fontFamily="@font/plus_jakarta_text_regular"
@@ -51,9 +54,11 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout"
-                android:layout_width="@dimen/layout_width"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/large_layout_height"
+                android:layout_marginStart="@dimen/regular_margin"
                 android:layout_marginTop="@dimen/large_margin"
+                android:layout_marginEnd="@dimen/regular_margin"
                 android:background="@drawable/layout_choose_bill"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +68,7 @@
                     android:id="@+id/tvBilledMonthly"
                     android:layout_width="96dp"
                     android:layout_height="48dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/small_margin"
                     android:text="@string/billed_monthly"
                     android:textAppearance="@style/TextViewLargeText"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +90,7 @@
                     android:id="@+id/tvBilledAnnually"
                     android:layout_width="95dp"
                     android:layout_height="48dp"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginEnd="@dimen/regular_margin"
                     android:text="@string/billed_annually"
                     android:textAppearance="@style/TextViewLargeText"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -95,9 +100,11 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="327dp"
+                android:layout_width="match_parent"
                 android:layout_height="492dp"
+                android:layout_marginStart="@dimen/regular_margin"
                 android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/regular_margin"
                 android:background="@drawable/layout_feature_for_premium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -109,10 +116,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/small_margin"
                     android:layout_marginTop="@dimen/small_margin"
+                    android:text="@string/monthly_premium"
                     android:textAppearance="@style/TextViewTitle"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:text="@string/monthly_premium" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvDescriptionBill"
@@ -130,10 +137,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_margin"
+                    android:text="@string/monthly_price"
                     android:textAppearance="@style/TextViewSuperLargeBoldText"
                     app:layout_constraintStart_toStartOf="@id/tvPremium"
-                    app:layout_constraintTop_toBottomOf="@id/tvDescriptionBill"
-                    android:text="@string/monthly_price" />
+                    app:layout_constraintTop_toBottomOf="@id/tvDescriptionBill" />
 
                 <TextView
                     android:id="@+id/tvExtensionTime"
@@ -142,17 +149,17 @@
                     android:layout_marginStart="@dimen/margin_between_desc_and_title"
                     android:layout_marginBottom="@dimen/margin_between_desc_and_title"
                     android:fontFamily="@font/plus_jakarta_text_regular"
+                    android:text="@string/month"
                     android:textAppearance="@style/TextViewMediumText"
                     app:layout_constraintBottom_toBottomOf="@id/tvPrice"
-                    app:layout_constraintStart_toEndOf="@id/tvPrice"
-                    android:text="@string/month" />
+                    app:layout_constraintStart_toEndOf="@id/tvPrice" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnStart"
                     style="@style/ButtonGradientMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="36dp"
+                    android:layout_marginTop="@dimen/big_margin"
                     android:text="@string/start_free_trial"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

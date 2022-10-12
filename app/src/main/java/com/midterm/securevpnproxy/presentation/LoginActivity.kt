@@ -1,11 +1,10 @@
-package com.midterm.securevpnproxy
+package com.midterm.securevpnproxy.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.midterm.securevpnproxy.presentation.login_register.login.LoginFragment
+import com.midterm.securevpnproxy.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

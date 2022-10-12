@@ -1,4 +1,4 @@
-package com.midterm.securevpnproxy.presentation.login_register.reset_password
+package com.midterm.securevpnproxy.presentation.auth.reset_password
 
 import androidx.lifecycle.ViewModel
 
