@@ -1,4 +1,4 @@
-package com.midterm.securevpnproxy.presentation.main.sever_list
+package com.midterm.securevpnproxy.presentation.main.server_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.midterm.securevpnproxy.databinding.ItemSeverListBinding
 
-class SeverListAdapter(
+class ServerListAdapter(
     private val itemClickListener: ItemClickListener,
     private var currentPosition: Int
-) : ListAdapter<ItemSeverListData, SeverListAdapter.ItemViewHolder>(DiffCallback) {
+) : ListAdapter<ItemSeverListData, ServerListAdapter.ItemViewHolder>(DiffCallback) {
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<ItemSeverListData>() {
@@ -51,13 +51,13 @@ class SeverListAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): SeverListAdapter.ItemViewHolder {
+    ): ServerListAdapter.ItemViewHolder {
         return ItemViewHolder(
             ItemSeverListBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         )
     }
 
-    override fun onBindViewHolder(holder: SeverListAdapter.ItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ServerListAdapter.ItemViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.bind(currentItem)
     }

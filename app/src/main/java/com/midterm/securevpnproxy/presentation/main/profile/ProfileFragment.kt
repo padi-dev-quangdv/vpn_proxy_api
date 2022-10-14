@@ -4,6 +4,7 @@ import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentProfileBinding
+import com.midterm.securevpnproxy.presentation.auth.login.LoginFragment
 
 class ProfileFragment :
     BaseFragment<FragmentProfileBinding, ProfileViewModel>(layoutId = R.layout.fragment_profile) {
@@ -31,7 +32,12 @@ class ProfileFragment :
                 findNavController().navigate(action)
             }
             btnLogout.setOnClickListener {
-                this@ProfileFragment.activity?.finish()
+                val sharedPreferences =
+                    activity?.getSharedPreferences(LoginFragment.SHARED_PREFS, 0)
+                val editor = sharedPreferences?.edit()
+                editor?.putString("name", "false")
+                editor?.apply()
+                activity?.finish()
             }
         }
     }

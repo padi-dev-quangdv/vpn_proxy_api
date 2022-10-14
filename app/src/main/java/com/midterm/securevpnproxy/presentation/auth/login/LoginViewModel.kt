@@ -2,8 +2,10 @@ package com.midterm.securevpnproxy.presentation.auth.login
 
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.midterm.securevpnproxy.base.BaseViewModel
+import com.midterm.securevpnproxy.domain.model.LoginModel
 import com.midterm.securevpnproxy.domain.model.ResultModel
 import com.midterm.securevpnproxy.domain.usecase.login.LoginParam
 import com.midterm.securevpnproxy.domain.usecase.login.LoginUseCase
@@ -15,11 +17,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : BaseViewModel<LoginViewModel.ViewState>() {
+class LoginViewModel @Inject constructor
+    (private val loginUseCase: LoginUseCase) :
+    BaseViewModel<LoginViewModel.ViewState,LoginViewModel.ViewEvent>() {
 
     init {
         viewState = MutableLiveData(ViewState())
     }
+    val currentUser = MutableLiveData<LoginModel>()
     val isUserExist: MutableLiveData<Boolean> = MutableLiveData()
 
     private var job: Job? = null
@@ -32,6 +37,7 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
             loginUseCase.invoke(LoginParam(email, password)).collectLatest { result ->
                 when (result) {
                     is ResultModel.Success -> {
+                        currentUser.postValue(loginUseCase.getCurrentUser().asLiveData().value)
                         isUserExist.postValue(true)
                     }
                     is ResultModel.Error -> {
@@ -42,11 +48,12 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
         }
     }
 
-    override fun onEvent(event: BaseViewModel.ViewEvent) {
+    override fun onEvent(event: ViewEvent) {
         when (event) {
             is ViewEvent.LoginEvent -> login(event.email, event.password)
         }
     }
+
 
     private fun validateLogin(email: String, password: String): Boolean {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -80,11 +87,12 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
         val passwordError: String? = null
     ): BaseViewModel.ViewState()
 
-    sealed interface ViewEvent {
+    sealed interface ViewEvent: BaseViewModel.ViewEvent {
         data class LoginEvent(
             val email: String,
             val password: String
-        ): BaseViewModel.ViewEvent
+        ): ViewEvent
     }
+
 
 }

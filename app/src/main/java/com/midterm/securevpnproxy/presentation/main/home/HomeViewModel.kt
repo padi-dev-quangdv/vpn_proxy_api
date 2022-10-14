@@ -3,13 +3,13 @@ package com.midterm.securevpnproxy.presentation.main.home
 import androidx.lifecycle.MutableLiveData
 import com.midterm.securevpnproxy.base.BaseViewModel
 
-class HomeViewModel : BaseViewModel<HomeViewModel.ViewState>() {
+class HomeViewModel : BaseViewModel<HomeViewModel.ViewState,HomeViewModel.ViewEvent>() {
 
     init {
         viewState = MutableLiveData(ViewState())
     }
 
-    override fun onEvent(event: BaseViewModel.ViewEvent) {
+    override fun onEvent(event: ViewEvent) {
         when (event) {
             is ViewEvent.OnOffToggle -> {
                 val currentOnOffState = viewState.value?.onOffState ?: false
@@ -26,5 +26,4 @@ class HomeViewModel : BaseViewModel<HomeViewModel.ViewState>() {
     sealed interface ViewEvent : BaseViewModel.ViewEvent {
         object OnOffToggle : ViewEvent
     }
-
 }

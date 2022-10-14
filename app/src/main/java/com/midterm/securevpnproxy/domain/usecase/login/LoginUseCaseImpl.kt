@@ -11,4 +11,8 @@ class LoginUseCaseImpl @Inject constructor(private val dataSource: AuthDataSourc
     override fun invoke(param: LoginParam): Flow<ResultModel<LoginModel>> {
         return dataSource.login(param)
     }
+
+    override fun getCurrentUser(): Flow<LoginModel> {
+        return dataSource.getCurrentUser()
+    }
 }

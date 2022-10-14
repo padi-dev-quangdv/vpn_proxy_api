@@ -132,6 +132,11 @@ class LoginFragment :
                 ).show()
             }
         }
+        viewModel.currentUser.observe(viewLifecycleOwner) { currentUser ->
+            if (currentUser != null) {
+
+            }
+        }
     }
 
     override fun initView() {

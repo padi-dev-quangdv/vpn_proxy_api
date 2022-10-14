@@ -1,4 +1,4 @@
-package com.midterm.securevpnproxy.presentation.main.sever_list
+package com.midterm.securevpnproxy.presentation.main.server_list
 
 data class ItemSeverListData(
     var isChecked: Boolean = false,

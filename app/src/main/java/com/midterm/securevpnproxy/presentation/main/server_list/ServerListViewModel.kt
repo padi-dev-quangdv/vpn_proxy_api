@@ -1,10 +1,9 @@
-package com.midterm.securevpnproxy.presentation.main.sever_list
+package com.midterm.securevpnproxy.presentation.main.server_list
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.midterm.securevpnproxy.R
 
-class SeverListViewModel : ViewModel() {
+class ServerListViewModel : ViewModel() {
 
     val allSeverDataList = MutableLiveData<List<ItemSeverListData>>()
 

@@ -48,6 +48,21 @@ class AuthRepository @Inject constructor() : AuthDataSource {
         }
     }
 
+    override fun getCurrentUser(): Flow<LoginModel> {
+        return callbackFlow {
+
+            val currentUser = Firebase.auth.currentUser
+            if(currentUser != null) {
+                val model = currentUser.email?.let { LoginDto(it,currentUser.uid) }?.toLoginModel()
+                if(model != null)
+                    trySend(model)
+            }
+            awaitClose {
+
+            }
+        }
+    }
+
     override fun register(param: RegisterParam): Flow<ResultModel<RegisterModel>> {
         return callbackFlow {
             Firebase.auth.createUserWithEmailAndPassword(param.email, param.password)

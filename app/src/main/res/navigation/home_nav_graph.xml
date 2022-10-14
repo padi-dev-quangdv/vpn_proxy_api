@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/severListFragment"
-        android:name="com.midterm.securevpnproxy.presentation.main.sever_list.SeverListFragment"
+        android:name="com.midterm.securevpnproxy.presentation.main.server_list.ServerListFragment"
         android:label="fragment_sever_list"
         tools:layout="@layout/fragment_sever_list" >
         <action

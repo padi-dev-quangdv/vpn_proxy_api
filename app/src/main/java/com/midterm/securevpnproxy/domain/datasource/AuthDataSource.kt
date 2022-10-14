@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.Flow
 interface AuthDataSource {
     fun login(param: LoginParam): Flow<ResultModel<LoginModel>>
 
+    fun getCurrentUser(): Flow<LoginModel>
+
     fun register(param: RegisterParam): Flow<ResultModel<RegisterModel>>
 
     suspend fun resetPassword(param: ResetPasswordParam)

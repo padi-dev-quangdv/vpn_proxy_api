@@ -2,7 +2,6 @@ package com.midterm.securevpnproxy.presentation.auth.reset_password
 
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.midterm.securevpnproxy.base.BaseViewModel
 import com.midterm.securevpnproxy.domain.usecase.reset_password.ResetPasswordParam
@@ -13,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(private val resetPasswordUseCase: ResetPasswordUseCaseImpl) :
-    BaseViewModel<ForgotPasswordViewModel.ViewState>() {
+    BaseViewModel<ForgotPasswordViewModel.ViewState, ForgotPasswordViewModel.ViewEvent>() {
 
     init {
         viewState = MutableLiveData(ViewState())
@@ -54,13 +53,13 @@ class ForgotPasswordViewModel @Inject constructor(private val resetPasswordUseCa
         val emailError: String? = null
     ) : BaseViewModel.ViewState()
 
-    sealed interface ViewEvent {
+    sealed interface ViewEvent : BaseViewModel.ViewEvent {
         data class ResetPasswordEvent(
             val email: String
-        ) : BaseViewModel.ViewEvent
+        ) : ViewEvent
     }
 
-    override fun onEvent(event: BaseViewModel.ViewEvent) {
+    override fun onEvent(event: ViewEvent) {
         when (event) {
             is ViewEvent.ResetPasswordEvent -> resetPassword(event.email)
         }

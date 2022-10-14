@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject
-constructor(private val registerUseCase: RegisterUseCase) : BaseViewModel<RegisterViewModel.ViewState>() {
+constructor(private val registerUseCase: RegisterUseCase) : BaseViewModel<RegisterViewModel.ViewState,RegisterViewModel.ViewEvent>() {
 
     init {
         viewState = MutableLiveData(ViewState())
@@ -98,7 +98,7 @@ constructor(private val registerUseCase: RegisterUseCase) : BaseViewModel<Regist
         return true
     }
 
-    override fun onEvent(event: BaseViewModel.ViewEvent) {
+    override fun onEvent(event: ViewEvent) {
         when (event) {
             is ViewEvent.RegisterEvent -> register(
                 event.fullName,
@@ -116,13 +116,13 @@ constructor(private val registerUseCase: RegisterUseCase) : BaseViewModel<Regist
         val confirmPasswordError: String? = null
     ): BaseViewModel.ViewState()
 
-    sealed interface ViewEvent {
+    sealed interface ViewEvent : BaseViewModel.ViewEvent{
         data class RegisterEvent(
             val fullName: String,
             val email: String,
             val password: String,
             val confirmPassword: String
-        ) : BaseViewModel.ViewEvent
+        ) : ViewEvent
     }
 
 

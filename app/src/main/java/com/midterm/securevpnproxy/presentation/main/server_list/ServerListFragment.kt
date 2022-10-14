@@ -1,4 +1,4 @@
-package com.midterm.securevpnproxy.presentation.main.sever_list
+package com.midterm.securevpnproxy.presentation.main.server_list
 
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -6,12 +6,12 @@ import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentSeverListBinding
 
-class SeverListFragment :
-    BaseFragment<FragmentSeverListBinding, SeverListViewModel>(layoutId = R.layout.fragment_sever_list) {
+class ServerListFragment :
+    BaseFragment<FragmentSeverListBinding, ServerListViewModel>(layoutId = R.layout.fragment_sever_list) {
 
-    private val navigationArgs: SeverListFragmentArgs by navArgs()
+    private val navigationArgs: ServerListFragmentArgs by navArgs()
     private lateinit var filter: String
-    private lateinit var adapter: SeverListAdapter
+    private lateinit var adapter: ServerListAdapter
     private lateinit var itemClickListener: ItemClickListener
 
     override fun initData() {
@@ -24,7 +24,7 @@ class SeverListFragment :
                 })
             }
         }
-        adapter = SeverListAdapter( itemClickListener,0)
+        adapter = ServerListAdapter( itemClickListener,0)
         binding.rcvFilter.adapter = adapter
         viewModel.allSeverDataList.observe(viewLifecycleOwner) { list ->
             list.let {
@@ -35,7 +35,7 @@ class SeverListFragment :
 
     override fun initViewListener() {
         binding.layoutHeader.iconRight.setOnClickListener {
-            val action = SeverListFragmentDirections.actionSeverListFragmentToProfileFragment()
+            val action = ServerListFragmentDirections.actionSeverListFragmentToProfileFragment()
             findNavController().navigate(action)
         }
     }
