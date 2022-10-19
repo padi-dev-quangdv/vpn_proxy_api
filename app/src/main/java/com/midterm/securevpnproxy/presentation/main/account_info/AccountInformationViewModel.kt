@@ -1,6 +1,30 @@
 package com.midterm.securevpnproxy.presentation.main.account_info
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import com.midterm.securevpnproxy.base.BaseViewModel
+import com.midterm.securevpnproxy.domain.usecase.check_login.CheckLoginUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class AccountInformationViewModel: ViewModel() {
+@HiltViewModel
+class AccountInformationViewModel @Inject constructor
+    (private val checkLoginUseCase: CheckLoginUseCase) :
+    BaseViewModel<AccountInformationViewModel.ViewState, AccountInformationViewModel.ViewEvent>() {
+
+
+    fun checkLogout() {
+        checkLoginUseCase.checkLogout(application = Application())
+    }
+
+    override fun onEvent(event: AccountInformationViewModel.ViewEvent) {
+        TODO("Not yet implemented")
+    }
+
+    class ViewState(): BaseViewModel.ViewState()
+
+    sealed interface ViewEvent: BaseViewModel.ViewEvent {
+
+    }
+
+
 }

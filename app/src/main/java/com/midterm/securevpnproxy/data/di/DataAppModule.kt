@@ -4,7 +4,6 @@ import com.midterm.securevpnproxy.data.repository.AuthRepository
 import com.midterm.securevpnproxy.domain.datasource.AuthDataSource
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -15,5 +14,5 @@ abstract class DataAppModule {
 
     @Binds
     @ViewModelScoped
-    abstract fun bindAuthDataSource(repository: AuthRepository) : AuthDataSource
+    abstract fun bindAuthDataSource(repository: AuthRepository): AuthDataSource
 }

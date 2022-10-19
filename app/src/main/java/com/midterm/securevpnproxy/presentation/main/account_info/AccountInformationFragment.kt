@@ -6,7 +6,9 @@ import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentAccountInformationBinding
 import com.midterm.securevpnproxy.presentation.auth.login.LoginFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AccountInformationFragment :
     BaseFragment<FragmentAccountInformationBinding, AccountInformationViewModel>(layoutId = R.layout.fragment_account_information) {
 
@@ -20,10 +22,7 @@ class AccountInformationFragment :
     }
 
     private fun backToLogin() {
-        val sharedPreferences = activity?.getSharedPreferences(LoginFragment.SHARED_PREFS, 0)
-        val editor = sharedPreferences?.edit()
-        editor?.putString("name", "false")
-        editor?.apply()
+        viewModel.checkLogout()
         activity?.finish()
     }
 

@@ -19,10 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginFragment :
     BaseFragment<FragmentLoginBinding, LoginViewModel>(layoutId = R.layout.fragment_login) {
 
-    companion object {
-        const val SHARED_PREFS = "sharedPrefs"
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
@@ -42,9 +38,7 @@ class LoginFragment :
     }
 
     private fun checkIsLogin() {
-        val sharedPreferences = activity?.getSharedPreferences(SHARED_PREFS, 0)
-        val result = sharedPreferences?.getString("name", "")
-        if (result.equals("true")) {
+        if(viewModel.isLogin()) {
             val intent =
                 Intent(requireActivity(), MainActivity::class.java)
             startActivity(intent)
@@ -117,10 +111,7 @@ class LoginFragment :
         }
         viewModel.isUserExist.observe(viewLifecycleOwner) { isExist ->
             if (isExist) {
-                val sharedPreferences = activity?.getSharedPreferences(SHARED_PREFS, 0)
-                val editor = sharedPreferences?.edit()
-                editor?.putString("name", "true")
-                editor?.apply()
+                viewModel.checkLogin()
                 val intent =
                     Intent(requireActivity(), MainActivity::class.java)
                 startActivity(intent)

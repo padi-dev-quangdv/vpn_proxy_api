@@ -1,5 +1,6 @@
 package com.midterm.securevpnproxy.presentation.auth.login
 
+import android.app.Application
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -7,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.midterm.securevpnproxy.base.BaseViewModel
 import com.midterm.securevpnproxy.domain.model.LoginModel
 import com.midterm.securevpnproxy.domain.model.ResultModel
+import com.midterm.securevpnproxy.domain.usecase.check_login.CheckLoginUseCase
 import com.midterm.securevpnproxy.domain.usecase.login.LoginParam
 import com.midterm.securevpnproxy.domain.usecase.login.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,12 +20,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor
-    (private val loginUseCase: LoginUseCase) :
-    BaseViewModel<LoginViewModel.ViewState,LoginViewModel.ViewEvent>() {
+    (private val loginUseCase: LoginUseCase,
+    private val checkLoginUseCase: CheckLoginUseCase) :
+    BaseViewModel<LoginViewModel.ViewState, LoginViewModel.ViewEvent>() {
 
     init {
         viewState = MutableLiveData(ViewState())
     }
+
     val currentUser = MutableLiveData<LoginModel>()
     val isUserExist: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -48,6 +52,15 @@ class LoginViewModel @Inject constructor
         }
     }
 
+    fun checkLogin() {
+        checkLoginUseCase.checkLogin(application = Application())
+    }
+
+    fun isLogin(): Boolean {
+        return checkLoginUseCase.isLogin(application = Application())
+    }
+
+
     override fun onEvent(event: ViewEvent) {
         when (event) {
             is ViewEvent.LoginEvent -> login(event.email, event.password)
@@ -64,7 +77,7 @@ class LoginViewModel @Inject constructor
             )
             return false
         }
-        if(password.trim().isEmpty()) {
+        if (password.trim().isEmpty()) {
             viewState.postValue(
                 viewState.value?.copy(
                     passwordError = "Password cannot be empty"
@@ -85,13 +98,13 @@ class LoginViewModel @Inject constructor
     data class ViewState(
         val emailError: String? = null,
         val passwordError: String? = null
-    ): BaseViewModel.ViewState()
+    ) : BaseViewModel.ViewState()
 
-    sealed interface ViewEvent: BaseViewModel.ViewEvent {
+    sealed interface ViewEvent : BaseViewModel.ViewEvent {
         data class LoginEvent(
             val email: String,
             val password: String
-        ): ViewEvent
+        ) : ViewEvent
     }
 
 

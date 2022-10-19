@@ -1,5 +1,6 @@
 package com.midterm.securevpnproxy.data.repository
 
+import android.app.Application
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.midterm.securevpnproxy.data.dto.LoginDto
@@ -11,12 +12,37 @@ import com.midterm.securevpnproxy.domain.model.ResultModel
 import com.midterm.securevpnproxy.domain.usecase.login.LoginParam
 import com.midterm.securevpnproxy.domain.usecase.register.RegisterParam
 import com.midterm.securevpnproxy.domain.usecase.reset_password.ResetPasswordParam
+import com.midterm.securevpnproxy.presentation.auth.login.LoginFragment
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor() : AuthDataSource {
+    companion object {
+        const val  SHARED_PREFS = "sharedPrefs"
+    }
+
+    override fun checkLogin(application: Application) {
+        val sharedPreferences = application.getSharedPreferences(SHARED_PREFS, 0)
+        val editor = sharedPreferences?.edit()
+        editor?.putString("name", "true")
+        editor?.apply()
+    }
+
+    override fun checkLogout(application: Application) {
+        val sharedPreferences = application.getSharedPreferences(SHARED_PREFS, 0)
+        val editor = sharedPreferences?.edit()
+        editor?.putString("name", "false")
+        editor?.apply()
+    }
+
+    override fun isLogin(application: Application) : Boolean{
+        val sharedPreferences = application.getSharedPreferences(SHARED_PREFS, 0)
+        val result = sharedPreferences?.getString("name", "")
+        return result.equals("true")
+    }
+
     override fun login(param: LoginParam): Flow<ResultModel<LoginModel>> {
         return callbackFlow {
             Firebase.auth.signInWithEmailAndPassword(param.email, param.password)

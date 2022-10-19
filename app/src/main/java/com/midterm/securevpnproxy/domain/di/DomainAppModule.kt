@@ -1,5 +1,7 @@
 package com.midterm.securevpnproxy.domain.di
 
+import com.midterm.securevpnproxy.domain.usecase.check_login.CheckLoginUseCase
+import com.midterm.securevpnproxy.domain.usecase.check_login.CheckLoginUseCaseImpl
 import com.midterm.securevpnproxy.domain.usecase.login.LoginUseCase
 import com.midterm.securevpnproxy.domain.usecase.login.LoginUseCaseImpl
 import com.midterm.securevpnproxy.domain.usecase.register.RegisterUseCase
@@ -21,5 +23,9 @@ abstract class DomainAppModule {
     @Binds
     @ViewModelScoped
     abstract fun bindLoginUseCase(impl: LoginUseCaseImpl): LoginUseCase
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindCheckLoginUseCase(impl: CheckLoginUseCaseImpl): CheckLoginUseCase
 
 }

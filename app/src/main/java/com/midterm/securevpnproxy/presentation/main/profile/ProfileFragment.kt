@@ -33,7 +33,7 @@ class ProfileFragment :
             }
             btnLogout.setOnClickListener {
                 val sharedPreferences =
-                    activity?.getSharedPreferences(LoginFragment.SHARED_PREFS, 0)
+                    activity?.getSharedPreferences("sharedPrefs", 0)
                 val editor = sharedPreferences?.edit()
                 editor?.putString("name", "false")
                 editor?.apply()
