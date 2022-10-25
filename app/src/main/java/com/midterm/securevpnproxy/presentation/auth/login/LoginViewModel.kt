@@ -1,6 +1,5 @@
 package com.midterm.securevpnproxy.presentation.auth.login
 
-import android.app.Application
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -53,11 +52,11 @@ class LoginViewModel @Inject constructor
     }
 
     fun checkLogin() {
-        checkLoginUseCase.checkLogin(application = Application())
+        checkLoginUseCase.checkLogin()
     }
 
     fun isLogin(): Boolean {
-        return checkLoginUseCase.isLogin(application = Application())
+        return checkLoginUseCase.isLogin()
     }
 
 

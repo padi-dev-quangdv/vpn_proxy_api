@@ -12,32 +12,32 @@ import com.midterm.securevpnproxy.domain.model.ResultModel
 import com.midterm.securevpnproxy.domain.usecase.login.LoginParam
 import com.midterm.securevpnproxy.domain.usecase.register.RegisterParam
 import com.midterm.securevpnproxy.domain.usecase.reset_password.ResetPasswordParam
-import com.midterm.securevpnproxy.presentation.auth.login.LoginFragment
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
-class AuthRepository @Inject constructor() : AuthDataSource {
+class AuthRepository @Inject constructor(private val application: Application) : AuthDataSource {
+
     companion object {
         const val  SHARED_PREFS = "sharedPrefs"
     }
 
-    override fun checkLogin(application: Application) {
+    override fun checkLogin() {
         val sharedPreferences = application.getSharedPreferences(SHARED_PREFS, 0)
         val editor = sharedPreferences?.edit()
         editor?.putString("name", "true")
         editor?.apply()
     }
 
-    override fun checkLogout(application: Application) {
+    override fun checkLogout() {
         val sharedPreferences = application.getSharedPreferences(SHARED_PREFS, 0)
         val editor = sharedPreferences?.edit()
         editor?.putString("name", "false")
         editor?.apply()
     }
 
-    override fun isLogin(application: Application) : Boolean{
+    override fun isLogin() : Boolean{
         val sharedPreferences = application.getSharedPreferences(SHARED_PREFS, 0)
         val result = sharedPreferences?.getString("name", "")
         return result.equals("true")

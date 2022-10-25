@@ -1,5 +1,6 @@
 package com.midterm.securevpnproxy.presentation.auth.login
 
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -27,12 +28,15 @@ class LoginFragment :
         }
     }
 
+
+
     override fun initData() {
         binding.apply {
             inputPassword.etInput.transformationMethod =
                 PasswordTransformationMethod.getInstance()
             imageDisplayPassword.setImageResource(R.drawable.ic_display_password)
         }
+        context
 
         checkIsLogin()
     }

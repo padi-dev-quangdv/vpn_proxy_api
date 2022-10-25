@@ -1,6 +1,5 @@
 package com.midterm.securevpnproxy.presentation.main.account_info
 
-import android.app.Application
 import com.midterm.securevpnproxy.base.BaseViewModel
 import com.midterm.securevpnproxy.domain.usecase.check_login.CheckLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +12,7 @@ class AccountInformationViewModel @Inject constructor
 
 
     fun checkLogout() {
-        checkLoginUseCase.checkLogout(application = Application())
+        checkLoginUseCase.checkLogout()
     }
 
     override fun onEvent(event: AccountInformationViewModel.ViewEvent) {
