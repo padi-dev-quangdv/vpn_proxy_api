@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentForgotPasswordBinding
+import com.midterm.securevpnproxy.util.extensions.observe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -41,7 +42,7 @@ class ForgotPasswordFragment :
     }
 
     override fun initObserver() {
-        viewModel.viewState.observe(viewLifecycleOwner) {
+        observe(viewModel.state) {
             binding.etEmail.error = it.emailError
         }
         viewModel.isEmailExist.observe(viewLifecycleOwner) {

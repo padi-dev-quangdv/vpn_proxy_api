@@ -3,7 +3,10 @@ package com.midterm.securevpnproxy.presentation.auth.reset_password
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.midterm.securevpnproxy.base.BaseViewEffect
+import com.midterm.securevpnproxy.base.BaseViewEvent
 import com.midterm.securevpnproxy.base.BaseViewModel
+import com.midterm.securevpnproxy.base.BaseViewState
 import com.midterm.securevpnproxy.domain.usecase.reset_password.ResetPasswordParam
 import com.midterm.securevpnproxy.domain.usecase.reset_password.ResetPasswordUseCaseImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,11 +15,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(private val resetPasswordUseCase: ResetPasswordUseCaseImpl) :
-    BaseViewModel<ForgotPasswordViewModel.ViewState, ForgotPasswordViewModel.ViewEvent>() {
-
-    init {
-        viewState = MutableLiveData(ViewState())
-    }
+    BaseViewModel<ForgotPasswordViewModel.ViewState, ForgotPasswordViewModel.ViewEvent, ForgotPasswordViewModel.ViewEffect>(
+        ViewState()
+    ) {
 
     val isEmailExist: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -39,8 +40,8 @@ class ForgotPasswordViewModel @Inject constructor(private val resetPasswordUseCa
 
     private fun validateEmail(email: String): Boolean {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            viewState.postValue(
-                viewState.value?.copy(
+            setState(
+                currentState.copy(
                     emailError = "Invalid email"
                 )
             )
@@ -51,9 +52,9 @@ class ForgotPasswordViewModel @Inject constructor(private val resetPasswordUseCa
 
     data class ViewState(
         val emailError: String? = null
-    ) : BaseViewModel.ViewState()
+    ) : BaseViewState
 
-    sealed interface ViewEvent : BaseViewModel.ViewEvent {
+    sealed interface ViewEvent : BaseViewEvent {
         data class ResetPasswordEvent(
             val email: String
         ) : ViewEvent
@@ -64,5 +65,7 @@ class ForgotPasswordViewModel @Inject constructor(private val resetPasswordUseCa
             is ViewEvent.ResetPasswordEvent -> resetPassword(event.email)
         }
     }
+
+    interface ViewEffect : BaseViewEffect
 
 }

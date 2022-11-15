@@ -1,14 +1,17 @@
 package com.midterm.securevpnproxy.presentation.auth.register
 
 import android.util.Patterns
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.midterm.securevpnproxy.base.BaseViewEffect
+import com.midterm.securevpnproxy.base.BaseViewEvent
 import com.midterm.securevpnproxy.base.BaseViewModel
+import com.midterm.securevpnproxy.base.BaseViewState
 import com.midterm.securevpnproxy.domain.model.ResultModel
 import com.midterm.securevpnproxy.domain.usecase.register.RegisterParam
 import com.midterm.securevpnproxy.domain.usecase.register.RegisterUseCase
+import com.midterm.securevpnproxy.presentation.auth.login.LoginViewModel
+import com.midterm.securevpnproxy.presentation.auth.register.RegisterViewModel.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -16,15 +19,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject
-constructor(private val registerUseCase: RegisterUseCase) : BaseViewModel<RegisterViewModel.ViewState,RegisterViewModel.ViewEvent>() {
+constructor(private val registerUseCase: RegisterUseCase) :
+    BaseViewModel<ViewState, ViewEvent, ViewEffect>(ViewState()) {
 
-    init {
-        viewState = MutableLiveData(ViewState())
-    }
-
-    val isEmailAlreadyExist: MutableLiveData<Boolean> = MutableLiveData()
-
-    private var job: Job? = null
+    private var registerJob: Job? = null
 
     private fun register(
         fullName: String,
@@ -34,16 +32,16 @@ constructor(private val registerUseCase: RegisterUseCase) : BaseViewModel<Regist
     ) {
         val validateResult = validateRegister(fullName, email, password, confirmPassword)
         if (!validateResult) return
-        job?.cancel()
+        registerJob?.cancel()
         val param = RegisterParam(email = email, fullName = fullName, password = password)
-        job = viewModelScope.launch(Dispatchers.IO) {
+        registerJob = viewModelScope.launch {
             registerUseCase(param).collectLatest { result ->
                 when (result) {
                     is ResultModel.Success -> {
-                        isEmailAlreadyExist.postValue(false)
+                        setEffect(ViewEffect.RegisterCompleted)
                     }
                     is ResultModel.Error -> {
-                        isEmailAlreadyExist.postValue(true)
+                        setEffect(ViewEffect.Error(message = result.t.localizedMessage ?: "Unknown Error"))
                     }
                 }
             }
@@ -57,39 +55,41 @@ constructor(private val registerUseCase: RegisterUseCase) : BaseViewModel<Regist
         confirmPassword: String
     ): Boolean {
         if (fullName.trim().isEmpty()) {
-            viewState.postValue(
-                viewState.value?.copy(
+            setState(
+                currentState.copy(
                     fullNameError = "Full name cannot be empty"
                 )
             )
             return false
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            viewState.postValue(
-                viewState.value?.copy(
+            setState(
+                currentState.copy(
                     emailError = "Invalid email"
                 )
             )
             return false
         }
         if (password.trim().isEmpty()) {
-            viewState.postValue(
-                viewState.value?.copy(
+            setState(
+                currentState.copy(
                     passwordError = "Password cannot be empty"
+
                 )
             )
         }
         if (password.trim().length < 8) {
-            viewState.postValue(
-                viewState.value?.copy(
+            setState(
+                currentState.copy(
                     passwordError = "Password must be longer than 8"
+
                 )
             )
             return false
         }
         if (confirmPassword.trim() != password.trim()) {
-            viewState.postValue(
-                viewState.value?.copy(
+            setState(
+                currentState.copy(
                     confirmPasswordError = "Confirm password is incorrect"
                 )
             )
@@ -114,9 +114,9 @@ constructor(private val registerUseCase: RegisterUseCase) : BaseViewModel<Regist
         val emailError: String? = null,
         val passwordError: String? = null,
         val confirmPasswordError: String? = null
-    ): BaseViewModel.ViewState()
+    ) : BaseViewState
 
-    sealed interface ViewEvent : BaseViewModel.ViewEvent{
+    sealed interface ViewEvent : BaseViewEvent {
         data class RegisterEvent(
             val fullName: String,
             val email: String,
@@ -126,7 +126,8 @@ constructor(private val registerUseCase: RegisterUseCase) : BaseViewModel<Regist
     }
 
 
-    sealed interface ViewEffect {
-
+    sealed interface ViewEffect : BaseViewEffect {
+        object RegisterCompleted: ViewEffect
+        data class Error(val message: String): ViewEffect
     }
 }

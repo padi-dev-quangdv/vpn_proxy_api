@@ -12,6 +12,7 @@ import com.midterm.securevpnproxy.presentation.MainActivity
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentRegisterBinding
+import com.midterm.securevpnproxy.util.extensions.observe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -81,26 +82,24 @@ class RegisterFragment :
     }
 
     override fun initObserver() {
-        viewModel.viewState.observe(viewLifecycleOwner) {
+        observe(viewModel.state) {
             binding.inputFullName.etInput.error = it.fullNameError
             binding.inputEmail.etInput.error = it.emailError
             binding.inputPassword.etInput.error = it.passwordError
             binding.inputConfirmPassword.etInput.error = it.confirmPasswordError
         }
-
-        viewModel.isEmailAlreadyExist.observe(viewLifecycleOwner) { isExist ->
-            if (isExist) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.error_email_already_exist),
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
-                val intent =
-                    Intent(this@RegisterFragment.requireContext(), MainActivity::class.java)
-                startActivity(intent)
+        observe(viewModel.effect) {
+            when (it) {
+                is RegisterViewModel.ViewEffect.Error -> Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                RegisterViewModel.ViewEffect.RegisterCompleted -> goToMain()
             }
         }
+    }
+
+    private fun goToMain() {
+        val intent =
+            Intent(this@RegisterFragment.requireContext(), MainActivity::class.java)
+        startActivity(intent)
     }
 
     override fun initView() {

@@ -4,48 +4,44 @@ import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.midterm.securevpnproxy.base.BaseViewEffect
+import com.midterm.securevpnproxy.base.BaseViewEvent
 import com.midterm.securevpnproxy.base.BaseViewModel
+import com.midterm.securevpnproxy.base.BaseViewState
 import com.midterm.securevpnproxy.domain.model.LoginModel
 import com.midterm.securevpnproxy.domain.model.ResultModel
 import com.midterm.securevpnproxy.domain.usecase.check_login.CheckLoginUseCase
 import com.midterm.securevpnproxy.domain.usecase.login.LoginParam
 import com.midterm.securevpnproxy.domain.usecase.login.LoginUseCase
+import com.midterm.securevpnproxy.presentation.auth.login.LoginViewModel.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor
-    (private val loginUseCase: LoginUseCase,
-    private val checkLoginUseCase: CheckLoginUseCase) :
-    BaseViewModel<LoginViewModel.ViewState, LoginViewModel.ViewEvent>() {
-
-    init {
-        viewState = MutableLiveData(ViewState())
-    }
-
+class LoginViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase,
+    private val checkLoginUseCase: CheckLoginUseCase
+) : BaseViewModel<ViewState, ViewEvent, ViewEffect>(ViewState()) {
     val currentUser = MutableLiveData<LoginModel>()
     val isUserExist: MutableLiveData<Boolean> = MutableLiveData()
 
-    private var job: Job? = null
+    private var loginJob: Job? = null
 
     private fun login(email: String, password: String) {
         val validateLogin = validateLogin(email, password)
         if (!validateLogin) return
-        job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
-            loginUseCase.invoke(LoginParam(email, password)).collectLatest { result ->
-                when (result) {
-                    is ResultModel.Success -> {
-                        currentUser.postValue(loginUseCase.getCurrentUser().asLiveData().value)
-                        isUserExist.postValue(true)
-                    }
-                    is ResultModel.Error -> {
-                        isUserExist.postValue(false)
-                    }
+        loginJob?.cancel()
+        loginJob = viewModelScope.launch {
+            when (loginUseCase.invoke(LoginParam(email, password)).firstOrNull()) {
+                is ResultModel.Success -> {
+                    currentUser.postValue(loginUseCase.getCurrentUser().asLiveData().value)
+                    isUserExist.postValue(true)
+                }
+                is ResultModel.Error -> {
+                    isUserExist.postValue(false)
                 }
             }
         }
@@ -69,26 +65,20 @@ class LoginViewModel @Inject constructor
 
     private fun validateLogin(email: String, password: String): Boolean {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            viewState.postValue(
-                viewState.value?.copy(
-                    emailError = "Invalid email"
-                )
-            )
+            setState(currentState.copy(
+                emailError = "Invalid email"
+            ))
             return false
         }
         if (password.trim().isEmpty()) {
-            viewState.postValue(
-                viewState.value?.copy(
-                    passwordError = "Password cannot be empty"
-                )
-            )
+            setState(currentState.copy(
+                passwordError = "Password cannot be empty"
+            ))
         }
         if (password.trim().length < 8) {
-            viewState.postValue(
-                viewState.value?.copy(
-                    passwordError = "Password must be longer than 8"
-                )
-            )
+            setState(currentState.copy(
+                passwordError = "Password must be longer than 8"
+            ))
             return false
         }
         return true
@@ -97,14 +87,15 @@ class LoginViewModel @Inject constructor
     data class ViewState(
         val emailError: String? = null,
         val passwordError: String? = null
-    ) : BaseViewModel.ViewState()
+    ) : BaseViewState
 
-    sealed interface ViewEvent : BaseViewModel.ViewEvent {
+    sealed interface ViewEvent : BaseViewEvent {
         data class LoginEvent(
             val email: String,
             val password: String
         ) : ViewEvent
     }
 
+    sealed interface ViewEffect : BaseViewEffect
 
 }

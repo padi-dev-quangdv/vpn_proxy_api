@@ -3,12 +3,18 @@ package com.midterm.securevpnproxy.presentation.main.home
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.Lifecycle.State
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentHomeBinding
+import com.midterm.securevpnproxy.util.extensions.observe
+import com.midterm.securevpnproxy.util.extensions.repeatOnState
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collectLatest
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -66,7 +72,7 @@ class HomeFragment :
     }
 
     override fun initObserver() {
-        viewModel.viewState.observe(viewLifecycleOwner) {
+        observe(viewModel.state, State.STARTED) {
             handleOnOffState(it.onOffState)
         }
     }

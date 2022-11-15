@@ -1,6 +1,5 @@
 package com.midterm.securevpnproxy.presentation.auth.login
 
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -14,6 +13,7 @@ import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentLoginBinding
 import com.midterm.securevpnproxy.presentation.MainActivity
+import com.midterm.securevpnproxy.util.extensions.observe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,7 +49,7 @@ class LoginFragment :
         }
     }
 
-    private fun gotoHome() {
+    private fun login() {
         binding.apply {
             val email = inputEmail.etInput.text.toString()
             val password = inputPassword.etInput.text.toString()
@@ -101,7 +101,7 @@ class LoginFragment :
     override fun onViewClicked(v: View) {
         super.onViewClicked(v)
         when (v.id) {
-            binding.btnLogin.id -> gotoHome()
+            binding.btnLogin.id -> login()
             binding.tvForgotPassword.id -> gotoForgotPassword()
             binding.tvNavigateToRegister.id -> gotoRegister()
             binding.imageDisplayPassword.id -> displayHidePassword()
@@ -109,7 +109,7 @@ class LoginFragment :
     }
 
     override fun initObserver() {
-        viewModel.viewState.observe(viewLifecycleOwner) {
+        observe(viewModel.state) {
             binding.inputEmail.etInput.error = it.emailError
             binding.inputPassword.etInput.error = it.passwordError
         }
