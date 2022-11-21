@@ -82,7 +82,6 @@ constructor(private val registerUseCase: RegisterUseCase) :
             setState(
                 currentState.copy(
                     passwordError = "Password must be longer than 8"
-
                 )
             )
             return false

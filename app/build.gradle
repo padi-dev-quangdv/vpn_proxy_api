@@ -26,6 +26,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "environment"
+    productFlavors {
+        dev {
+            dimension "environment"
+            buildConfigField "String", "BASE_API_URL", "\"https://api.dev-vpn.tanify.xyz/\""
+        }
+
+        staging {
+            dimension "environment"
+            buildConfigField "String", "BASE_API_URL", "\"\""
+        }
+
+        production {
+            dimension "environment"
+            buildConfigField "String", "BASE_API_URL", "\"\""
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -94,6 +113,15 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:1.0.0"
 
     implementation 'com.jakewharton.timber:timber:5.0.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+    implementation("com.squareup.moshi:moshi:1.14.0")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+
+    // OKHTTP
+    def okHttpVersion = "5.0.0-alpha.2"
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
 }
 
 kapt {

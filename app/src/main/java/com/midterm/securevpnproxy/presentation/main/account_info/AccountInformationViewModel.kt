@@ -17,7 +17,7 @@ class AccountInformationViewModel @Inject constructor
 
 
     fun checkLogout() {
-        checkLoginUseCase.checkLogout()
+//        checkLoginUseCase.checkLogout()
     }
 
     override fun onEvent(event: AccountInformationViewModel.ViewEvent) {

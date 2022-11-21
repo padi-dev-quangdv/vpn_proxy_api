@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
@@ -15,6 +16,8 @@ import com.midterm.securevpnproxy.databinding.FragmentLoginBinding
 import com.midterm.securevpnproxy.presentation.MainActivity
 import com.midterm.securevpnproxy.util.extensions.observe
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment :
@@ -36,17 +39,12 @@ class LoginFragment :
                 PasswordTransformationMethod.getInstance()
             imageDisplayPassword.setImageResource(R.drawable.ic_display_password)
         }
-        context
 
         checkIsLogin()
     }
 
     private fun checkIsLogin() {
-        if(viewModel.isLogin()) {
-            val intent =
-                Intent(requireActivity(), MainActivity::class.java)
-            startActivity(intent)
-        }
+        viewModel.onEvent(LoginViewModel.ViewEvent.CheckLogin)
     }
 
     private fun login() {
@@ -110,27 +108,28 @@ class LoginFragment :
 
     override fun initObserver() {
         observe(viewModel.state) {
+            handleLogin(it.loggedIn)
             binding.inputEmail.etInput.error = it.emailError
             binding.inputPassword.etInput.error = it.passwordError
         }
-        viewModel.isUserExist.observe(viewLifecycleOwner) { isExist ->
-            if (isExist) {
-                viewModel.checkLogin()
-                val intent =
-                    Intent(requireActivity(), MainActivity::class.java)
-                startActivity(intent)
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.error_user_not_exist),
-                    Toast.LENGTH_LONG
-                ).show()
+        observe(viewModel.effect) {
+            when (it) {
+                is LoginViewModel.ViewEffect.Error -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                }
+                LoginViewModel.ViewEffect.LoginSuccess -> {
+                    val intent = Intent(requireActivity(), MainActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
-        viewModel.currentUser.observe(viewLifecycleOwner) { currentUser ->
-            if (currentUser != null) {
+    }
 
-            }
+    private fun handleLogin(loggedIn: Boolean) {
+        if (loggedIn) {
+            val intent =
+                Intent(requireActivity(), MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

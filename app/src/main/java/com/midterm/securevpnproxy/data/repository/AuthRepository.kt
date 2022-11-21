@@ -4,120 +4,97 @@ import android.app.Application
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.midterm.securevpnproxy.data.dto.LoginDto
-import com.midterm.securevpnproxy.data.dto.RegisterDto
+import com.midterm.securevpnproxy.data.repository.network.AppApiService
+import com.midterm.securevpnproxy.data.repository.network.body.LoginBody
 import com.midterm.securevpnproxy.domain.datasource.AuthDataSource
 import com.midterm.securevpnproxy.domain.model.LoginModel
 import com.midterm.securevpnproxy.domain.model.RegisterModel
 import com.midterm.securevpnproxy.domain.model.ResultModel
-import com.midterm.securevpnproxy.domain.usecase.login.LoginParam
-import com.midterm.securevpnproxy.domain.usecase.register.RegisterParam
+import com.midterm.securevpnproxy.domain.payload.LoginPayload
+import com.midterm.securevpnproxy.domain.payload.RegisterPayload
 import com.midterm.securevpnproxy.domain.usecase.reset_password.ResetPasswordParam
-import kotlinx.coroutines.channels.awaitClose
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class AuthRepository @Inject constructor(private val application: Application) : AuthDataSource {
+class AuthRepository @Inject constructor(
+    private val application: Application,
+    private val appApiService: AppApiService,
+    private val moshi: Moshi,
+) : AuthDataSource {
 
     companion object {
-        const val  SHARED_PREFS = "sharedPrefs"
+        const val SHARED_PREFS = "sharedPrefs"
+        private const val USER_DATA = "USER_DATA"
+        private const val LOGGED_IN = "LOGGED_IN"
     }
 
-    override fun checkLogin() {
-        val sharedPreferences = application.getSharedPreferences(SHARED_PREFS, 0)
-        val editor = sharedPreferences?.edit()
-        editor?.putString("name", "true")
-        editor?.apply()
+    private val sharedPreference by lazy {
+        application.getSharedPreferences(SHARED_PREFS, 0)
     }
 
-    override fun checkLogout() {
-        val sharedPreferences = application.getSharedPreferences(SHARED_PREFS, 0)
-        val editor = sharedPreferences?.edit()
-        editor?.putString("name", "false")
-        editor?.apply()
+    private fun saveUserDataToStorage(loginDto: LoginDto) {
+        sharedPreference.edit().apply {
+            val jsonAdapter = moshi.adapter(LoginDto::class.java)
+            this.putString(USER_DATA, jsonAdapter.toJson(loginDto))
+        }.apply()
     }
 
-    override fun isLogin() : Boolean{
-        val sharedPreferences = application.getSharedPreferences(SHARED_PREFS, 0)
-        val result = sharedPreferences?.getString("name", "")
-        return result.equals("true")
+    private fun getUserDataFromStorage(): LoginDto? {
+        val userDataString = sharedPreference.getString(USER_DATA, null)
+        val jsonAdapter = moshi.adapter(LoginDto::class.java)
+        return jsonAdapter.fromJson(userDataString)
     }
 
-    override fun login(param: LoginParam): Flow<ResultModel<LoginModel>> {
-        return callbackFlow {
-            Firebase.auth.signInWithEmailAndPassword(param.email, param.password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val firebaseUser = task.result.user
-                        if (firebaseUser != null) {
-                            val loginDto = LoginDto(
-                                id = firebaseUser.uid,
-                                email = firebaseUser.email ?: ""
-                            )
-                            val model = loginDto.toLoginModel()
-                            trySend(ResultModel.Success(model))
-                        } else {
-                            val result =
-                                ResultModel.Error(Exception())
-                            trySend(result)
-                        }
-                    } else {
-                        task.exception?.let {
-                            val result = ResultModel.Error(it)
-                            trySend(result)
-                        }
-                    }
+    private fun saveLoginState(loggedIn: Boolean) {
+        sharedPreference.edit().apply {
+            this.putBoolean(LOGGED_IN, loggedIn)
+        }.apply()
+    }
+
+    override fun isLogin(): Boolean {
+        return sharedPreference.getBoolean(LOGGED_IN, false)
+    }
+
+    override fun login(payload: LoginPayload): Flow<ResultModel<LoginModel>> {
+        return flow {
+            val result = try {
+                val body = LoginBody(email = payload.email, password = payload.password)
+                val result = appApiService.login(body)
+                // success
+                val model = result.toLoginModel()
+                // save user info (userData + login State)
+                saveUserDataToStorage(result)
+                saveLoginState(loggedIn = true)
+                ResultModel.Success(model)
+            } catch (t: Throwable) {
+                t.printStackTrace()
+                ResultModel.Error(t)
+            }
+            emit(result)
+        }
+    }
+
+    override fun getCurrentUser(): Flow<ResultModel<LoginModel>> {
+        return flow {
+            try {
+                val userData = getUserDataFromStorage()
+                if (userData != null) {
+                    val loginModel = userData.toLoginModel()
+                    emit(ResultModel.Success(loginModel))
+                } else {
+                    emit(ResultModel.Error(java.lang.Exception("User Not Found")))
                 }
-            awaitClose {
-
+            } catch (t: Throwable) {
+                t.printStackTrace()
+                emit(ResultModel.Error(t))
             }
         }
     }
 
-    override fun getCurrentUser(): Flow<LoginModel> {
-        return callbackFlow {
-
-            val currentUser = Firebase.auth.currentUser
-            if(currentUser != null) {
-                val model = currentUser.email?.let { LoginDto(it,currentUser.uid) }?.toLoginModel()
-                if(model != null)
-                    trySend(model)
-            }
-            awaitClose {
-
-            }
-        }
-    }
-
-    override fun register(param: RegisterParam): Flow<ResultModel<RegisterModel>> {
-        return callbackFlow {
-            Firebase.auth.createUserWithEmailAndPassword(param.email, param.password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val firebaseUser = task.result.user
-                        if (firebaseUser != null) {
-                            val registerDto = RegisterDto(
-                                id = firebaseUser.uid,
-                                email = firebaseUser.email ?: ""
-                            )
-                            val model = registerDto.toRegisterModel()
-                            trySend(ResultModel.Success(model))
-                        } else {
-                            val result =
-                                ResultModel.Error(Exception())
-                            trySend(result)
-                        }
-                    } else {
-                        task.exception?.let {
-                            val result = ResultModel.Error(it)
-                            trySend(result)
-                        }
-                    }
-                }
-            awaitClose {
-
-            }
-        }
+    override fun register(payload: RegisterPayload): Flow<ResultModel<RegisterModel>> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun resetPassword(param: ResetPasswordParam) {

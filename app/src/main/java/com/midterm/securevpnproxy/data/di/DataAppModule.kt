@@ -14,7 +14,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class DataAppModule (){
+abstract class DataAppModule {
 
     @Binds
     @ViewModelScoped
