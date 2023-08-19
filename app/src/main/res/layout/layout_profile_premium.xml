@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_features_profile"
+        android:paddingVertical="@dimen/regular_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnLogout">
+
+        <TextView
+            android:id="@+id/tvSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sub_title_app"
+            android:textAppearance="@style/TextViewLargeBoldText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageWorld"
+            style="@style/ImageIconFeature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginTop="@dimen/margin_24"
+            android:src="@drawable/ic_world"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSubTitle" />
+
+        <TextView
+            android:id="@+id/tvRegionalSeversFeature"
+            style="@style/TextViewLargeGrayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_12"
+            android:text="@string/regional_servers_feature"
+            app:layout_constraintBottom_toBottomOf="@id/imageWorld"
+            app:layout_constraintStart_toEndOf="@id/imageWorld"
+            app:layout_constraintTop_toTopOf="@id/imageWorld" />
+
+
+        <ImageView
+            android:id="@+id/imageRocket"
+            style="@style/ImageIconFeature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:src="@drawable/ic_rocket"
+            app:layout_constraintEnd_toEndOf="@id/imageWorld"
+            app:layout_constraintStart_toStartOf="@id/imageWorld"
+            app:layout_constraintTop_toBottomOf="@id/imageWorld" />
+
+        <TextView
+            android:id="@+id/tvUnLockFeature"
+            style="@style/TextViewLargeGrayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_12"
+            android:text="@string/unlock_feature"
+            app:layout_constraintBottom_toBottomOf="@id/imageRocket"
+            app:layout_constraintStart_toEndOf="@id/imageRocket"
+            app:layout_constraintTop_toTopOf="@id/imageRocket" />
+
+        <ImageView
+            android:id="@+id/imageNoAds"
+            style="@style/ImageIconFeature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:src="@drawable/ic_no_ad"
+            app:layout_constraintEnd_toEndOf="@id/imageRocket"
+            app:layout_constraintStart_toStartOf="@id/imageRocket"
+            app:layout_constraintTop_toBottomOf="@id/imageRocket" />
+
+        <TextView
+            android:id="@+id/tvNoAdsFeature"
+            style="@style/TextViewLargeGrayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_12"
+            android:text="@string/no_ads_feature"
+            app:layout_constraintBottom_toBottomOf="@id/imageNoAds"
+            app:layout_constraintStart_toEndOf="@id/imageNoAds"
+            app:layout_constraintTop_toTopOf="@id/imageNoAds" />
+
+        <TextView
+            android:id="@+id/tvMoreAboutPremiumFeature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/more_about_premium"
+            android:textAppearance="@style/TextViewMediumBoldText"
+            app:layout_constraintBottom_toBottomOf="@id/imageCrown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageCrown"
+            app:layout_constraintTop_toTopOf="@id/imageCrown" />
+
+        <ImageView
+            android:id="@+id/imageCrown"
+            style="@style/ImageIconFeature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/regular_margin"
+            android:layout_marginEnd="@dimen/margin_12"
+            android:src="@drawable/ic_crown"
+            app:layout_constraintEnd_toStartOf="@id/tvMoreAboutPremiumFeature"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvNoAdsFeature" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
@@ -16,8 +15,6 @@ import com.midterm.securevpnproxy.databinding.FragmentLoginBinding
 import com.midterm.securevpnproxy.presentation.MainActivity
 import com.midterm.securevpnproxy.util.extensions.observe
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment :

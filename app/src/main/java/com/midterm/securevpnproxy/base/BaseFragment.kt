@@ -13,10 +13,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseFragment<BINDING : ViewDataBinding, VM : ViewModel>(val layoutId: Int) : Fragment(), View.OnClickListener {
+abstract class BaseFragment<BINDING : ViewDataBinding, VM : ViewModel>(val layoutId: Int) :
+    Fragment(), View.OnClickListener {
 
-    protected lateinit var binding: BINDING
-
+    private var _binding: BINDING? = null
+    protected val binding: BINDING get() = _binding!!
     protected val viewModel: VM by lazy { initViewModel() }
 
     override fun onCreateView(
@@ -24,7 +25,8 @@ abstract class BaseFragment<BINDING : ViewDataBinding, VM : ViewModel>(val layou
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        _binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -81,5 +83,10 @@ abstract class BaseFragment<BINDING : ViewDataBinding, VM : ViewModel>(val layou
         val manager: InputMethodManager =
             activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         manager.hideSoftInputFromWindow(view.applicationWindowToken, 0)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

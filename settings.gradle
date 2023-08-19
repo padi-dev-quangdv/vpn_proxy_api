@@ -14,3 +14,8 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Secure VPN Proxy"
 include ':app'
+include ':app:authentication'
+include ':app:networking'
+include ':app:localDb'
+include ':app:dns'
+include ':app:libcore'

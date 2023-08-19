@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_standard_desc">Block all known pornographic websites. It is designed to provide a basic level of protection against explicit content.</string>
+    <string name="mode_intense_desc">Beyond Standard mode, blocks proxy &amp; grey-zone sites (Reddit) and enforces safe search engine sites.</string>
+    <string name="mode_ultimate_desc">Beyond Intense mode, block some social networks that may contain adult content like Tumblr, Flickr, Instagram, Pinterest…</string>
+</resources>

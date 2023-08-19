@@ -8,7 +8,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -39,9 +39,7 @@
                 android:id="@+id/tvDescription"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/textview_height"
-                android:layout_marginStart="@dimen/wide_margin"
                 android:layout_marginTop="@dimen/regular_margin"
-                android:layout_marginEnd="@dimen/wide_margin"
                 android:gravity="center"
                 android:text="@string/description_login"
                 android:textAppearance="@style/TextViewSmallGrayColorText"
@@ -55,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/regular_margin"
-                android:layout_marginTop="@dimen/large_margin"
+                android:layout_marginTop="@dimen/regular_margin"
                 android:layout_marginEnd="@dimen/regular_margin"
                 app:inputHint="@{@string/email_hint}"
                 app:layout_constraintTop_toBottomOf="@id/tvDescription"
@@ -67,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/regular_margin"
-                android:layout_marginTop="@dimen/large_margin"
+                android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginEnd="@dimen/regular_margin"
                 app:inputHint="@{@string/password_hint}"
                 app:layout_constraintTop_toBottomOf="@id/inputEmail"

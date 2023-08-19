@@ -134,7 +134,6 @@
 
     // Image Icon for Features
     <style name="ImageIconFeature">
-        <item name="android:layout_marginStart">@dimen/small_margin</item>
         <item name="tint">@color/primary_main</item>
     </style>
 
@@ -156,7 +155,7 @@
 
     //Image icon
     <style name="MarginIcon">
-        <item name="android:layout_marginTop">@dimen/icon_margin_top</item>
+        <item name="android:layout_marginTop">@dimen/regular_margin</item>
         <item name="android:layout_marginStart">@dimen/regular_margin</item>
         <item name="android:layout_marginEnd">@dimen/regular_margin</item>
     </style>

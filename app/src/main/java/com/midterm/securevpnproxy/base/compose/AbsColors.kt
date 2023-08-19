@@ -1,0 +1,88 @@
+package com.midterm.securevpnproxy.base.compose
+
+import androidx.compose.ui.graphics.Color
+
+// Hex to Int: Remove # and add 0xFF. Alpha color: add 0x
+// Absolute colors.
+val AbsDarkGrey09 = Color(0xFF121317)
+val AbsDarkGrey08 = Color(0xFF1E1F24)
+val AbsDarkGrey07 = Color(0xFF292B32)
+val AbsDarkGrey06 = Color(0xFF33353D)
+val AbsDarkGrey05 = Color(0xFF3C3F48)
+val AbsDarkGrey04 = Color(0xFF464953)
+val AbsDarkGrey03 = Color(0xFF50535E)
+val AbsDarkGrey02 = Color(0xFF5A5D68)
+val AbsDarkGrey01 = Color(0xFF646773)
+
+val AbsWhite = Color(0xFFFFFFFF)
+val AbsLightGrey01 = Color(0xFFF2F2F3)
+val AbsLightGrey02 = Color(0xFFE7E8E9)
+val AbsLightGrey03 = Color(0xFFDCDDDF)
+val AbsLightGrey04 = Color(0xFFCFD0D3)
+val AbsLightGrey05 = Color(0xFFC2C4C7)
+val AbsLightGrey06 = Color(0xFFB1B4B9)
+val AbsLightGrey07 = Color(0xFFA0A4AB)
+val AbsLightGrey08 = Color(0xFF8D929B)
+val AbsLightGrey09 = Color(0xFF797F8B)
+
+val AbsBlue10 = Color(0xFF063975)
+val AbsBlue09 = Color(0xFF074D9D)
+val AbsBlue08 = Color(0xFF0763C5)
+val AbsBlue07 = Color(0xFF0777ED)
+val AbsBlue06 = Color(0xFF248FF9)
+val AbsBlue05 = Color(0xFF4BA3FB)
+val AbsBlue04 = Color(0xFF72BAFD)
+val AbsBlue03 = Color(0xFF9ACEFE)
+val AbsBlue02 = Color(0xFFC2E2FF)
+val AbsBlue01 = Color(0xFFEBF5FF)
+val AbsLightBlueAlpha04 = Color(0x299ACEFE)
+val AbsDarkBlueAlpha04 = Color(0x29248FF9)
+
+val AbsGreen10 = Color(0xFF003E27)
+val AbsGreen09 = Color(0xFF005234)
+val AbsGreen08 = Color(0xFF006B44)
+val AbsGreen07 = Color(0xFF008554)
+val AbsGreen06 = Color(0xFF2BA176)
+val AbsGreen05 = Color(0xFF4CBD94)
+val AbsGreen04 = Color(0xFF70D2AE)
+val AbsGreen03 = Color(0xFF9EE6CB)
+val AbsGreen02 = Color(0xFFC9F3E3)
+val AbsGreen01 = Color(0xFFE9FCF5)
+
+val AbsRed07 = Color(0xFFC12532)
+val AbsRed06 = Color(0xFFE13341)
+val AbsRed05 = Color(0xFFF25461)
+
+val AbsOrange06 = Color(0xFFFA9614)
+val AbsOrange05 = Color(0xFFFFB442)
+val AbsOrange04 = Color(0xFFFFC96B)
+val AbsOrange03 = Color(0xFFFFDA8F)
+val AbsOrange02 = Color(0xFFFFEAB8)
+val AbsOrange01 = Color(0xFFFFF7E0)
+
+val AbsBlackAlpha01 = Color(0x0A000000)
+val AbsBlackAlpha02 = Color(0x14000000)
+val AbsBlackAlpha03 = Color(0x1F000000)
+val AbsBlackAlpha04 = Color(0x29000000)
+val AbsBlackAlpha05 = Color(0x3D000000)
+val AbsBlackAlpha06 = Color(0x52000000)
+val AbsBlackAlpha07 = Color(0x7A000000)
+val AbsBlackAlpha08 = Color(0xA3000000)
+val AbsBlackAlpha09 = Color(0xCC000000)
+
+val AbsWhiteAlpha01 = Color(0x0AFFFFFF)
+val AbsWhiteAlpha02 = Color(0x14FFFFFF)
+val AbsWhiteAlpha03 = Color(0x1FFFFFFF)
+val AbsWhiteAlpha04 = Color(0x29FFFFFF)
+val AbsWhiteAlpha05 = Color(0x3DFFFFFF)
+val AbsWhiteAlpha06 = Color(0x52FFFFFF)
+val AbsWhiteAlpha07 = Color(0x7AFFFFFF)
+val AbsWhiteAlpha08 = Color(0xA3FFFFFF)
+val AbsWhiteAlpha09 = Color(0xCCFFFFFF)
+
+val AbsBlack = Color(0xFF000000)
+
+val AbsPurple04 = Color(0xFFB17FEB)
+val AbsPurple05 = Color(0xFF9054DE)
+
+val AbsLightOrangeAlpha03 = Color(0x1FDA8F1F)

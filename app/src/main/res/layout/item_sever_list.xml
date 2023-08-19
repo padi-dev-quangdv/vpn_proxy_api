@@ -10,8 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/regular_layout_height"
-        android:layout_marginTop="@dimen/small_margin"
         android:layout_marginStart="@dimen/regular_margin"
+        android:layout_marginTop="@dimen/small_margin"
         android:layout_marginEnd="@dimen/regular_margin"
         android:background="@drawable/bg_item_filter">
 
@@ -26,13 +26,15 @@
 
         <TextView
             android:id="@+id/tvItemTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="@string/security_filter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:textAppearance="@style/TextViewMediumBoldText"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imageStatus"
             app:layout_constraintStart_toEndOf="@id/radioButton"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/security_filter" />
 
         <ImageView
             android:id="@+id/imageInformation"

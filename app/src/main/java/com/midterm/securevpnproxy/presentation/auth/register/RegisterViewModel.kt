@@ -1,26 +1,27 @@
 package com.midterm.securevpnproxy.presentation.auth.register
 
 import android.util.Patterns
-import androidx.lifecycle.viewModelScope
 import com.midterm.securevpnproxy.base.BaseViewEffect
 import com.midterm.securevpnproxy.base.BaseViewEvent
 import com.midterm.securevpnproxy.base.BaseViewModel
 import com.midterm.securevpnproxy.base.BaseViewState
-import com.midterm.securevpnproxy.domain.model.ResultModel
-import com.midterm.securevpnproxy.domain.usecase.register.RegisterParam
-import com.midterm.securevpnproxy.domain.usecase.register.RegisterUseCase
-import com.midterm.securevpnproxy.presentation.auth.login.LoginViewModel
-import com.midterm.securevpnproxy.presentation.auth.register.RegisterViewModel.*
+import com.midterm.securevpnproxy.presentation.auth.register.RegisterViewModel.ViewEffect
+import com.midterm.securevpnproxy.presentation.auth.register.RegisterViewModel.ViewEvent
+import com.midterm.securevpnproxy.presentation.auth.register.RegisterViewModel.ViewState
+import com.tanify.library.authentication.domain.usecase.register.RegisterParam
+import com.tanify.library.authentication.domain.usecase.register.RegisterUseCase
+import com.tanify.library.libcore.usecase.ResultModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @HiltViewModel
-class RegisterViewModel @Inject
-constructor(private val registerUseCase: RegisterUseCase) :
-    BaseViewModel<ViewState, ViewEvent, ViewEffect>(ViewState()) {
+class RegisterViewModel @Inject constructor(
+    private val registerUseCase: RegisterUseCase
+) : BaseViewModel<ViewState, ViewEvent, ViewEffect>(ViewState()) {
 
     private var registerJob: Job? = null
 
@@ -33,19 +34,26 @@ constructor(private val registerUseCase: RegisterUseCase) :
         val validateResult = validateRegister(fullName, email, password, confirmPassword)
         if (!validateResult) return
         registerJob?.cancel()
-        val param = RegisterParam(email = email, fullName = fullName, password = password)
-        registerJob = viewModelScope.launch {
-            registerUseCase(param).collectLatest { result ->
-                when (result) {
-                    is ResultModel.Success -> {
-                        setEffect(ViewEffect.RegisterCompleted)
-                    }
-                    is ResultModel.Error -> {
-                        setEffect(ViewEffect.Error(message = result.t.localizedMessage ?: "Unknown Error"))
-                    }
+        val param = RegisterParam(
+            email = email,
+            fullName = fullName,
+            password = password
+        )
+        registerJob = registerUseCase.execute(param).onEach { result ->
+            when (result) {
+                is ResultModel.Success -> {
+                    setEffect(ViewEffect.RegisterCompleted)
+                }
+
+                is ResultModel.Error -> {
+                    setEffect(
+                        ViewEffect.Error(
+                            message = result.t.localizedMessage ?: "Unknown Error"
+                        )
+                    )
                 }
             }
-        }
+        }.launchIn(coroutineScope)
     }
 
     private fun validateRegister(
@@ -126,7 +134,7 @@ constructor(private val registerUseCase: RegisterUseCase) :
 
 
     sealed interface ViewEffect : BaseViewEffect {
-        object RegisterCompleted: ViewEffect
-        data class Error(val message: String): ViewEffect
+        object RegisterCompleted : ViewEffect
+        data class Error(val message: String) : ViewEffect
     }
 }
