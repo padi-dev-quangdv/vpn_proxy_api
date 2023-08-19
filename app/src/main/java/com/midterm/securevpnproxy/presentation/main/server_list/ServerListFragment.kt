@@ -1,46 +1,67 @@
 package com.midterm.securevpnproxy.presentation.main.server_list
 
+import android.view.View
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentSeverListBinding
+import com.midterm.securevpnproxy.presentation.dialog.SimpleMessageDialog
+import com.midterm.securevpnproxy.presentation.main.server_list.ServerListViewModel.ViewEvent
+import com.midterm.securevpnproxy.util.extensions.observe
+import com.tanify.library.dns.domain.model.server_list.ServerGroupType
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ServerListFragment :
     BaseFragment<FragmentSeverListBinding, ServerListViewModel>(layoutId = R.layout.fragment_sever_list) {
 
-    private val navigationArgs: ServerListFragmentArgs by navArgs()
-    private lateinit var filter: String
-    private lateinit var adapter: ServerListAdapter
-    private lateinit var itemClickListener: ItemClickListener
+    private val adapter: ServerListAdapter by lazy {
+        ServerListAdapter(itemClickListener = object : GroupTypeItemClickListener {
+            override fun invoke(item: ServerGroupType) {
+                viewModel.onEvent(ViewEvent.SelectServerGroupType(item))
+            }
+        }, infoClickListener = object : GroupTypeInfoClickListener {
+            override fun invoke(item: ServerGroupType) {
+                showGroupTypeInformation(item)
+            }
+        })
+    }
+
+    private fun showGroupTypeInformation(item: ServerGroupType) {
+        val dialog =
+            SimpleMessageDialog(title = item.displayName, description = getString(item.desc))
+        dialog.show(parentFragmentManager, SimpleMessageDialog::class.java.canonicalName)
+    }
 
     override fun initData() {
-        filter = navigationArgs.filter
-
-        itemClickListener = object : ItemClickListener {
-            override fun onClick() {
-                binding.rcvFilter.post(Runnable {
-                    adapter.notifyDataSetChanged()
-                })
-            }
-        }
-        adapter = ServerListAdapter( itemClickListener,0)
         binding.rcvFilter.adapter = adapter
-        viewModel.allSeverDataList.observe(viewLifecycleOwner) { list ->
-            list.let {
-                adapter.submitList(list)
-            }
-       }
     }
 
     override fun initViewListener() {
-        binding.layoutHeader.iconRight.setOnClickListener {
-            val action = ServerListFragmentDirections.actionSeverListFragmentToProfileFragment()
-            findNavController().navigate(action)
+        binding.layoutHeader.iconRight.setOnClickListener(this)
+        binding.btnBack.setOnClickListener(this)
+    }
+
+    override fun onViewClicked(view: View) {
+        super.onViewClicked(view)
+        when (view) {
+            binding.layoutHeader.iconRight -> {
+                val action = ServerListFragmentDirections.actionSeverListFragmentToProfileFragment()
+                findNavController().navigate(action)
+            }
+            binding.btnBack -> {
+                findNavController().popBackStack()
+            }
         }
     }
 
     override fun initObserver() {
+        observe(flow = viewModel.state, observer = ::handleStateChanges)
+    }
+
+    private fun handleStateChanges(state: ServerListViewModel.ViewState) {
+        adapter.updateData(state.groupTypes)
+        adapter.setSelectedId(state.selectedGroupType)
     }
 
     override fun initView() {

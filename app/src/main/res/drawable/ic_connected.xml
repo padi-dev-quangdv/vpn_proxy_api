@@ -6,12 +6,12 @@
   <path
       android:pathData="M107,107m-107,0a107,107 0,1 1,214 0a107,107 0,1 1,-214 0"
       android:strokeAlpha="0.05"
-      android:fillColor="#29AA63"
+      android:fillColor="#7662FA"
       android:fillAlpha="0.05"/>
   <path
       android:pathData="M107,107m-91,0a91,91 0,1 1,182 0a91,91 0,1 1,-182 0"
       android:strokeAlpha="0.05"
-      android:fillColor="#29AA63"
+      android:fillColor="#7662FA"
       android:fillAlpha="0.05"/>
   <path
       android:pathData="M107,107m-75,0a75,75 0,1 1,150 0a75,75 0,1 1,-150 0"
@@ -21,7 +21,7 @@
       android:fillColor="#ffffff"/>
   <path
       android:pathData="M107,107m-24,0a24,24 0,1 1,48 0a24,24 0,1 1,-48 0"
-      android:fillColor="#00CF39"/>
+      android:fillColor="#7662FA"/>
   <group>
     <clip-path
         android:pathData="M91,91h32v32h-32z"/>

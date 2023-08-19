@@ -39,12 +39,22 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvFilter"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_marginTop="@dimen/regular_margin"
+            android:layout_weight="1"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvSubTitle"
             tools:listitem="@layout/item_sever_list" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBack"
+            style="@style/ButtonGradientSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_height"
+            android:layout_gravity="center|bottom"
+            android:layout_marginVertical="@dimen/regular_margin"
+            android:text="@string/back"
+            app:layout_constraintTop_toBottomOf="@id/btnManageAccount" />
     </LinearLayout>
 </layout>

@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "429322443473",
-    "project_id": "vpn-7c12a",
-    "storage_bucket": "vpn-7c12a.appspot.com"
+    "project_number": "323810669630",
+    "project_id": "tanify-vpn-dev",
+    "storage_bucket": "tanify-vpn-dev.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:429322443473:android:7d1171d30782193cc203f0",
+        "mobilesdk_app_id": "1:323810669630:android:a3bcdba73ce33138bccd6f",
         "android_client_info": {
-          "package_name": "com.midterm.securevpnproxy"
+          "package_name": "com.tanify.vpnblocker.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "429322443473-6r48p58d8p9nb7jm8e2udc8g5n4girom.apps.googleusercontent.com",
+          "client_id": "323810669630-f28jac31mcu3obdhndu97tiblgb54dek.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.midterm.securevpnproxy",
-            "certificate_hash": "d5645875a5fe2e4320473ea3b653a5c296021b72"
+            "package_name": "com.tanify.vpnblocker.dev",
+            "certificate_hash": "9489457f6efaa2983c9773398d909f268e0885f5"
           }
         },
         {
-          "client_id": "429322443473-q4vh917ss03hcg9gohgcp2c9kfcrisod.apps.googleusercontent.com",
+          "client_id": "323810669630-mr4qtbeqc1esatv01u8gekpqv8edlukl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBVkGvBtfEDs1vz82ZBmA08JTvNRb_X-60"
+          "current_key": "AIzaSyDH23PanY6VVQkhxlvzGrVXIQt7357Ws4c"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "429322443473-q4vh917ss03hcg9gohgcp2c9kfcrisod.apps.googleusercontent.com",
+              "client_id": "323810669630-6ae3ekkttbhcur2avmd7j733rc2csp60.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

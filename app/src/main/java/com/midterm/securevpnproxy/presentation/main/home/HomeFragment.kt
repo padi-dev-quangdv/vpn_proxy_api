@@ -1,28 +1,36 @@
 package com.midterm.securevpnproxy.presentation.main.home
 
+import android.app.Activity
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle.State
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentHomeBinding
 import com.midterm.securevpnproxy.util.extensions.observe
-import com.midterm.securevpnproxy.util.extensions.repeatOnState
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collectLatest
-import java.util.*
-import kotlin.math.roundToInt
+import com.midterm.securevpnproxy.vpn_state.DnsVpnManager
+import com.tanify.library.dns.domain.model.server_list.ServerGroupType
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class HomeFragment :
     BaseFragment<FragmentHomeBinding, HomeViewModel>(layoutId = R.layout.fragment_home) {
 
-    private val navigationArgs: HomeFragmentArgs by navArgs()
-    private var filterName: String? = null
+    @Inject
+    lateinit var dnsVpnManager: DnsVpnManager
+
+    private val dnsPrepareResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                dnsVpnManager.start()
+            } else {
+                toggleOnOff()
+            }
+        }
 
     private fun toggleOnOff() {
         val event = HomeViewModel.ViewEvent.OnOffToggle
@@ -36,7 +44,7 @@ class HomeFragment :
 
     private fun goToFilter() {
         val action =
-            HomeFragmentDirections.actionHomeFragmentToSeverListFragment(binding.tvSubTitleFilter.text.toString())
+            HomeFragmentDirections.actionHomeFragmentToSeverListFragment()
         findNavController().navigate(action)
     }
 
@@ -52,9 +60,9 @@ class HomeFragment :
         binding.btnNavigateToPremium.setOnClickListener(this)
     }
 
-    override fun onViewClicked(v: View) {
-        super.onViewClicked(v)
-        when (v.id) {
+    override fun onViewClicked(view: View) {
+        super.onViewClicked(view)
+        when (view.id) {
             binding.imageTurnOn.id -> toggleOnOff()
             binding.layoutHeader.iconRight.id -> goToProfile()
             binding.btnFilter.id -> goToFilter()
@@ -63,17 +71,38 @@ class HomeFragment :
     }
 
     override fun initData() {
-        filterName = navigationArgs.filter
-        binding.apply {
-            if (filterName != null && filterName != "") {
-                tvSubTitleFilter.text = filterName
-            }
-        }
     }
 
     override fun initObserver() {
         observe(viewModel.state, State.STARTED) {
             handleOnOffState(it.onOffState)
+            handleGroupTypeChanges(it.currentGroupType)
+        }
+        observe(viewModel.effect, State.RESUMED) {
+            handleEffect(it)
+        }
+    }
+
+    private fun handleGroupTypeChanges(currentGroupType: ServerGroupType?) {
+        binding.tvSubTitleFilter.text = currentGroupType?.displayName
+        binding.subDescriptionFilter.text = getString(R.string.filter_protected)
+    }
+
+    private fun handleEffect(effect: HomeViewModel.ViewEffect) {
+        when (effect) {
+            is HomeViewModel.ViewEffect.TurnVpn -> turnVpn(effect.on)
+        }
+    }
+
+    private fun turnVpn(on: Boolean) {
+        if (on) {
+            if (!dnsVpnManager.isPermissionGranted()) {
+                dnsPrepareResult.launch(dnsVpnManager.getVpnPrepareIntent())
+            } else {
+                dnsVpnManager.start()
+            }
+        } else {
+            dnsVpnManager.stop()
         }
     }
 
@@ -82,15 +111,17 @@ class HomeFragment :
             binding.imageTurnOn.setImageResource(R.drawable.ic_connected)
 
             binding.tvStatus.setTextColor(
-                ContextCompat.getColor(binding.tvStatus.context, R.color.success_main)
+                ContextCompat.getColor(binding.tvStatus.context, R.color.primary_main)
             )
             binding.tvStatus.setText(R.string.protected_status)
+            binding.ivBackgroundSuccess.isVisible = true
         } else {
             binding.imageTurnOn.setImageResource(R.drawable.ic_disconnected)
             binding.tvStatus.setTextColor(
                 ContextCompat.getColor(binding.tvStatus.context, R.color.danger_main)
             )
             binding.tvStatus.setText(R.string.not_protected_status)
+            binding.ivBackgroundSuccess.isVisible = false
         }
     }
 

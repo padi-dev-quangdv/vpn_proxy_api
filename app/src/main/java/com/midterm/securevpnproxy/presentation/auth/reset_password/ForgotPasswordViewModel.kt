@@ -7,14 +7,14 @@ import com.midterm.securevpnproxy.base.BaseViewEffect
 import com.midterm.securevpnproxy.base.BaseViewEvent
 import com.midterm.securevpnproxy.base.BaseViewModel
 import com.midterm.securevpnproxy.base.BaseViewState
-import com.midterm.securevpnproxy.domain.usecase.reset_password.ResetPasswordParam
-import com.midterm.securevpnproxy.domain.usecase.reset_password.ResetPasswordUseCaseImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class ForgotPasswordViewModel @Inject constructor(private val resetPasswordUseCase: ResetPasswordUseCaseImpl) :
+class ForgotPasswordViewModel @Inject constructor(
+//    private val resetPasswordUseCase: com.tanify.library.authentication.domain.usecase.reset_password.ResetPasswordUseCaseImpl
+    ) :
     BaseViewModel<ForgotPasswordViewModel.ViewState, ForgotPasswordViewModel.ViewEvent, ForgotPasswordViewModel.ViewEffect>(
         ViewState()
     ) {
@@ -29,7 +29,11 @@ class ForgotPasswordViewModel @Inject constructor(private val resetPasswordUseCa
         } else {
             isEmailExist.value = true
             viewModelScope.launch {
-                resetPasswordUseCase(ResetPasswordParam(email))
+//                resetPasswordUseCase(
+//                    com.tanify.library.authentication.domain.usecase.reset_password.ResetPasswordParam(
+//                        email
+//                    )
+//                )
             }
         }
     }

@@ -50,17 +50,17 @@ class RegisterFragment :
         findNavController().navigate(action)
     }
 
-    private fun displayHidePassword(etInput: EditText,imageDisplayPassword: ImageView) {
-        binding.apply {
-            if (etInput.transformationMethod == PasswordTransformationMethod.getInstance()) {
-                imageDisplayPassword.setImageResource(R.drawable.ic_hide_password)
-                etInput.transformationMethod =
-                    HideReturnsTransformationMethod.getInstance()
-            } else {
-                etInput.transformationMethod =
-                    PasswordTransformationMethod.getInstance()
-                imageDisplayPassword.setImageResource(R.drawable.ic_display_password)
-            }
+    private fun displayHidePassword(etInput: EditText, imageDisplayPassword: ImageView) {
+        if (etInput.transformationMethod == PasswordTransformationMethod.getInstance()) {
+            imageDisplayPassword.setImageResource(R.drawable.ic_hide_password)
+            etInput.transformationMethod =
+                HideReturnsTransformationMethod.getInstance()
+            etInput.setSelection(etInput.selectionEnd)
+        } else {
+            etInput.transformationMethod =
+                PasswordTransformationMethod.getInstance()
+            imageDisplayPassword.setImageResource(R.drawable.ic_display_password)
+            etInput.setSelection(etInput.selectionEnd)
         }
     }
 
@@ -76,8 +76,14 @@ class RegisterFragment :
         when (v.id) {
             binding.tvNavigateToLogin.id -> gotoLogin()
             binding.btnRegister.id -> gotoHome()
-            binding.imageDisplayPassword.id -> displayHidePassword(binding.inputPassword.etInput,binding.imageDisplayPassword)
-            binding.imageDisplayConfirmPassword.id -> displayHidePassword(binding.inputConfirmPassword.etInput, binding.imageDisplayConfirmPassword)
+            binding.imageDisplayPassword.id -> displayHidePassword(
+                binding.inputPassword.etInput,
+                binding.imageDisplayPassword
+            )
+            binding.imageDisplayConfirmPassword.id -> displayHidePassword(
+                binding.inputConfirmPassword.etInput,
+                binding.imageDisplayConfirmPassword
+            )
         }
     }
 
@@ -90,7 +96,11 @@ class RegisterFragment :
         }
         observe(viewModel.effect) {
             when (it) {
-                is RegisterViewModel.ViewEffect.Error -> Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                is RegisterViewModel.ViewEffect.Error -> Toast.makeText(
+                    requireContext(),
+                    it.message,
+                    Toast.LENGTH_LONG
+                ).show()
                 RegisterViewModel.ViewEffect.RegisterCompleted -> goToMain()
             }
         }

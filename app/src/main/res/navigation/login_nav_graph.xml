@@ -23,7 +23,7 @@
         android:id="@+id/loginFragment"
         android:name="com.midterm.securevpnproxy.presentation.auth.login.LoginFragment"
         android:label="LoginFragment"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment" />
@@ -33,9 +33,9 @@
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        tools:layout="@layout/fragment_forgot_password"
         android:name="com.midterm.securevpnproxy.presentation.auth.reset_password.ForgotPasswordFragment"
-        android:label="ForgotPasswordFragment" >
+        android:label="ForgotPasswordFragment"
+        tools:layout="@layout/fragment_forgot_password">
         <action
             android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -46,10 +46,10 @@
             app:destination="@id/checkEmailFragment" />
     </fragment>
     <fragment
-        tools:layout="@layout/fragment_check_email"
         android:id="@+id/checkEmailFragment"
         android:name="com.midterm.securevpnproxy.presentation.auth.reset_password.CheckEmailFragment"
-        android:label="CheckEmailFragment" >
+        android:label="CheckEmailFragment"
+        tools:layout="@layout/fragment_check_email">
         <action
             android:id="@+id/action_checkEmailFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -57,10 +57,10 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        tools:layout="@layout/fragment_register"
         android:id="@+id/registerFragment"
         android:name="com.midterm.securevpnproxy.presentation.auth.register.RegisterFragment"
-        android:label="RegisterFragment" >
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"

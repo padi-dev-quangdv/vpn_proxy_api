@@ -7,10 +7,11 @@ import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseFragment
 import com.midterm.securevpnproxy.databinding.FragmentOnboardingBinding
+import timber.log.Timber
 
 class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingViewModel>(layoutId = R.layout.fragment_onboarding){
 
-    private lateinit var adapter: ViewPagerAdapter
+    private lateinit var adapter: OnBoardingViewPagerAdapter
     private lateinit var onBoardingDataList: List<OnBoardingData>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -23,6 +24,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
     }
 
     private fun setButtonText(position: Int, btnContinue: Button) {
+        Timber.d("==> $position")
         when(position) {
             0,1 -> btnContinue.setText(R.string.btn_continue_text)
             2 -> btnContinue.setText(R.string.btn_get_started_text)
@@ -48,9 +50,10 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
                 resources.getString(R.string.description_on_boarding_3)
             )
         )
-        adapter = ViewPagerAdapter(onBoardingDataList)
+        adapter = OnBoardingViewPagerAdapter(onBoardingDataList)
         binding.viewPagerOnBoarding.adapter = adapter
         binding.indicator.setViewPager(binding.viewPagerOnBoarding)
+        setButtonText(0, btnContinue = binding.btnContinue)
     }
 
     private fun skipToLogin() {
@@ -61,7 +64,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnboardingBinding, OnBoardingVie
     private fun gotoLogin() {
         binding.apply {
             var position = viewPagerOnBoarding.currentItem
-            setButtonText(position,btnContinue)
+            setButtonText(position, btnContinue)
             if (position < onBoardingDataList.size) {
                 position++
                 viewPagerOnBoarding.currentItem = position

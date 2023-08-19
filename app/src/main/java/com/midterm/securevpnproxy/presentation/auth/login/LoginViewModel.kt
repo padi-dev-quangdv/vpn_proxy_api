@@ -1,35 +1,30 @@
 package com.midterm.securevpnproxy.presentation.auth.login
 
 import android.util.Patterns
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.midterm.securevpnproxy.base.BaseViewEffect
 import com.midterm.securevpnproxy.base.BaseViewEvent
 import com.midterm.securevpnproxy.base.BaseViewModel
 import com.midterm.securevpnproxy.base.BaseViewState
-import com.midterm.securevpnproxy.domain.model.LoginModel
-import com.midterm.securevpnproxy.domain.model.ResultModel
-import com.midterm.securevpnproxy.domain.usecase.check_login.CheckLoginParam
-import com.midterm.securevpnproxy.domain.usecase.check_login.CheckLoginUseCase
-import com.midterm.securevpnproxy.domain.usecase.login.LoginParam
-import com.midterm.securevpnproxy.domain.usecase.login.LoginUseCase
 import com.midterm.securevpnproxy.presentation.auth.login.LoginViewModel.ViewEffect
 import com.midterm.securevpnproxy.presentation.auth.login.LoginViewModel.ViewEvent
 import com.midterm.securevpnproxy.presentation.auth.login.LoginViewModel.ViewState
+import com.tanify.library.authentication.domain.datasource.AuthManager
+import com.tanify.library.libcore.usecase.ResultModel
+import com.tanify.library.authentication.domain.model.auth_state.AuthState
+import com.tanify.library.authentication.domain.usecase.login.LoginParam
+import com.tanify.library.authentication.domain.usecase.login.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val checkLoginUseCase: CheckLoginUseCase
+    private val authManager: AuthManager,
 ) : BaseViewModel<ViewState, ViewEvent, ViewEffect>(ViewState()) {
 
     private var loginJob: Job? = null
@@ -38,25 +33,30 @@ class LoginViewModel @Inject constructor(
         val validateLogin = validateLogin(email, password)
         if (!validateLogin) return
         loginJob?.cancel()
-        loginJob = coroutineScope.launch {
-            when (val result = loginUseCase.invoke(LoginParam(email, password)).firstOrNull()) {
-                is ResultModel.Success -> {
-                    setEffect(ViewEffect.LoginSuccess)
-                }
-                is ResultModel.Error -> {
-                    setEffect(
-                        ViewEffect.Error(
-                            message = result.t.localizedMessage ?: "Unknown error"
+        loginJob = loginUseCase.execute(LoginParam(email, password))
+            .onEach {
+                when (it) {
+                    is ResultModel.Success -> {
+                        setEffect(ViewEffect.LoginSuccess)
+                    }
+
+                    is ResultModel.Error -> {
+                        setEffect(
+                            ViewEffect.Error(
+                                message = it.t.localizedMessage ?: "Unknown Error"
+                            )
                         )
-                    )
+                    }
                 }
-            }
-        }
+            }.launchIn(coroutineScope)
     }
 
     private fun checkLogin() {
-        val loggedIn = checkLoginUseCase(CheckLoginParam())
-        setState(currentState.copy(loggedIn = loggedIn))
+        coroutineScope.launch {
+            authManager.getAuthState().collectLatest {
+                setState(currentState.copy(loggedIn = it == AuthState.LOGGED_IN))
+            }
+        }
     }
 
 
@@ -107,7 +107,7 @@ class LoginViewModel @Inject constructor(
             val password: String
         ) : ViewEvent
 
-        object CheckLogin: ViewEvent
+        object CheckLogin : ViewEvent
     }
 
     sealed interface ViewEffect : BaseViewEffect {
