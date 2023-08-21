@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
@@ -64,4 +65,9 @@ abstract class BaseViewModel<ViewState : BaseViewState, ViewEvent : BaseViewEven
      * Handle event from view.
      */
     abstract fun onEvent(event: ViewEvent)
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineScope.cancel()
+    }
 }

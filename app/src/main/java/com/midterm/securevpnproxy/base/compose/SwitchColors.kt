@@ -9,16 +9,16 @@ object SwitchColors {
     @Composable
     fun colors(): SwitchColors {
         return SwitchDefaults.colors(
-            checkedThumbColor = AbsWhite,
-            checkedTrackColor = AbsBlue07,
-            uncheckedThumbColor = AbsBlue07,
+            checkedThumbColor = LocalColors.current.white,
+            checkedTrackColor = LocalColors.current.infoMain,
+            uncheckedThumbColor = LocalColors.current.white,
             checkedTrackAlpha = 1f,
-            uncheckedTrackColor = LocalColors.current.white,
-            uncheckedTrackAlpha = 0.08f,
-            disabledCheckedThumbColor = LocalColors.current.darkGrey03,
-            disabledCheckedTrackColor = LocalColors.current.whiteAlpha02,
-            disabledUncheckedThumbColor = LocalColors.current.darkGrey03,
-            disabledUncheckedTrackColor = LocalColors.current.whiteAlpha02
+            uncheckedTrackColor = LocalColors.current.neutral60,
+            uncheckedTrackAlpha = 1f,
+            disabledCheckedThumbColor = LocalColors.current.white,
+            disabledCheckedTrackColor = LocalColors.current.neutral60,
+            disabledUncheckedThumbColor = LocalColors.current.white,
+            disabledUncheckedTrackColor = LocalColors.current.neutral60
         )
     }
 }

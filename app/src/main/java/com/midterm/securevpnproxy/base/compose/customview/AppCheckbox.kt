@@ -47,10 +47,10 @@ object AppCheckbox {
     @Composable
     private fun color(): CheckboxColors {
         return CheckboxDefaults.colors(
-            checkedColor = LocalColors.current.blue06,
-            uncheckedColor = LocalColors.current.lightGrey09,
+            checkedColor = LocalColors.current.infoMain,
+            uncheckedColor = LocalColors.current.neutral60,
             checkmarkColor = AbsWhite,
-            disabledColor = LocalColors.current.darkGrey07,
+            disabledColor = LocalColors.current.neutral60,
         )
     }
 }

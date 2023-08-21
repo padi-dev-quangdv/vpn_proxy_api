@@ -11,30 +11,30 @@ import androidx.compose.runtime.CompositionLocalProvider
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val color = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
-    val customColorsPalette = if (darkTheme) {
-        AppDarkColorsPalette
-    } else {
-        AppLightColorsPalette
-    }
-    val customTextSelectionColors = if (darkTheme) {
-        DarkTextSelectionColors
-    } else {
-        LightTextSelectionColors
-    }
+//    val color = if (darkTheme) {
+//        DarkColorPalette
+//    } else {
+//        LightColorPalette
+//    }
+//    val customColorsPalette = if (darkTheme) {
+//        AppDarkColorsPalette
+//    } else {
+//        AppLightColorsPalette
+//    }
+//    val customTextSelectionColors = if (darkTheme) {
+//        DarkTextSelectionColors
+//    } else {
+//        LightTextSelectionColors
+//    }
 
     MaterialTheme(
-        colors = color,
+        colors = LightColorPalette,
         typography = appTypography,
         shapes = Shapes,
     ) {
         CompositionLocalProvider(
-            LocalColors provides customColorsPalette,
-            LocalTextSelectionColors provides customTextSelectionColors,
+            LocalColors provides AppLightColorsPalette,
+            LocalTextSelectionColors provides LightTextSelectionColors,
             LocalMinimumInteractiveComponentEnforcement provides false,
             content = content
         )

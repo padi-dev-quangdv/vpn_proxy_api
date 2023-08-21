@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.midterm.securevpnproxy.base.compose.LabelMedium
+import com.midterm.securevpnproxy.base.compose.LargeTextBold
 import com.midterm.securevpnproxy.base.compose.LocalColors
 
 @Composable
@@ -16,8 +16,8 @@ fun ClassicHeader(
     BaseHeader(startContent = startContent, centerContent = {
         Text(
             text = title,
-            style = LabelMedium,
-            color = LocalColors.current.lightGrey03
+            style = LargeTextBold,
+            color = LocalColors.current.neutral90
         )
     }, endContent = endContent)
 }

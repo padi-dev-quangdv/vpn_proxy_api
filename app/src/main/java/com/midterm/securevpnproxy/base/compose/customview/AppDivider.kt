@@ -14,7 +14,7 @@ import com.midterm.securevpnproxy.base.compose.LocalColors
 private fun BaseDivider(modifier: Modifier = Modifier) {
     Divider(
         modifier = modifier,
-        color = LocalColors.current.whiteAlpha01,
+        color = LocalColors.current.neutral70,
         thickness = 1.dp
     )
 }

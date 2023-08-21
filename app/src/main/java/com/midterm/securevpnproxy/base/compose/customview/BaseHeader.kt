@@ -16,7 +16,7 @@ import com.midterm.securevpnproxy.base.compose.LocalColors
 @Composable
 fun BaseHeader(
     modifier: Modifier = Modifier,
-    dividerColor: Color = LocalColors.current.whiteAlpha01,
+    dividerColor: Color = Color.Transparent,
     startContent: @Composable BoxScope.() -> Unit,
     centerContent: @Composable BoxScope.() -> Unit,
     endContent: @Composable BoxScope.() -> Unit

@@ -1,4 +1,4 @@
-package com.midterm.securevpnproxy.base.compose.customview.text_field.input_filter
+package com.midterm.securevpnproxy.base.compose.customview.text_field
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.text.BasicTextField
@@ -14,6 +14,7 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import com.midterm.securevpnproxy.base.compose.customview.text_field.input_filter.ComposeInputFilter
 
 @Composable
 fun BaseTextField(
