@@ -1,6 +1,7 @@
 package com.tanify.library.authentication.domain.datasource
 
 import com.tanify.library.authentication.domain.model.auth_state.AuthState
+import com.tanify.library.authentication.domain.model.user_info.UserDataModel
 import kotlinx.coroutines.flow.Flow
 
 interface AuthManager {
@@ -14,7 +15,7 @@ interface AuthManager {
 //
 //    suspend fun setRefreshToken(token: String?)
 //
-//    suspend fun setUserData(userData: UserDataModel?)
+    suspend fun setUserData(userData: UserDataModel?)
 //
 //    suspend fun getUserData(): UserDataModel?
 }

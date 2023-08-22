@@ -29,7 +29,9 @@ class LoginViewModel @Inject constructor(
 
     private var loginJob: Job? = null
 
-    private fun login(email: String, password: String) {
+    private fun login() {
+        val email = currentState.email
+        val password = currentState.password
         val validateLogin = validateLogin(email, password)
         if (!validateLogin) return
         loginJob?.cancel()
@@ -54,7 +56,8 @@ class LoginViewModel @Inject constructor(
     private fun checkLogin() {
         coroutineScope.launch {
             authManager.getAuthState().collectLatest {
-                setState(currentState.copy(loggedIn = it == AuthState.LOGGED_IN))
+                if (it == AuthState.LOGGED_IN)
+                    setEffect(ViewEffect.LoginSuccess)
             }
         }
     }
@@ -62,9 +65,24 @@ class LoginViewModel @Inject constructor(
 
     override fun onEvent(event: ViewEvent) {
         when (event) {
-            is ViewEvent.LoginEvent -> login(event.email, event.password)
             is ViewEvent.CheckLogin -> checkLogin()
+            ViewEvent.Submit -> login()
+            is ViewEvent.UpdateEmail -> updateEmail(event.email)
+            is ViewEvent.UpdatePassword -> updatePassword(event.password)
+            ViewEvent.TogglePasswordVisibility -> updatePasswordVisibility()
         }
+    }
+
+    private fun updateEmail(email: String) {
+        setState(currentState.copy(email = email))
+    }
+
+    private fun updatePassword(password: String) {
+        setState(currentState.copy(password = password))
+    }
+
+    private fun updatePasswordVisibility() {
+        setState(currentState.copy(showPassword = !currentState.showPassword))
     }
 
 
@@ -92,22 +110,26 @@ class LoginViewModel @Inject constructor(
             )
             return false
         }
+        setState(currentState.copy(emailError = null, passwordError = null))
         return true
     }
 
     data class ViewState(
-        val loggedIn: Boolean = false,
+        val email: String = "",
+        val password: String = "",
+        val showPassword: Boolean = false,
         val emailError: String? = null,
-        val passwordError: String? = null
+        val passwordError: String? = null,
+        val emailPlaceholder: String = "email@example.com",
+        val passwordPlaceholder: String = "********",
     ) : BaseViewState
 
     sealed interface ViewEvent : BaseViewEvent {
-        data class LoginEvent(
-            val email: String,
-            val password: String
-        ) : ViewEvent
-
         object CheckLogin : ViewEvent
+        data class UpdateEmail(val email: String) : ViewEvent
+        data class UpdatePassword(val password: String) : ViewEvent
+        object TogglePasswordVisibility : ViewEvent
+        object Submit : ViewEvent
     }
 
     sealed interface ViewEffect : BaseViewEffect {

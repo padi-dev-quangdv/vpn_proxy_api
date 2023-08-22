@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tanify.library.authentication.data.dto.auth_state.AuthState
 import com.tanify.library.authentication.data.dto.auth_state.toModel
 import com.tanify.library.authentication.domain.datasource.AuthManager
+import com.tanify.library.authentication.domain.model.user_info.UserDataModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,4 +36,8 @@ class AuthManagerImpl @Inject constructor(
         flow {
             emitAll(authStateSharedFlow.map { it.toModel() })
         }
+
+    override suspend fun setUserData(userData: UserDataModel?) {
+        TODO("Not yet implemented")
+    }
 }

@@ -52,4 +52,12 @@ constructor(
     protected open fun MainComposeViewContent() {
         // You will need to add @Composable when trying to override this func.
     }
+
+    override fun initViewListener() {
+
+    }
+
+    override fun initObserver() {
+
+    }
 }

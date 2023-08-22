@@ -5,4 +5,4 @@ import com.tanify.library.libcore.usecase.FlowResultUseCase
 import com.tanify.library.libcore.usecase.ResultModel
 import kotlinx.coroutines.flow.Flow
 
-interface LoginUseCase: FlowResultUseCase<LoginParam, LoginModel>
+interface LoginUseCase: FlowResultUseCase<LoginParam, Unit>
