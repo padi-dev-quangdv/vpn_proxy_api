@@ -11,6 +11,7 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import timber.log.Timber
@@ -53,6 +54,9 @@ abstract class BaseViewModel<ViewState : BaseViewState, ViewEvent : BaseViewEven
     private val _effect = Channel<ViewEffect>()
     val effect: Flow<ViewEffect> = _effect.receiveAsFlow()
 
+    private val _loadingState = MutableStateFlow(false)
+    val loadingState: Flow<Boolean> = _loadingState
+
     /**
      * Send effect to view.
      */
@@ -65,6 +69,10 @@ abstract class BaseViewModel<ViewState : BaseViewState, ViewEvent : BaseViewEven
      * Handle event from view.
      */
     abstract fun onEvent(event: ViewEvent)
+
+    protected open fun onLoading(loading: Boolean = true) {
+        _loadingState.update { loading }
+    }
 
     override fun onCleared() {
         super.onCleared()

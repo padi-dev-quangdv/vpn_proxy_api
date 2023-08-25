@@ -5,6 +5,7 @@ import com.midterm.securevpnproxy.base.BaseViewEffect
 import com.midterm.securevpnproxy.base.BaseViewEvent
 import com.midterm.securevpnproxy.base.BaseViewModel
 import com.midterm.securevpnproxy.base.BaseViewState
+import com.midterm.securevpnproxy.presentation.auth.login.LoginViewModel
 import com.midterm.securevpnproxy.presentation.auth.register.RegisterViewModel.ViewEffect
 import com.midterm.securevpnproxy.presentation.auth.register.RegisterViewModel.ViewEvent
 import com.midterm.securevpnproxy.presentation.auth.register.RegisterViewModel.ViewState
@@ -20,17 +21,16 @@ import kotlinx.coroutines.flow.onEach
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val registerUseCase: RegisterUseCase
+    private val registerUseCase: RegisterUseCase,
 ) : BaseViewModel<ViewState, ViewEvent, ViewEffect>(ViewState()) {
 
     private var registerJob: Job? = null
 
-    private fun register(
-        fullName: String,
-        email: String,
-        password: String,
-        confirmPassword: String
-    ) {
+    private fun register() {
+        val fullName = currentState.fullName
+        val email = currentState.email
+        val password = currentState.password
+        val confirmPassword = currentState.confirmPassword
         val validateResult = validateRegister(fullName, email, password, confirmPassword)
         if (!validateResult) return
         registerJob?.cancel()
@@ -39,7 +39,9 @@ class RegisterViewModel @Inject constructor(
             fullName = fullName,
             password = password
         )
+        onLoading(true)
         registerJob = registerUseCase.execute(param).onEach { result ->
+            onLoading(false)
             when (result) {
                 is ResultModel.Success -> {
                     setEffect(ViewEffect.RegisterCompleted)
@@ -60,7 +62,7 @@ class RegisterViewModel @Inject constructor(
         fullName: String,
         email: String,
         password: String,
-        confirmPassword: String
+        confirmPassword: String,
     ): Boolean {
         if (fullName.trim().isEmpty()) {
             setState(
@@ -102,34 +104,71 @@ class RegisterViewModel @Inject constructor(
             )
             return false
         }
+        //clear
+        setState(
+            currentState.copy(
+                fullNameError = null,
+                emailError = null,
+                passwordError = null,
+                confirmPasswordError = null
+            )
+        )
         return true
     }
 
     override fun onEvent(event: ViewEvent) {
         when (event) {
-            is ViewEvent.RegisterEvent -> register(
-                event.fullName,
-                event.email,
-                event.password,
-                event.confirmPassword
-            )
+            ViewEvent.Submit -> register()
+            ViewEvent.TogglePasswordVisibility -> updatePasswordVisibility()
+            is ViewEvent.UpdateConfirmPassword -> updateConfirmPassword(event.confirmPassword)
+            is ViewEvent.UpdateEmail -> updateEmail(event.email)
+            is ViewEvent.UpdateFullName -> updateFullName(event.fullName)
+            is ViewEvent.UpdatePassword -> updatePassword(event.password)
         }
     }
 
+    private fun updateFullName(fullName: String) {
+        setState(currentState.copy(fullName = fullName))
+    }
+
+    private fun updateEmail(email: String) {
+        setState(currentState.copy(email = email))
+    }
+
+    private fun updatePassword(password: String) {
+        setState(currentState.copy(password = password))
+    }
+
+    private fun updateConfirmPassword(password: String) {
+        setState(currentState.copy(confirmPassword = password))
+    }
+
+    private fun updatePasswordVisibility() {
+        setState(currentState.copy(showPassword = !currentState.showPassword))
+    }
+
     data class ViewState(
+        val fullName: String = "",
+        val fullNamePlaceholder: String = "John Doe",
         val fullNameError: String? = null,
+        val email: String = "",
+        val emailPlaceholder: String = "email@example.com",
         val emailError: String? = null,
+        val password: String = "",
+        val passwordPlaceholder: String = "********",
         val passwordError: String? = null,
-        val confirmPasswordError: String? = null
+        val confirmPassword: String = "",
+        val confirmPasswordError: String? = null,
+        val showPassword: Boolean = false,
     ) : BaseViewState
 
     sealed interface ViewEvent : BaseViewEvent {
-        data class RegisterEvent(
-            val fullName: String,
-            val email: String,
-            val password: String,
-            val confirmPassword: String
-        ) : ViewEvent
+        data class UpdateFullName(val fullName: String) : ViewEvent
+        data class UpdateEmail(val email: String) : ViewEvent
+        data class UpdatePassword(val password: String) : ViewEvent
+        data class UpdateConfirmPassword(val confirmPassword: String) : ViewEvent
+        object TogglePasswordVisibility : ViewEvent
+        object Submit : ViewEvent
     }
 
 

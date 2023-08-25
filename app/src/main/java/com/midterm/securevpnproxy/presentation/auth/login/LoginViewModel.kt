@@ -35,8 +35,10 @@ class LoginViewModel @Inject constructor(
         val validateLogin = validateLogin(email, password)
         if (!validateLogin) return
         loginJob?.cancel()
+        onLoading(true)
         loginJob = loginUseCase.execute(LoginParam(email, password))
             .onEach {
+                onLoading(false)
                 when (it) {
                     is ResultModel.Success -> {
                         setEffect(ViewEffect.LoginSuccess)

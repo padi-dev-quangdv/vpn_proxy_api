@@ -1,12 +1,13 @@
 package com.tanify.library.localdb.tanify
 
 import com.tanify.library.localdb.dataStore.DataStore
+import com.tanify.library.localdb.dataStore.annotation.UserStorage
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UserDataStoreImpl @Inject constructor(
-    private val dataStore: DataStore
+    @UserStorage private val dataStore: DataStore,
 ) : UserDataStore {
     override fun getSelectedGroupType(): Flow<String?> {
         return dataStore.getStringFlow(SELECTED_GROUP_TYPE_KEY).map {

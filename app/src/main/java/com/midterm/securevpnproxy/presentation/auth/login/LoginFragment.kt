@@ -1,110 +1,86 @@
 package com.midterm.securevpnproxy.presentation.auth.login
 
 import android.content.Intent
+import android.view.View
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
 import com.midterm.securevpnproxy.base.BaseComposeFragment
 import com.midterm.securevpnproxy.base.compose.ButtonColors
+import com.midterm.securevpnproxy.base.compose.HandleEffect
 import com.midterm.securevpnproxy.base.compose.LocalColors
 import com.midterm.securevpnproxy.base.compose.MediumTextRegular
 import com.midterm.securevpnproxy.base.compose.MediumTextSemiBold
 import com.midterm.securevpnproxy.base.compose.customview.LargeSolidButton
 import com.midterm.securevpnproxy.base.compose.customview.text_field.AppEditText
+import com.midterm.securevpnproxy.base.compose.customview.text_field.PasswordEditText
 import com.midterm.securevpnproxy.databinding.LayoutComposeOnlyBinding
 import com.midterm.securevpnproxy.presentation.MainActivity
 import com.midterm.securevpnproxy.presentation.auth.login.LoginViewModel.ViewEvent
 import com.midterm.securevpnproxy.presentation.auth.ui.AuthHeaderUi
 import dagger.hilt.android.AndroidEntryPoint
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import kotlinx.coroutines.flow.Flow
 
 @AndroidEntryPoint
 class LoginFragment :
-    BaseComposeFragment<LayoutComposeOnlyBinding, LoginViewModel>(layoutId2 = R.layout.layout_compose_only) {
+    BaseComposeFragment<LayoutComposeOnlyBinding, LoginViewModel>(layoutId2 = R.layout.layout_compose_only),
+    HandleEffect<LoginViewModel.ViewEffect> {
     override fun getMainComposeView(): ComposeView = binding.composeView
 
-    @Composable
-    override fun MainComposeViewContent() {
-        Surface(modifier = Modifier.background(color = LocalColors.current.white)) {
-            val viewState by viewModel.state.collectAsStateWithLifecycle(initialValue = LoginViewModel.ViewState())
-            ListenEffect()
-            Column(
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(horizontal = 24.dp)
-            ) {
-                AuthHeaderUi()
-                LoginForm(
-                    email = viewState.email,
-                    password = viewState.password,
-                    emailError = viewState.emailError,
-                    passwordError = viewState.passwordError,
-                    showPassword = viewState.showPassword,
-                    emailPlaceholder = viewState.emailPlaceholder,
-                    passwordPlaceholder = viewState.passwordPlaceholder,
-                    onEmailChange = { viewModel.onEvent(ViewEvent.UpdateEmail(it)) },
-                    onPasswordChange = { viewModel.onEvent(ViewEvent.UpdatePassword(it)) },
-                    onLoginClicked = { viewModel.onEvent(ViewEvent.Submit) },
-                    onRegisterClicked = ::gotoRegister,
-                    onForgotPasswordClicked = ::gotoForgotPassword,
-                    onTogglePasswordVisibility = { viewModel.onEvent(ViewEvent.TogglePasswordVisibility) }
-                )
-            }
-        }
-    }
+    override val loadingView: View
+        get() = binding.loading
+
+    override val loadingState: Flow<Boolean>
+        get() = viewModel.loadingState
 
     @Composable
-    private fun ListenEffect() {
-        val effect by viewModel.effect.collectAsStateWithLifecycle(initialValue = null)
-        LaunchedEffect(key1 = effect) {
-            when (effect) {
-                is LoginViewModel.ViewEffect.Error -> {
-                    Toast.makeText(
-                        requireContext(),
-                        (effect as LoginViewModel.ViewEffect.Error).message,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-
-                LoginViewModel.ViewEffect.LoginSuccess -> handleLogin(true)
-                else -> {
-
-                }
-            }
+    override fun MainComposeViewContent(modifier: Modifier) {
+        val viewState by viewModel.state.collectAsStateWithLifecycle(initialValue = LoginViewModel.ViewState())
+        Column(
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(horizontal = 24.dp)
+        ) {
+            AuthHeaderUi()
+            LoginForm(
+                email = viewState.email,
+                password = viewState.password,
+                emailError = viewState.emailError,
+                passwordError = viewState.passwordError,
+                showPassword = viewState.showPassword,
+                emailPlaceholder = viewState.emailPlaceholder,
+                passwordPlaceholder = viewState.passwordPlaceholder,
+                onEmailChange = { viewModel.onEvent(ViewEvent.UpdateEmail(it)) },
+                onPasswordChange = { viewModel.onEvent(ViewEvent.UpdatePassword(it)) },
+                onLoginClicked = { viewModel.onEvent(ViewEvent.Submit) },
+                onRegisterClicked = ::gotoRegister,
+                onForgotPasswordClicked = ::gotoForgotPassword,
+                onTogglePasswordVisibility = { viewModel.onEvent(ViewEvent.TogglePasswordVisibility) }
+            )
         }
     }
 
     @Composable
     private fun LoginForm(
-        modifier: Modifier = Modifier,
         email: String,
         password: String,
         emailError: String?,
         passwordError: String?,
-        showPassword: Boolean = false,
         emailPlaceholder: String,
         passwordPlaceholder: String,
         onEmailChange: (String) -> Unit,
@@ -113,6 +89,8 @@ class LoginFragment :
         onRegisterClicked: () -> Unit,
         onForgotPasswordClicked: () -> Unit,
         onTogglePasswordVisibility: () -> Unit,
+        modifier: Modifier = Modifier,
+        showPassword: Boolean = false,
     ) {
         Column(modifier) {
             AppEditText(
@@ -122,14 +100,15 @@ class LoginFragment :
                 onValueChange = onEmailChange,
                 placeHolder = emailPlaceholder
             )
-            PasswordField(
-                modifier = Modifier.padding(top = 24.dp),
+            PasswordEditText(
+                label = stringResource(id = R.string.password),
                 showPassword = showPassword,
                 password = password,
                 passwordError = passwordError,
                 onPasswordChange = onPasswordChange,
                 passwordPlaceholder = passwordPlaceholder,
-                onTogglePasswordVisibility = onTogglePasswordVisibility
+                onTogglePasswordVisibility = onTogglePasswordVisibility,
+                modifier = Modifier.padding(top = 24.dp),
             )
             Text(
                 modifier = Modifier
@@ -158,47 +137,6 @@ class LoginFragment :
                 color = LocalColors.current.neutral70
             )
         }
-    }
-
-    @Composable
-    private fun PasswordField(
-        modifier: Modifier = Modifier,
-        showPassword: Boolean,
-        password: String,
-        passwordError: String?,
-        onPasswordChange: (String) -> Unit,
-        onTogglePasswordVisibility: () -> Unit,
-        passwordPlaceholder: String
-    ) {
-        val rightImage = if (showPassword) {
-            R.drawable.ic_display_password
-        } else {
-            R.drawable.ic_hide_password
-        }
-        val passwordVisualTransformation = remember {
-            PasswordVisualTransformation()
-        }
-        val visualTransformation = if (showPassword) {
-            VisualTransformation.None
-        } else {
-            passwordVisualTransformation
-        }
-        AppEditText(
-            modifier = modifier,
-            label = stringResource(id = R.string.password),
-            text = password,
-            error = passwordError,
-            onValueChange = onPasswordChange,
-            placeHolder = passwordPlaceholder,
-            rightImage = {
-                Image(
-                    modifier = Modifier.clickable(onClick = onTogglePasswordVisibility),
-                    painter = painterResource(id = rightImage),
-                    contentDescription = "Show/Hide password"
-                )
-            },
-            visualTransformation = visualTransformation,
-        )
     }
 
     override fun initData() {
@@ -230,4 +168,23 @@ class LoginFragment :
     override fun initView() {
     }
 
+    override val provideEffectFlow: Flow<LoginViewModel.ViewEffect>
+        get() = viewModel.effect
+
+    override fun onEffectTriggered(effect: LoginViewModel.ViewEffect?) {
+        when (effect) {
+            is LoginViewModel.ViewEffect.Error -> {
+                Toast.makeText(
+                    requireContext(),
+                    effect.message,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            LoginViewModel.ViewEffect.LoginSuccess -> handleLogin(true)
+            else -> {
+
+            }
+        }
+    }
 }

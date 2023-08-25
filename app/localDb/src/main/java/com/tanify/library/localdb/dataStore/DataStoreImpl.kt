@@ -20,10 +20,11 @@ import timber.log.Timber
 
 @Singleton
 class DataStoreImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    private val context: Context,
+    dbName: String,
 ) : DataStore {
 
-    private val Context.dataStore by preferencesDataStore(name = context.packageName)
+    private val Context.dataStore by preferencesDataStore(name = dbName)
     private val dataFlow = context.dataStore.data.catch {
         Timber.e("$this got error: $it")
     }
