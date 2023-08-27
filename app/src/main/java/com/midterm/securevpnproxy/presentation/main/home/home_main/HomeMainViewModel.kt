@@ -1,12 +1,13 @@
-package com.midterm.securevpnproxy.presentation.main.home
+package com.midterm.securevpnproxy.presentation.main.home.home_main
 
-import androidx.lifecycle.MutableLiveData
 import com.midterm.securevpnproxy.base.BaseViewEffect
 import com.midterm.securevpnproxy.base.BaseViewEvent
 import com.midterm.securevpnproxy.base.BaseViewModel
 import com.midterm.securevpnproxy.base.BaseViewState
-import com.midterm.securevpnproxy.presentation.main.home.HomeViewModel.*
-import com.midterm.securevpnproxy.presentation.main.home.model.HomeChildScreen
+import com.midterm.securevpnproxy.presentation.main.home.HomeViewModel
+import com.midterm.securevpnproxy.presentation.main.home.home_main.HomeMainViewModel.*
+import com.midterm.securevpnproxy.presentation.main.home.home_main.model.VpnProfileUi
+import com.midterm.securevpnproxy.presentation.main.home.home_main.ui.VpnToggleState
 import com.midterm.securevpnproxy.vpn_state.DnsVpnManager
 import com.midterm.securevpnproxy.vpn_state.DnsVpnRunningState
 import com.tanify.library.dns.domain.model.server_list.ServerGroupType
@@ -14,13 +15,12 @@ import com.tanify.library.localdb.tanify.UserDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class HomeMainViewModel @Inject constructor(
     private val dnsVpnManager: DnsVpnManager,
     private val userDataStore: UserDataStore,
 ) : BaseViewModel<ViewState, ViewEvent, ViewEffect>(ViewState()) {
@@ -39,8 +39,8 @@ class HomeViewModel @Inject constructor(
         userServerGroupTypeJob?.cancel()
         userServerGroupTypeJob = userDataStore.getSelectedGroupType()
             .onEach { typeId ->
-                val type =
-                    ServerGroupType.values().find { it.id == typeId }
+                val type = ServerGroupType.values()
+                    .firstOrNull { it.id == typeId } ?: ServerGroupType.Standard
                 setState(currentState.copy(currentGroupType = type))
             }
             .launchIn(coroutineScope)
@@ -50,8 +50,13 @@ class HomeViewModel @Inject constructor(
         userVpnOnOffStateJob?.cancel()
         userVpnOnOffStateJob = userDataStore.isVpnTurnedOn()
             .onEach { isOn ->
-                setState(currentState.copy(onOffState = isOn))
-                setEffect(ViewEffect.TurnVpn(isOn))
+                val toggleState = if (isOn) {
+                    VpnToggleState.Active
+                } else {
+                    VpnToggleState.Inactive
+                }
+                setState(currentState.copy(status = toggleState))
+                setEffect(ViewEffect.TurnVpn(toggleState))
             }
             .launchIn(coroutineScope)
     }
@@ -67,10 +72,10 @@ class HomeViewModel @Inject constructor(
 
     private fun handleDnsVpnState(it: DnsVpnRunningState) {
         val uiStateOn = when (it) {
-            DnsVpnRunningState.Starting, DnsVpnRunningState.Started -> true
-            DnsVpnRunningState.Stopping, DnsVpnRunningState.Stopped -> false
+            DnsVpnRunningState.Starting, DnsVpnRunningState.Started -> VpnToggleState.Active
+            DnsVpnRunningState.Stopping, DnsVpnRunningState.Stopped -> VpnToggleState.Inactive
         }
-        setState(currentState.copy(onOffState = uiStateOn))
+        setState(currentState.copy(status = uiStateOn))
     }
 
     override fun onEvent(event: ViewEvent) {
@@ -80,9 +85,9 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun handleToggleOnOff() {
-        val newOnOffState = !currentState.onOffState
+        val newToggleState = currentState.status != VpnToggleState.Active
         coroutineScope.launch {
-            userDataStore.saveVpnTurned(newOnOffState)
+            userDataStore.saveVpnTurned(newToggleState)
         }
     }
 
@@ -93,17 +98,16 @@ class HomeViewModel @Inject constructor(
     }
 
     data class ViewState(
-        val currentScreen: HomeChildScreen = HomeChildScreen.Main,
-        val onOffState: Boolean = false,
-        val currentGroupType: ServerGroupType? = null,
+        val status: VpnToggleState = VpnToggleState.Inactive,
+        val timer: String = "",
+        val currentGroupType: ServerGroupType = ServerGroupType.Standard,
     ) : BaseViewState
-
 
     sealed interface ViewEvent : BaseViewEvent {
         object OnOffToggle : ViewEvent
     }
 
     sealed interface ViewEffect : BaseViewEffect {
-        data class TurnVpn(val on: Boolean) : ViewEffect
+        data class TurnVpn(val newState: VpnToggleState) : ViewEffect
     }
 }

@@ -1,27 +1,72 @@
 package com.midterm.securevpnproxy.presentation.main.home
 
 import android.app.Activity
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle.State
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
 import com.midterm.securevpnproxy.R
-import com.midterm.securevpnproxy.base.BaseFragment
-import com.midterm.securevpnproxy.databinding.FragmentHomeBinding
-import com.midterm.securevpnproxy.util.extensions.observe
+import com.midterm.securevpnproxy.base.BaseComposeFragment
+import com.midterm.securevpnproxy.databinding.LayoutComposeOnlyBinding
+import com.midterm.securevpnproxy.presentation.main.home.ui.HomeHeader
 import com.midterm.securevpnproxy.vpn_state.DnsVpnManager
-import com.tanify.library.dns.domain.model.server_list.ServerGroupType
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.unit.dp
+import com.midterm.securevpnproxy.presentation.main.home.home_main.HomeMainScreen
+import com.midterm.securevpnproxy.presentation.main.home.home_main.ui.VpnToggleState
+import com.midterm.securevpnproxy.presentation.main.home.home_select_mode.HomeSelectModeScreen
+import com.midterm.securevpnproxy.presentation.main.home.model.HomeChildScreen
 
 @AndroidEntryPoint
 class HomeFragment :
-    BaseFragment<FragmentHomeBinding, HomeViewModel>(layoutId = R.layout.fragment_home) {
-
+    BaseComposeFragment<LayoutComposeOnlyBinding, HomeViewModel>(layoutId2 = R.layout.layout_compose_only) {
     @Inject
     lateinit var dnsVpnManager: DnsVpnManager
+
+    override fun getMainComposeView(): ComposeView = binding.composeView
+
+    @Composable
+    override fun MainComposeViewContent(modifier: Modifier) {
+        super.MainComposeViewContent(modifier)
+        val viewState by viewModel.state.collectAsStateWithLifecycle(
+            initialValue = HomeViewModel.ViewState()
+        )
+        Column(modifier = modifier) {
+            HomeHeader(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                onStartItemClicked = {
+
+                },
+                onEndItemClicked = {
+
+                },
+                iconStart = R.drawable.ic_menu,
+                iconEnd = R.drawable.ic_person,
+            )
+            HomeContent(viewState.currentScreen)
+        }
+    }
+
+    @Composable
+    private fun HomeContent(currentScreen: HomeChildScreen) {
+        when (currentScreen) {
+            HomeChildScreen.Main -> HomeMainScreen(
+                onChangeProfileClicked = {
+
+                },
+                onSwitchVpnState = { turnVpn(it) }
+            )
+
+            HomeChildScreen.SelectMode -> HomeSelectModeScreen()
+        }
+    }
+
 
     private val dnsPrepareResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -53,49 +98,15 @@ class HomeFragment :
         findNavController().navigate(action)
     }
 
-    override fun initViewListener() {
-        binding.imageTurnOn.setOnClickListener(this)
-        binding.layoutHeader.iconRight.setOnClickListener(this)
-        binding.btnFilter.setOnClickListener(this)
-        binding.btnNavigateToPremium.setOnClickListener(this)
-    }
-
-    override fun onViewClicked(view: View) {
-        super.onViewClicked(view)
-        when (view.id) {
-            binding.imageTurnOn.id -> toggleOnOff()
-            binding.layoutHeader.iconRight.id -> goToProfile()
-            binding.btnFilter.id -> goToFilter()
-            binding.btnNavigateToPremium.id -> goToPremium()
-        }
-    }
-
     override fun initData() {
     }
 
     override fun initObserver() {
-        observe(viewModel.state, State.STARTED) {
-            handleOnOffState(it.onOffState)
-            handleGroupTypeChanges(it.currentGroupType)
-        }
-        observe(viewModel.effect, State.RESUMED) {
-            handleEffect(it)
-        }
     }
 
-    private fun handleGroupTypeChanges(currentGroupType: ServerGroupType?) {
-        binding.tvSubTitleFilter.text = currentGroupType?.displayName
-        binding.subDescriptionFilter.text = getString(R.string.filter_protected)
-    }
-
-    private fun handleEffect(effect: HomeViewModel.ViewEffect) {
-        when (effect) {
-            is HomeViewModel.ViewEffect.TurnVpn -> turnVpn(effect.on)
-        }
-    }
-
-    private fun turnVpn(on: Boolean) {
-        if (on) {
+    private fun turnVpn(state: VpnToggleState) {
+        val shouldOn = state == VpnToggleState.Active
+        if (shouldOn) {
             if (!dnsVpnManager.isPermissionGranted()) {
                 dnsPrepareResult.launch(dnsVpnManager.getVpnPrepareIntent())
             } else {
@@ -103,25 +114,6 @@ class HomeFragment :
             }
         } else {
             dnsVpnManager.stop()
-        }
-    }
-
-    private fun handleOnOffState(isOn: Boolean) {
-        if (isOn) {
-            binding.imageTurnOn.setImageResource(R.drawable.ic_connected)
-
-            binding.tvStatus.setTextColor(
-                ContextCompat.getColor(binding.tvStatus.context, R.color.primary_main)
-            )
-            binding.tvStatus.setText(R.string.protected_status)
-            binding.ivBackgroundSuccess.isVisible = true
-        } else {
-            binding.imageTurnOn.setImageResource(R.drawable.ic_disconnected)
-            binding.tvStatus.setTextColor(
-                ContextCompat.getColor(binding.tvStatus.context, R.color.danger_main)
-            )
-            binding.tvStatus.setText(R.string.not_protected_status)
-            binding.ivBackgroundSuccess.isVisible = false
         }
     }
 
