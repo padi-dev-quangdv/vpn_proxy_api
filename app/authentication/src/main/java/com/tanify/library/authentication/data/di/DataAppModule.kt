@@ -1,5 +1,6 @@
 package com.tanify.library.authentication.data.di
 
+import AuthRepository
 import com.tanify.library.authentication.data.repository.network.firebase.FirebaseAuthRepository
 import com.tanify.library.authentication.domain.datasource.AuthDataSource
 import dagger.Binds
@@ -14,5 +15,5 @@ abstract class DataAppModule {
 
     @Binds
     @ViewModelScoped
-    abstract fun bindAuthDataSource(repository: FirebaseAuthRepository): AuthDataSource
+    abstract fun bindAuthDataSource(repository: AuthRepository): AuthDataSource
 }

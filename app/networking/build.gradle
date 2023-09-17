@@ -23,12 +23,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
+    }
+
+    hilt {
+        enableExperimentalClasspathAggregation = true
     }
 }
 
@@ -37,10 +43,15 @@ dependencies {
     implementation deps.firebase.firestore
     implementation deps.firebase.auth
 
+    implementation deps.kotlin.stdlib
     // Dagger Hilt
     implementation deps.hilt.android
+    implementation project(path: ':app:libcore')
     kapt deps.hilt.compiler
 
+    kapt deps.moshi.codegen
+    implementation deps.moshi.values()
+    api platform(deps.okhttp.bom)
     api deps.network.values()
-
+    api deps.timber
 }

@@ -11,5 +11,4 @@ interface HandleEffect<E : BaseViewEffect> {
     val provideEffectFlow: Flow<E>
 
     fun onEffectTriggered(effect: E?)
-
 }
